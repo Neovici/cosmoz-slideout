@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,ut as i}from"./iframe-CXTWcQPs.js";import{t as a,u as o}from"./cosmoz-slideout-5l254dyi.js";var s,c,l,u,d,f,p,m,h;e((()=>{o(),r(),a(),{expect:s,waitFor:c}=__STORYBOOK_MODULE_TEST__,l=(e,t)=>{let n=document.createElement(`span`);n.style.color=t,e.append(n);let r=getComputedStyle(n).color;return n.remove(),r},u={title:`CosmozSlideout/Regression`,component:`cosmoz-slideout`,tags:[`!autodocs`]},d={render:()=>{let e=document.createElement(`div`);return t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,ut as i}from"./iframe-rxxicwRP.js";import{t as a,u as o}from"./cosmoz-slideout-Bx0QNqgs.js";var s,c,l,u,d,f,p,m,h;e((()=>{o(),r(),a(),{expect:s,waitFor:c}=__STORYBOOK_MODULE_TEST__,l=(e,t)=>{let n=document.createElement(`span`);n.style.color=t,e.append(n);let r=getComputedStyle(n).color;return n.remove(),r},u={title:`CosmozSlideout/Test`,component:`cosmoz-slideout`,tags:[`!autodocs`]},d={render:()=>{let e=document.createElement(`div`);return t`
             <cosmoz-button variant="primary" @click=${()=>i(t`
                     <cosmoz-slideout
                         variant="panel"
@@ -47,7 +47,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                         aria-label="Guarded draft"
                         @close=${()=>i(n,e)}
                     >
-                        <button id="inner">Focus me</button>
+                        <cosmoz-button id="inner">Focus me</cosmoz-button>
                     </cosmoz-slideout>
                 `,e)}>
                 Open guarded draft
@@ -179,7 +179,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                         aria-label="Guarded draft"
                         @close=\${() => render(nothing, mount)}
                     >
-                        <button id="inner">Focus me</button>
+                        <cosmoz-button id="inner">Focus me</cosmoz-button>
                     </cosmoz-slideout>
                 \`, mount);
     return html\`

@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,ut as i}from"./iframe-CXTWcQPs.js";import{a,s as o,t as s,u as c}from"./cosmoz-slideout-5l254dyi.js";var l,u,d,f,p,m,h;e((()=>{c(),a(),r(),s(),{expect:l,waitFor:u}=__STORYBOOK_MODULE_TEST__,d=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),f={title:`CosmozSlideout/Shell`,component:`cosmoz-slideout`,tags:[`autodocs`]},p={render:()=>{let e=document.createElement(`div`);return t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,ut as i}from"./iframe-rxxicwRP.js";import{a,s as o,t as s,u as c}from"./cosmoz-slideout-Bx0QNqgs.js";var l,u,d,f,p,m,h;e((()=>{c(),a(),r(),s(),{expect:l,waitFor:u}=__STORYBOOK_MODULE_TEST__,d=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),f={title:`CosmozSlideout/Shell`,component:`cosmoz-slideout`,tags:[`autodocs`]},p={render:()=>{let e=document.createElement(`div`);return t`
             <cosmoz-button variant="primary" @click=${()=>i(t`
                     <cosmoz-slideout
                         aria-label="Release notes"

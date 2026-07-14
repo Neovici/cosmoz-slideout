@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./iframe-CXTWcQPs.js";import{d as r,f as i,t as a}from"./cosmoz-slideout-5l254dyi.js";import{n as o,r as s,t as c}from"./arg-types-B_r0JqzP.js";var l,u,d,f,p;e((()=>{n(),r(),a(),o(),{expect:l,waitFor:u}=__STORYBOOK_MODULE_TEST__,d={title:`CosmozSlideout/Playground`,component:`cosmoz-slideout`,argTypes:s,args:c},f={tags:[`!autodocs`],render:e=>t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./iframe-rxxicwRP.js";import{d as r,f as i,t as a}from"./cosmoz-slideout-Bx0QNqgs.js";import{n as o,r as s,t as c}from"./arg-types-B_r0JqzP.js";var l,u,d,f,p;e((()=>{n(),r(),a(),o(),{expect:l,waitFor:u}=__STORYBOOK_MODULE_TEST__,d={title:`CosmozSlideout/Playground`,component:`cosmoz-slideout`,argTypes:s,args:c},f={tags:[`!autodocs`],render:e=>t`
         <cosmoz-slideout
             variant=${i(e.variant||void 0)}
             heading=${i(e.heading)}
