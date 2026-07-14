@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,ut as i}from"./iframe-C9FwPToW.js";import{f as a,l as o,s}from"./src-DKiyH0AA.js";import{t as c}from"./cosmoz-slideout-JpLFWnb0.js";var l,u,d,f,p,m,h;e((()=>{a(),s(),r(),c(),{expect:l,waitFor:u}=__STORYBOOK_MODULE_TEST__,d=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),f={title:`CosmozSlideout/Shell`,component:`cosmoz-slideout`,tags:[`autodocs`]},p={render:()=>{let e=document.createElement(`div`);return t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,ut as i}from"./iframe-CXTWcQPs.js";import{a,s as o,t as s,u as c}from"./cosmoz-slideout-5l254dyi.js";var l,u,d,f,p,m,h;e((()=>{c(),a(),r(),s(),{expect:l,waitFor:u}=__STORYBOOK_MODULE_TEST__,d=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),f={title:`CosmozSlideout/Shell`,component:`cosmoz-slideout`,tags:[`autodocs`]},p={render:()=>{let e=document.createElement(`div`);return t`
             <cosmoz-button variant="primary" @click=${()=>i(t`
                     <cosmoz-slideout
                         aria-label="Release notes"
@@ -18,7 +18,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                 Open bare slideout
             </cosmoz-button>
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open bare slideout/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`opens with no built-in controls`,async()=>{await u(()=>l(a.matches(`:popover-open`)).toBe(!0)),l(i.querySelector(`cosmoz-button`)).toBeNull()}),await n(`renders no panel chrome without variant="panel"`,async()=>{l(i.shadowRoot.querySelector(`.header`)).toBeNull(),l(i.shadowRoot.querySelector(`.body`)).toBeNull(),l(i.shadowRoot.querySelector(`.footer`)).toBeNull(),l(i.shadowRoot.querySelector(`cosmoz-button[aria-label="Close"]`)).toBeNull()}),await n(`Escape is the only dismissal and removes it`,async()=>{await r.keyboard(`{Escape}`),await u(()=>l(t.querySelector(`cosmoz-slideout`)).toBeNull())})}},m={render:()=>{let e=document.createElement(`div`);return t`
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open bare slideout/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`opens with no built-in controls`,async()=>{await u(()=>l(a.matches(`:popover-open`)).toBe(!0)),l(i.querySelector(`cosmoz-button`)).toBeNull()}),await n(`renders no panel UI without variant="panel"`,async()=>{l(i.shadowRoot.querySelector(`.header`)).toBeNull(),l(i.shadowRoot.querySelector(`.body`)).toBeNull(),l(i.shadowRoot.querySelector(`.footer`)).toBeNull(),l(i.shadowRoot.querySelector(`cosmoz-button[aria-label="Close"]`)).toBeNull()}),await n(`Escape is the only dismissal and removes it`,async()=>{await r.keyboard(`{Escape}`),await u(()=>l(t.querySelector(`cosmoz-slideout`)).toBeNull())})}},m={render:()=>{let e=document.createElement(`div`);return t`
             <cosmoz-button variant="primary" @click=${()=>i(t`
                     <cosmoz-slideout
                         aria-label="Edit supplier"
@@ -102,7 +102,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
       await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
       expect(el.querySelector('cosmoz-button')).toBeNull();
     });
-    await step('renders no panel chrome without variant="panel"', async () => {
+    await step('renders no panel UI without variant="panel"', async () => {
       expect(el.shadowRoot!.querySelector('.header')).toBeNull();
       expect(el.shadowRoot!.querySelector('.body')).toBeNull();
       expect(el.shadowRoot!.querySelector('.footer')).toBeNull();

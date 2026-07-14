@@ -1,24 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,ut as i}from"./iframe-C9FwPToW.js";import{f as a,h as o,r as s,t as c}from"./src-DKiyH0AA.js";import{t as l}from"./cosmoz-slideout-JpLFWnb0.js";var u,d,f,p,m,h;e((()=>{a(),o(),r(),l(),c(),{expect:u,waitFor:d}=__STORYBOOK_MODULE_TEST__,customElements.get(`demo-labeled-slideout`)||customElements.define(`demo-labeled-slideout`,s(e=>t`
-                <cosmoz-button
-                    variant="tertiary"
-                    size="sm"
-                    aria-label="Close"
-                    style="position: absolute; top: 12px; right: 12px; z-index: 3;"
-                    @click=${()=>e.close()}
-                >
-                    ✕
-                </cosmoz-button>
-                <h2
-                    id="dialog-title"
-                    style="margin: 0; padding: 24px 24px 4px; font: 600 20px/1.4 system-ui;"
-                >
-                    Same-tree label
-                </h2>
-                <div style="padding: 12px 24px; color: var(--cz-color-text-tertiary);">
-                    <code>aria-labelledby</code> works here because the title is rendered
-                    in the same shadow tree as the dialog surface.
-                </div>
-            `)),f={title:`CosmozSlideout/Lifecycle`,component:`cosmoz-slideout`,tags:[`autodocs`]},p={render:()=>{let e=document.createElement(`div`),r=document.createElement(`ol`);r.dataset.testid=`event-log`,r.style.cssText=`margin: calc(var(--cz-spacing) * 3) 0 0; color: var(--cz-color-text-tertiary); font-family: var(--cz-font-body); font-size: var(--cz-text-sm);`;let a=e=>{let t=document.createElement(`li`);t.textContent=e,r.append(t)};return t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,ut as i}from"./iframe-CXTWcQPs.js";import{t as a,u as o}from"./cosmoz-slideout-5l254dyi.js";var s,c,l,u,d;e((()=>{o(),r(),a(),{expect:s,waitFor:c}=__STORYBOOK_MODULE_TEST__,l={title:`CosmozSlideout/Lifecycle`,component:`cosmoz-slideout`,tags:[`autodocs`]},u={render:()=>{let e=document.createElement(`div`),r=document.createElement(`ol`);r.dataset.testid=`event-log`,r.style.cssText=`margin: calc(var(--cz-spacing) * 3) 0 0; color: var(--cz-color-text-tertiary); font-family: var(--cz-font-body); font-size: var(--cz-text-sm);`;let a=e=>{let t=document.createElement(`li`);t.textContent=e,r.append(t)};return t`
             <cosmoz-button variant="primary" @click=${()=>{r.replaceChildren(),i(t`
                     <cosmoz-slideout
                         variant="panel"
@@ -55,17 +35,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                 Open lifecycle panel
             </cosmoz-button>
             ${r}${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{let i=()=>[...t.querySelectorAll(`[data-testid="event-log"] li`)].map(e=>e.textContent);await r.click(await e.findByShadowRole(`button`,{name:/open lifecycle panel/iu}));let a=t.querySelector(`cosmoz-slideout`);await n(`dispatches opened after the entrance transition`,async()=>{await d(()=>u(i()).toContain(`opened`))}),await n(`emits full-screen-changed with state detail`,async()=>{await r.click(await e.findByShadowRole(`button`,{name:/toggle full screen/iu})),await d(()=>u(i()).toContain(`full-screen: true`))}),await n(`fires close and onClose when the animation finishes`,async()=>{a.querySelector(`cosmoz-button:last-of-type`).click(),await d(()=>u(i()).toContain(`close event`)),await d(()=>u(i()).toContain(`onClose callback`))})}},m={render:()=>{let e=document.createElement(`div`);return t`
-            <cosmoz-button variant="primary" @click=${()=>i(t`
-                    <demo-labeled-slideout
-                        aria-labelledby="dialog-title"
-                        @close=${()=>i(n,e)}
-                    ></demo-labeled-slideout>
-                `,e)}>
-                Open labelled factory slideout
-            </cosmoz-button>
-            ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open labelled factory slideout/iu}));let i=t.querySelector(`demo-labeled-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`mirrors aria-labelledby onto the same-tree dialog surface`,async()=>{await d(()=>u(a.matches(`:popover-open`)).toBe(!0)),u(a).toHaveAttribute(`aria-labelledby`,`dialog-title`),u(i.shadowRoot.querySelector(`#dialog-title`)).not.toBeNull()})}},p.parameters={...p.parameters,docs:{...p.parameters?.docs,source:{originalSource:`{
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{let i=()=>[...t.querySelectorAll(`[data-testid="event-log"] li`)].map(e=>e.textContent);await r.click(await e.findByShadowRole(`button`,{name:/open lifecycle panel/iu}));let a=t.querySelector(`cosmoz-slideout`);await n(`dispatches opened after the entrance transition`,async()=>{await c(()=>s(i()).toContain(`opened`))}),await n(`emits full-screen-changed with state detail`,async()=>{await r.click(await e.findByShadowRole(`button`,{name:/toggle full screen/iu})),await c(()=>s(i()).toContain(`full-screen: true`))}),await n(`fires close and onClose when the animation finishes`,async()=>{a.querySelector(`cosmoz-button:last-of-type`).click(),await c(()=>s(i()).toContain(`close event`)),await c(()=>s(i()).toContain(`onClose callback`))})}},u.parameters={...u.parameters,docs:{...u.parameters?.docs,source:{originalSource:`{
   render: () => {
     const mount = document.createElement('div');
     const log = document.createElement('ol');
@@ -150,37 +120,4 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
       await waitFor(() => expect(logItems()).toContain('onClose callback'));
     });
   }
-}`,...p.parameters?.docs?.source}}},m.parameters={...m.parameters,docs:{...m.parameters?.docs,source:{originalSource:`{
-  render: () => {
-    const mount = document.createElement('div');
-    const open = () => render(litHtml\`
-                    <demo-labeled-slideout
-                        aria-labelledby="dialog-title"
-                        @close=\${() => render(nothing, mount)}
-                    ></demo-labeled-slideout>
-                \`, mount);
-    return litHtml\`
-            <cosmoz-button variant="primary" @click=\${open}>
-                Open labelled factory slideout
-            </cosmoz-button>
-            \${mount}
-        \`;
-  },
-  play: async ({
-    canvas,
-    canvasElement,
-    step,
-    userEvent
-  }) => {
-    await userEvent.click(await canvas.findByShadowRole('button', {
-      name: /open labelled factory slideout/iu
-    }));
-    const el = canvasElement.querySelector('demo-labeled-slideout') as LabeledEl;
-    const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
-    await step('mirrors aria-labelledby onto the same-tree dialog surface', async () => {
-      await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
-      expect(surface).toHaveAttribute('aria-labelledby', 'dialog-title');
-      expect(el.shadowRoot!.querySelector('#dialog-title')).not.toBeNull();
-    });
-  }
-}`,...m.parameters?.docs?.source}}},h=[`Events`,`AriaLabelledbyFactory`]}))();export{m as AriaLabelledbyFactory,p as Events,h as __namedExportsOrder,f as default};
+}`,...u.parameters?.docs?.source}}},d=[`Events`]}))();export{u as Events,d as __namedExportsOrder,l as default};

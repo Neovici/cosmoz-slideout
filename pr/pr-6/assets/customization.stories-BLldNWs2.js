@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,ut as i}from"./iframe-C9FwPToW.js";import{f as a}from"./src-DKiyH0AA.js";import{t as o}from"./cosmoz-slideout-JpLFWnb0.js";var s,c,l,u,d,f,p,m,h,g;e((()=>{a(),r(),o(),{expect:s,waitFor:c}=__STORYBOOK_MODULE_TEST__,l=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),u=t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,ut as i}from"./iframe-CXTWcQPs.js";import{t as a,u as o}from"./cosmoz-slideout-5l254dyi.js";var s,c,l,u,d,f,p,m,h,g;e((()=>{o(),r(),a(),{expect:s,waitFor:c}=__STORYBOOK_MODULE_TEST__,l=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),u=t`
     <cosmoz-button
         slot="controls"
         variant="tertiary"
@@ -45,8 +45,16 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                             Muted surface
                         </h2>
                         <div style="padding: 12px 24px;">
-                            The raw shell uses the same token-backed custom properties as the
-                            panel, but all chrome is still supplied by the parent.
+                            This is the bare shell (no <code>variant="panel"</code>), yet its
+                            surface is still fully themeable. Its
+                            <code>--cosmoz-slideout-*</code> overrides accept either a design
+                            token or a plain value: here <code>--cosmoz-slideout-bg</code> and
+                            the text color resolve to <code>@neovici/cosmoz-tokens</code>
+                            <code>--cz-*</code> tokens - so the drawer stays on-theme and
+                            follows dark mode - while <code>--cosmoz-slideout-shadow</code> is
+                            a one-off value. The only difference from the panel preset is that
+                            shell mode leaves the inner UI - this header and close button -
+                            for the parent to author.
                         </div>
                     </cosmoz-slideout>
                 `,e)}>
@@ -136,8 +144,16 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                             Muted surface
                         </h2>
                         <div style="padding: 12px 24px;">
-                            The raw shell uses the same token-backed custom properties as the
-                            panel, but all chrome is still supplied by the parent.
+                            This is the bare shell (no <code>variant="panel"</code>), yet its
+                            surface is still fully themeable. Its
+                            <code>--cosmoz-slideout-*</code> overrides accept either a design
+                            token or a plain value: here <code>--cosmoz-slideout-bg</code> and
+                            the text color resolve to <code>@neovici/cosmoz-tokens</code>
+                            <code>--cz-*</code> tokens - so the drawer stays on-theme and
+                            follows dark mode - while <code>--cosmoz-slideout-shadow</code> is
+                            a one-off value. The only difference from the panel preset is that
+                            shell mode leaves the inner UI - this header and close button -
+                            for the parent to author.
                         </div>
                     </cosmoz-slideout>
                 \`, mount);

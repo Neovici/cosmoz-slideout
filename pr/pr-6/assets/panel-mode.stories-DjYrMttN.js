@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,ut as i}from"./iframe-C9FwPToW.js";import{f as a,m as o,p as s}from"./src-DKiyH0AA.js";import{t as c}from"./cosmoz-slideout-JpLFWnb0.js";import{n as l,r as u,t as d}from"./arg-types-IejsG4U-.js";var f,p,m,h,g,_,v,y,b;e((()=>{a(),r(),s(),c(),l(),{expect:f,waitFor:p}=__STORYBOOK_MODULE_TEST__,m=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),h={title:`CosmozSlideout/Panel Mode`,component:`cosmoz-slideout`,tags:[`autodocs`],argTypes:u,args:d},g={args:{heading:`Acme Industries`,subtitle:`Supplier #4021 · Stockholm, SE`,closeable:!0},render:e=>{let r=document.createElement(`div`);return t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,ut as i}from"./iframe-CXTWcQPs.js";import{d as a,f as o,t as s,u as c}from"./cosmoz-slideout-5l254dyi.js";import{n as l,r as u,t as d}from"./arg-types-B_r0JqzP.js";var f,p,m,h,g,_,v,y,b;e((()=>{c(),r(),a(),s(),l(),{expect:f,waitFor:p}=__STORYBOOK_MODULE_TEST__,m=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),h={title:`CosmozSlideout/Panel Mode`,component:`cosmoz-slideout`,tags:[`autodocs`],argTypes:u,args:d},g={args:{heading:`Acme Industries`,subtitle:`Supplier #4021 · Stockholm, SE`,closeable:!0},render:e=>{let r=document.createElement(`div`);return t`
             <cosmoz-button variant="primary" @click=${()=>i(t`
                     <cosmoz-slideout
                         variant=${o(e.variant||void 0)}
@@ -31,7 +31,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                     </cosmoz-slideout>
                 `,r)}>Open panel</cosmoz-button>
             ${r}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open panel/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`opens with built-in header chrome and footer actions`,async()=>{await p(()=>f(a.matches(`:popover-open`)).toBe(!0)),f(i.shadowRoot.querySelector(`.heading`).textContent).toMatch(/Acme Industries/u),f(i.shadowRoot.querySelector(`cosmoz-button[aria-label="Close"]`)).not.toBeNull(),await p(()=>f(i.shadowRoot.querySelector(`.footer`).hidden).toBe(!1))}),await n(`the built-in close button dismisses the panel`,async()=>{i.shadowRoot.querySelector(`cosmoz-button[aria-label="Close"]`).click(),await p(()=>f(t.querySelector(`cosmoz-slideout`)).toBeNull())})}},_={args:{heading:void 0,subtitle:void 0,"aria-label":`Customer health`,closeable:!0},render:e=>{let r=document.createElement(`div`);return t`
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open panel/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`opens with built-in header UI and footer actions`,async()=>{await p(()=>f(a.matches(`:popover-open`)).toBe(!0)),f(i.shadowRoot.querySelector(`.heading`).textContent).toMatch(/Acme Industries/u),f(i.shadowRoot.querySelector(`cosmoz-button[aria-label="Close"]`)).not.toBeNull(),await p(()=>f(i.shadowRoot.querySelector(`.footer`).hidden).toBe(!1))}),await n(`the built-in close button dismisses the panel`,async()=>{i.shadowRoot.querySelector(`cosmoz-button[aria-label="Close"]`).click(),await p(()=>f(t.querySelector(`cosmoz-slideout`)).toBeNull())})}},_={args:{heading:void 0,subtitle:void 0,"aria-label":`Customer health`,closeable:!0},render:e=>{let r=document.createElement(`div`);return t`
             <cosmoz-button variant="primary" @click=${()=>i(t`
                     <cosmoz-slideout
                         variant=${o(e.variant||void 0)}
@@ -81,15 +81,15 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                     >
                         <p>
                             A panel can be just a right-hand reading surface. With no heading,
-                            close button, custom header, or footer, the chrome stays out of
-                            the way - <code>variant="panel"</code> alone is what gives the
-                            body its padding and gap, independent of any other affordance.
+                            close button, custom header, or footer, the UI stays out of the
+                            way - <code>variant="panel"</code> alone is what gives the body
+                            its padding and gap, independent of any other affordance.
                         </p>
                         <p>Press <kbd>Esc</kbd> to dismiss it.</p>
                     </cosmoz-slideout>
                 `,r)}>Open notes</cosmoz-button>
             ${r}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open notes/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`hides empty header and footer regions`,async()=>{await p(()=>f(a.matches(`:popover-open`)).toBe(!0)),f(i.shadowRoot.querySelector(`.header`).hidden).toBe(!0),f(i.shadowRoot.querySelector(`.footer`).hidden).toBe(!0),f(i.shadowRoot.querySelector(`.body`)).not.toBeNull()})}},y={args:{heading:`Activity`,subtitle:`Latest supplier events`,closeable:!0,width:`min(520px, 100vw)`},render:e=>{let r=document.createElement(`div`),a=Array.from({length:18},(e,t)=>t+1);return t`
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open notes/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`hides empty header and footer regions`,async()=>{await p(()=>f(a.matches(`:popover-open`)).toBe(!0)),f(i.shadowRoot.querySelector(`.header`).hidden).toBe(!0),f(i.shadowRoot.querySelector(`.footer`).hidden).toBe(!0),f(i.shadowRoot.querySelector(`.body`)).not.toBeNull()})}},y={args:{heading:`Activity`,subtitle:`Latest supplier events`,closeable:!0,width:`min(520px, 100vw)`},render:e=>{let r=document.createElement(`div`),a=Array.from({length:50},(e,t)=>t+1);return t`
             <cosmoz-button variant="primary" @click=${()=>i(t`
                     <cosmoz-slideout
                         variant=${o(e.variant||void 0)}
@@ -180,7 +180,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
     }));
     const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
     const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
-    await step('opens with built-in header chrome and footer actions', async () => {
+    await step('opens with built-in header UI and footer actions', async () => {
       await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
       expect(el.shadowRoot!.querySelector('.heading')!.textContent).toMatch(/Acme Industries/u);
       expect(el.shadowRoot!.querySelector('cosmoz-button[aria-label="Close"]')).not.toBeNull();
@@ -278,9 +278,9 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                     >
                         <p>
                             A panel can be just a right-hand reading surface. With no heading,
-                            close button, custom header, or footer, the chrome stays out of
-                            the way - <code>variant="panel"</code> alone is what gives the
-                            body its padding and gap, independent of any other affordance.
+                            close button, custom header, or footer, the UI stays out of the
+                            way - <code>variant="panel"</code> alone is what gives the body
+                            its padding and gap, independent of any other affordance.
                         </p>
                         <p>Press <kbd>Esc</kbd> to dismiss it.</p>
                     </cosmoz-slideout>
@@ -318,7 +318,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
   render: args => {
     const mount = document.createElement('div');
     const rows = Array.from({
-      length: 18
+      length: 50
     }, (_, i) => i + 1);
     const open = () => render(html\`
                     <cosmoz-slideout

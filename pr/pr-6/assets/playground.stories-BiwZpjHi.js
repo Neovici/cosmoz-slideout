@@ -1,9 +1,9 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./iframe-C9FwPToW.js";import{m as r,p as i}from"./src-DKiyH0AA.js";import{t as a}from"./cosmoz-slideout-JpLFWnb0.js";import{n as o,r as s,t as c}from"./arg-types-IejsG4U-.js";var l,u,d,f,p;e((()=>{n(),i(),a(),o(),{expect:l,waitFor:u}=__STORYBOOK_MODULE_TEST__,d={title:`CosmozSlideout/Playground`,component:`cosmoz-slideout`,argTypes:s,args:c},f={tags:[`!autodocs`],render:e=>t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./iframe-CXTWcQPs.js";import{d as r,f as i,t as a}from"./cosmoz-slideout-5l254dyi.js";import{n as o,r as s,t as c}from"./arg-types-B_r0JqzP.js";var l,u,d,f,p;e((()=>{n(),r(),a(),o(),{expect:l,waitFor:u}=__STORYBOOK_MODULE_TEST__,d={title:`CosmozSlideout/Playground`,component:`cosmoz-slideout`,argTypes:s,args:c},f={tags:[`!autodocs`],render:e=>t`
         <cosmoz-slideout
-            variant=${r(e.variant||void 0)}
-            heading=${r(e.heading)}
-            subtitle=${r(e.subtitle)}
-            aria-label=${r(e[`aria-label`])}
+            variant=${i(e.variant||void 0)}
+            heading=${i(e.heading)}
+            subtitle=${i(e.subtitle)}
+            aria-label=${i(e[`aria-label`])}
             ?closeable=${e.closeable}
             ?loading=${e.loading}
             ?full-screen=${e[`full-screen`]}

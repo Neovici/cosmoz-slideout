@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,ut as i}from"./iframe-C9FwPToW.js";import{f as a}from"./src-DKiyH0AA.js";import{t as o}from"./cosmoz-slideout-JpLFWnb0.js";var s,c,l,u,d,f,p,m,h;e((()=>{a(),r(),o(),{expect:s,waitFor:c}=__STORYBOOK_MODULE_TEST__,l=(e,t)=>{let n=document.createElement(`span`);n.style.color=t,e.append(n);let r=getComputedStyle(n).color;return n.remove(),r},u={title:`CosmozSlideout/Regression`,component:`cosmoz-slideout`,tags:[`!autodocs`]},d={render:()=>{let e=document.createElement(`div`);return t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,ut as i}from"./iframe-CXTWcQPs.js";import{t as a,u as o}from"./cosmoz-slideout-5l254dyi.js";var s,c,l,u,d,f,p,m,h;e((()=>{o(),r(),a(),{expect:s,waitFor:c}=__STORYBOOK_MODULE_TEST__,l=(e,t)=>{let n=document.createElement(`span`);n.style.color=t,e.append(n);let r=getComputedStyle(n).color;return n.remove(),r},u={title:`CosmozSlideout/Regression`,component:`cosmoz-slideout`,tags:[`!autodocs`]},d={render:()=>{let e=document.createElement(`div`);return t`
             <cosmoz-button variant="primary" @click=${()=>i(t`
                     <cosmoz-slideout
                         variant="panel"
@@ -27,7 +27,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                 Open property-bound panel
             </cosmoz-button>
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open property-bound panel/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`renders panel chrome with real padding despite no variant attribute`,async()=>{await c(()=>s(a.matches(`:popover-open`)).toBe(!0)),s(i.hasAttribute(`variant`)).toBe(!1);let e=i.shadowRoot.querySelector(`.body`);s(e).not.toBeNull(),s(getComputedStyle(e).paddingLeft).not.toBe(`0px`)})}},p={render:()=>{let e=document.createElement(`div`);return t`
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open property-bound panel/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`renders panel UI with real padding despite no variant attribute`,async()=>{await c(()=>s(a.matches(`:popover-open`)).toBe(!0)),s(i.hasAttribute(`variant`)).toBe(!1);let e=i.shadowRoot.querySelector(`.body`);s(e).not.toBeNull(),s(getComputedStyle(e).paddingLeft).not.toBe(`0px`)})}},p={render:()=>{let e=document.createElement(`div`);return t`
             <cosmoz-button variant="primary" @click=${()=>i(t`
                     <cosmoz-slideout
                         aria-label="Property-bound full screen"
@@ -126,7 +126,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
     }));
     const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
     const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
-    await step('renders panel chrome with real padding despite no variant attribute', async () => {
+    await step('renders panel UI with real padding despite no variant attribute', async () => {
       await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
       expect(el.hasAttribute('variant')).toBe(false);
       const body = el.shadowRoot!.querySelector<HTMLElement>('.body')!;
