@@ -1,17 +1,17 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,lt as i,ot as a,pt as o,st as s,ut as c}from"./iframe-rxxicwRP.js";import{A as l,C as u,D as d,P as f,T as p,_ as m,b as h,c as g,d as _,f as v,g as ee,i as y,j as b,k as te,l as x,m as ne,n as re,p as S,t as ie,u as C,v as w,x as T,y as ae}from"./cosmoz-slideout-Bx0QNqgs.js";var E,oe=e((()=>{o(),h(),a(),E=w(class extends ae{constructor(e){if(super(e),e.type!==T.PROPERTY&&e.type!==T.ATTRIBUTE&&e.type!==T.BOOLEAN_ATTRIBUTE)throw Error("The `live` directive is not allowed on child or event bindings");if(!t(e))throw Error("`live` bindings can only contain a single expression")}render(e){return e}update(e,[t]){if(t===n||t===i)return t;let r=e.element,a=e.name;if(e.type===T.PROPERTY){if(t===r[a])return n}else if(e.type===T.BOOLEAN_ATTRIBUTE){if(!!t===r.hasAttribute(a))return n}else if(e.type===T.ATTRIBUTE&&r.getAttribute(a)===t+``)return n;return s(e),t}})})),D,O,k=e((()=>{o(),m(),h(),D=new WeakMap,O=w(class extends ee{render(e){return i}update(e,[t]){let n=t!==this.G;return n&&this.rt(void 0),(n||this.lt!==this.ct)&&(this.G=t,this.ht=e.options?.host,this.rt(this.ct=e.element)),i}rt(e){if(this.G!==void 0)if(this.isConnected||(e=void 0),typeof this.G==`function`){let t=this.ht??globalThis,n=D.get(t);n===void 0&&(n=new WeakMap,D.set(t,n)),n.get(this.G)!==void 0&&this.G.call(this.ht,void 0),n.set(this.G,e),e!==void 0&&this.G.call(this.ht,e)}else this.G.value=e}get lt(){return typeof this.G==`function`?D.get(this.ht??globalThis)?.get(this.G):this.G?.value}disconnected(){this.lt===this.ct&&this.rt(void 0)}reconnected(){this.rt(this.ct)}})})),A,j,se=e((()=>{o(),g(),A=(e,{label:t,invalid:n,errorMessage:i})=>r`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,lt as i,ot as a,pt as o,st as s,ut as c}from"./iframe-CqVTJ8_o.js";import{A as l,E as u,F as d,M as f,O as p,S as m,_ as h,b as g,c as _,d as v,f as y,g as ee,h as te,i as ne,j as b,l as re,o as x,p as ie,s as ae,u as oe,v as se,y as S}from"./src-BVV7ohPG.js";import{t as ce}from"./cosmoz-slideout-C5rfLSfj.js";import{t as C}from"./cosmoz-slideout-panel-D522LWGK.js";var w,T=e((()=>{o(),S(),a(),w=h(class extends se{constructor(e){if(super(e),e.type!==g.PROPERTY&&e.type!==g.ATTRIBUTE&&e.type!==g.BOOLEAN_ATTRIBUTE)throw Error("The `live` directive is not allowed on child or event bindings");if(!t(e))throw Error("`live` bindings can only contain a single expression")}render(e){return e}update(e,[t]){if(t===n||t===i)return t;let r=e.element,a=e.name;if(e.type===g.PROPERTY){if(t===r[a])return n}else if(e.type===g.BOOLEAN_ATTRIBUTE){if(!!t===r.hasAttribute(a))return n}else if(e.type===g.ATTRIBUTE&&r.getAttribute(a)===t+``)return n;return s(e),t}})})),E,D,le=e((()=>{o(),ee(),S(),E=new WeakMap,D=h(class extends te{render(e){return i}update(e,[t]){let n=t!==this.G;return n&&this.rt(void 0),(n||this.lt!==this.ct)&&(this.G=t,this.ht=e.options?.host,this.rt(this.ct=e.element)),i}rt(e){if(this.G!==void 0)if(this.isConnected||(e=void 0),typeof this.G==`function`){let t=this.ht??globalThis,n=E.get(t);n===void 0&&(n=new WeakMap,E.set(t,n)),n.get(this.G)!==void 0&&this.G.call(this.ht,void 0),n.set(this.G,e),e!==void 0&&this.G.call(this.ht,e)}else this.G.value=e}get lt(){return typeof this.G==`function`?E.get(this.ht??globalThis)?.get(this.G):this.G?.value}disconnected(){this.lt===this.ct&&this.rt(void 0)}reconnected(){this.rt(this.ct)}})})),O,k,A=e((()=>{o(),ae(),O=(e,{label:t,invalid:n,errorMessage:i})=>r`
 		<div class="float" part="float">&nbsp;</div>
 		<div class="wrap" part="wrap">
 			<slot name="prefix"></slot>
 			<div class="control" part="control">
 				<slot name="control"></slot>
 				${e}
-				${x(t,()=>r`<label for="input" part="label">${t}</label>`)}
+				${_(t,()=>r`<label for="input" part="label">${t}</label>`)}
 			</div>
 			<slot name="suffix"></slot>
 		</div>
 		<div class="line" part="line"></div>
-		${x(n&&i,()=>r`<div class="error" part="error">${i}</div>`)}
-	`,j=[`autocomplete`,`readonly`,`disabled`,`maxlength`,`invalid`,`no-label-float`,`always-float-label`]})),M,N,P=e((()=>{re(),M=y`
+		${_(n&&i,()=>r`<div class="error" part="error">${i}</div>`)}
+	`,k=[`autocomplete`,`readonly`,`disabled`,`maxlength`,`invalid`,`no-label-float`,`always-float-label`]})),j,M,ue=e((()=>{ne(),j=x`
 	.wrap {
 		--contour-color: var(--focused-color);
 		background: var(--focused-bg);
@@ -31,7 +31,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
 		transform: none;
 		transition: 0.25s transform ease;
 	}
-`,N=y`
+`,M=x`
 	:host {
 		--font-family: var(
 			--cosmoz-input-font-family,
@@ -273,25 +273,25 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
 	}
 
 	:host(:focus-within) {
-		${M}
+		${j}
 	}
 	@container style(--focused: focused) {
-		${M}
+		${j}
 	}
-`})),F,ce=e((()=>{S(),F=e=>d(()=>{if(e==null)return;let t=new RegExp(e,`u`);return e=>{!e.defaultPrevented&&e.data&&!t.test(e.data)&&e.preventDefault()}},[e])})),I,le=e((()=>{S(),I=b(class extends l{values;constructor(e,t,n,r){super(e,t),Object.assign(t.host,n),this.values=r}update(e,t){this.hasChanged(t)&&(this.values=t,Object.assign(this.state.host,e))}hasChanged(e=[]){return e.some((e,t)=>this.values[t]!==e)}})})),ue=e((()=>{S(),b(class extends l{update(){return this.state.host}})})),L,R,de=e((()=>{S(),ue(),L=/([A-Z])/gu,R=(e,t,n)=>{e[t]=n,e.dispatchEvent(new CustomEvent(t.replace(L,`-$1`).toLowerCase()+`-changed`,{detail:{value:n}}))}})),z,B=e((()=>{le(),de(),S(),z=e=>{let t=u(void 0),n=p(e=>t.current=e,[]),r=e.shadowRoot,i=p(t=>e.dispatchEvent(new Event(t.type,{bubbles:t.bubbles})),[]),a=p(t=>R(e,`value`,t.target.value),[]),o=p(t=>R(e,`focused`,t.type===`focus`),[]),s=p(()=>{let n=t.current?.checkValidity();return e.toggleAttribute(`invalid`,!n),n},[]);return I({validate:s},[s]),te(()=>{let e=e=>{e.composedPath()[0]?.closest?.(`input, textarea`)||(e.preventDefault(),t.current?.focus())};return r.addEventListener(`mousedown`,e),()=>r.removeEventListener(`mousedown`,e)},[]),{onChange:i,onFocus:o,onInput:a,onRef:n}}})),V,H,fe=e((()=>{V=({placeholder:e,noLabelFloat:t,label:n})=>(t?n:void 0)||e||` `,H=(e,t)=>t??(e===`date`?`9999-12-31`:void 0)})),U,W,pe=e((()=>{S(),o(),_(),oe(),k(),se(),P(),ce(),B(),fe(),U=[`type`,`pattern`,`allowed-pattern`,`min`,`max`,`step`,`autosize`,`label`,`placeholder`,...j],W=e=>{let{type:t=`text`,pattern:n,allowedPattern:i,autocomplete:a,value:o,readonly:s,disabled:c,min:l,max:u,step:d,maxlength:f}=e,{onChange:p,onFocus:m,onInput:h,onRef:g}=z(e),_=F(i);return A(r`
+`})),N,de=e((()=>{y(),N=e=>p(()=>{if(e==null)return;let t=new RegExp(e,`u`);return e=>{!e.defaultPrevented&&e.data&&!t.test(e.data)&&e.preventDefault()}},[e])})),P,fe=e((()=>{y(),P=f(class extends b{values;constructor(e,t,n,r){super(e,t),Object.assign(t.host,n),this.values=r}update(e,t){this.hasChanged(t)&&(this.values=t,Object.assign(this.state.host,e))}hasChanged(e=[]){return e.some((e,t)=>this.values[t]!==e)}})})),pe=e((()=>{y(),f(class extends b{update(){return this.state.host}})})),F,I,L=e((()=>{y(),pe(),F=/([A-Z])/gu,I=(e,t,n)=>{e[t]=n,e.dispatchEvent(new CustomEvent(t.replace(F,`-$1`).toLowerCase()+`-changed`,{detail:{value:n}}))}})),R,z=e((()=>{fe(),L(),y(),R=e=>{let t=m(void 0),n=u(e=>t.current=e,[]),r=e.shadowRoot,i=u(t=>e.dispatchEvent(new Event(t.type,{bubbles:t.bubbles})),[]),a=u(t=>I(e,`value`,t.target.value),[]),o=u(t=>I(e,`focused`,t.type===`focus`),[]),s=u(()=>{let n=t.current?.checkValidity();return e.toggleAttribute(`invalid`,!n),n},[]);return P({validate:s},[s]),l(()=>{let e=e=>{e.composedPath()[0]?.closest?.(`input, textarea`)||(e.preventDefault(),t.current?.focus())};return r.addEventListener(`mousedown`,e),()=>r.removeEventListener(`mousedown`,e)},[]),{onChange:i,onFocus:o,onInput:a,onRef:n}}})),B,V,me=e((()=>{B=({placeholder:e,noLabelFloat:t,label:n})=>(t?n:void 0)||e||` `,V=(e,t)=>t??(e===`date`?`9999-12-31`:void 0)})),H,U,he=e((()=>{y(),o(),oe(),T(),le(),A(),ue(),de(),z(),me(),H=[`type`,`pattern`,`allowed-pattern`,`min`,`max`,`step`,`autosize`,`label`,`placeholder`,...k],U=e=>{let{type:t=`text`,pattern:n,allowedPattern:i,autocomplete:a,value:o,readonly:s,disabled:c,min:l,max:u,step:d,maxlength:f}=e,{onChange:p,onFocus:m,onInput:h,onRef:g}=R(e),_=N(i);return O(r`
 			<input
-				${O(g)}
+				${D(g)}
 				style="--chars: ${o?.toString()?.length??0}ch"
 				id="input"
 				part="input"
 				type=${t}
 				pattern=${v(n)}
 				autocomplete=${v(a)}
-				placeholder=${V(e)}
+				placeholder=${B(e)}
 				?readonly=${s}
 				?aria-disabled=${c}
 				?disabled=${c}
-				.value=${E(o??``)}
+				.value=${w(o??``)}
 				maxlength=${v(f)}
 				@beforeinput=${_}
 				@input=${h}
@@ -299,20 +299,26 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
 				@focus=${m}
 				@blur=${m}
 				min=${v(l)}
-				max=${v(H(t,u))}
+				max=${v(V(t,u))}
 				step=${v(d)}
 			/>
-		`,e)},customElements.define(`cosmoz-input`,ne(W,{observedAttributes:U,styleSheets:[f(N)],shadowRootInit:{mode:`open`,delegatesFocus:!0}}))})),G,K,q,J,Y,X,Z,Q,$;e((()=>{C(),pe(),o(),ie(),{expect:G,waitFor:K}=__STORYBOOK_MODULE_TEST__,q=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),J={title:`CosmozSlideout/Interaction`,component:`cosmoz-slideout`,tags:[`autodocs`]},Y={render:()=>{let e=document.createElement(`div`),t=document.createElement(`p`);t.dataset.testid=`bg-count`,t.style.cssText=`margin: calc(var(--cz-spacing) * 3) 0 0; color: var(--cz-color-text-tertiary); font-family: var(--cz-font-body); font-size: var(--cz-text-sm);`;let n=0;return t.textContent=`Background clicks: 0`,r`
-            <div
-                style="display: flex; gap: calc(var(--cz-spacing) * 3); align-items: center;"
-            >
-                <cosmoz-button variant="primary" @click=${()=>c(r`
-                    <cosmoz-slideout
-                        variant="panel"
+		`,e)},customElements.define(`cosmoz-input`,ie(U,{observedAttributes:H,styleSheets:[d(M)],shadowRootInit:{mode:`open`,delegatesFocus:!0}}))})),W,G,K,q,J,Y,X,Z,Q,$;e((()=>{re(),he(),o(),ce(),C(),{expect:W,waitFor:G}=__STORYBOOK_MODULE_TEST__,K=e=>e.currentTarget.closest(`cosmoz-slideout, cosmoz-slideout-panel`)?.close(),q=r`
+    <cosmoz-button
+        slot="controls"
+        variant="tertiary"
+        size="sm"
+        aria-label="Close"
+        @click=${K}
+    >
+        ✕
+    </cosmoz-button>
+`,J={title:`CosmozSlideout/Interaction`,component:`cosmoz-slideout`,tags:[`autodocs`]},Y={render:()=>{let e=document.createElement(`div`),t=document.createElement(`p`);t.dataset.testid=`bg-count`,t.style.cssText=`margin: calc(var(--cz-spacing) * 3) 0 0; color: var(--cz-color-text-tertiary); font-family: var(--cz-font-body); font-size: var(--cz-text-sm);`;let n=0;t.textContent=`Background clicks: 0`;let i=()=>{n+=1,t.textContent=`Background clicks: ${n}`},a=!1,o=()=>c(r`
+                    <cosmoz-slideout-panel
+                        .opened=${a}
                         heading="Supplier"
                         subtitle="Quick preview"
                         closeable
-                        @close=${()=>c(i,e)}
+                        @opened-changed=${e=>{a=e.detail.value,o()}}
                     >
                         <p style="margin: 0; color: var(--cz-color-text-tertiary);">
                             The page behind remains interactive. This is useful for
@@ -322,27 +328,30 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
                             slot="footer"
                             style="display: flex; justify-content: flex-end;"
                         >
-                            <cosmoz-button variant="secondary" @click=${q}>
+                            <cosmoz-button variant="secondary" @click=${K}>
                                 Close
                             </cosmoz-button>
                         </div>
-                    </cosmoz-slideout>
-                `,e)}>
+                    </cosmoz-slideout-panel>
+                `,e);return o(),r`
+            <div
+                style="display: flex; gap: calc(var(--cz-spacing) * 3); align-items: center;"
+            >
+                <cosmoz-button variant="primary" @click=${()=>{a=!0,o()}}>
                     Open panel
                 </cosmoz-button>
-                <cosmoz-button variant="secondary" @click=${()=>{n+=1,t.textContent=`Background clicks: ${n}`}}>
+                <cosmoz-button variant="secondary" @click=${i}>
                     Background action
                 </cosmoz-button>
             </div>
             ${t}${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open panel/iu}));let i=t.querySelector(`cosmoz-slideout`).shadowRoot.querySelector(`[popover]`);await n(`background controls remain clickable while open`,async()=>{await K(()=>G(i.matches(`:popover-open`)).toBe(!0)),await r.click(await e.findByShadowRole(`button`,{name:/background action/iu})),G(t.querySelector(`[data-testid="bg-count"]`).textContent).toMatch(/Background clicks: 1/u)})}},X={render:()=>{let e=document.createElement(`div`);return r`
-            <cosmoz-button variant="primary" @click=${()=>c(r`
-                    <cosmoz-slideout
-                        variant="panel"
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open panel/iu}));let i=t.querySelector(`cosmoz-slideout-panel`).shadowRoot.querySelector(`[popover]`);await n(`background controls remain clickable while open`,async()=>{await G(()=>W(i.matches(`:popover-open`)).toBe(!0)),await r.click(await e.findByShadowRole(`button`,{name:/background action/iu})),W(t.querySelector(`[data-testid="bg-count"]`).textContent).toMatch(/Background clicks: 1/u)})}},X={render:()=>{let e=document.createElement(`div`),t=!1,n=()=>c(r`
+                    <cosmoz-slideout-panel
+                        .opened=${t}
                         heading="Edit profile"
                         subtitle="Focus returns to the opener on close"
                         closeable
-                        @close=${()=>c(i,e)}
+                        @opened-changed=${e=>{t=e.detail.value,n()}}
                     >
                         <div style="display: grid; gap: calc(var(--cz-spacing) * 4);">
                             <cosmoz-input
@@ -354,21 +363,21 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
                                 .value=${`alex@acme.se`}
                             ></cosmoz-input>
                         </div>
-                    </cosmoz-slideout>
-                `,e)}>
+                    </cosmoz-slideout-panel>
+                `,e);return n(),r`
+            <cosmoz-button variant="primary" @click=${()=>{t=!0,n()}}>
                 Edit profile
             </cosmoz-button>
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{let i=await e.findByShadowRole(`button`,{name:/edit profile/iu});await r.click(i);let a=t.querySelector(`cosmoz-slideout`),o=a.shadowRoot.querySelector(`[popover]`);await n(`moves focus into the dialog surface`,async()=>{await K(()=>G(o.matches(`:popover-open`)).toBe(!0)),await K(()=>G(a.shadowRoot.activeElement).toBe(o))}),await n(`returns focus to the opener after close`,async()=>{a.shadowRoot.querySelector(`cosmoz-button[aria-label="Close"]`).click(),await K(()=>G(t.querySelector(`cosmoz-slideout`)).toBeNull()),await K(()=>G(document.activeElement).toBe(t.querySelector(`cosmoz-button`)))})}},Z={render:()=>{let e=document.createElement(`div`);return r`
-            <cosmoz-button variant="primary" @click=${()=>c(r`
-                    <cosmoz-slideout
-                        variant="panel"
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{let i=await e.findByShadowRole(`button`,{name:/edit profile/iu});await r.click(i);let a=t.querySelector(`cosmoz-slideout-panel`),o=a.shadowRoot.querySelector(`[popover]`);await n(`moves focus into the dialog surface`,async()=>{await G(()=>W(o.matches(`:popover-open`)).toBe(!0)),await G(()=>W(a.shadowRoot.activeElement).toBe(o))}),await n(`returns focus to the opener after close`,async()=>{a.shadowRoot.querySelector(`cosmoz-button[aria-label="Close"]`).click(),await G(()=>W(o.matches(`:popover-open`)).toBe(!1)),await G(()=>W(document.activeElement).toBe(t.querySelector(`cosmoz-button`)))})}},Z={render:()=>{let e=document.createElement(`div`),t=!1,n=()=>c(r`
+                    <cosmoz-slideout-panel
+                        .opened=${t}
                         heading="Guarded draft"
                         subtitle="Escape disabled, autofocus disabled"
                         closeable
                         no-escape
                         no-autofocus
-                        @close=${()=>c(i,e)}
+                        @opened-changed=${e=>{t=e.detail.value,n()}}
                     >
                         <p>
                             Use <code>no-escape</code> when accidental dismissal would be
@@ -379,30 +388,24 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
                             slot="footer"
                             style="display: flex; justify-content: flex-end;"
                         >
-                            <cosmoz-button variant="primary" @click=${q}>
+                            <cosmoz-button variant="primary" @click=${K}>
                                 Close explicitly
                             </cosmoz-button>
                         </div>
-                    </cosmoz-slideout>
-                `,e)}>
+                    </cosmoz-slideout-panel>
+                `,e);return n(),r`
+            <cosmoz-button variant="primary" @click=${()=>{t=!0,n()}}>
                 Open guarded draft
             </cosmoz-button>
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{let i=await e.findByShadowRole(`button`,{name:/open guarded draft/iu});await r.click(i);let a=t.querySelector(`cosmoz-slideout`),o=a.shadowRoot.querySelector(`[popover]`);await n(`opens without stealing focus from the trigger`,async()=>{await K(()=>G(o.matches(`:popover-open`)).toBe(!0)),G(a.shadowRoot.activeElement).not.toBe(o),G(document.activeElement).not.toBe(a)}),await n(`Escape does not close the guarded panel`,async()=>{await r.keyboard(`{Escape}`),G(o.matches(`:popover-open`)).toBe(!0)})}},Q={render:()=>{let e=document.createElement(`div`),t=document.createElement(`div`),n=()=>c(r`
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{let i=await e.findByShadowRole(`button`,{name:/open guarded draft/iu});await r.click(i);let a=t.querySelector(`cosmoz-slideout-panel`),o=a.shadowRoot.querySelector(`[popover]`);await n(`opens without stealing focus from the trigger`,async()=>{await G(()=>W(o.matches(`:popover-open`)).toBe(!0)),W(a.shadowRoot.activeElement).not.toBe(o),W(document.activeElement).not.toBe(a)}),await n(`Escape does not close the guarded panel`,async()=>{await r.keyboard(`{Escape}`),W(o.matches(`:popover-open`)).toBe(!0)})}},Q={render:()=>{let e=document.createElement(`div`),t=document.createElement(`div`),n=!1,i=!1,a=()=>c(r`
                     <cosmoz-slideout
                         aria-label="Second"
+                        .opened=${i}
                         style="--cosmoz-slideout-width: min(320px, 100vw); --cosmoz-slideout-bg: var(--cz-color-bg-secondary);"
-                        @close=${()=>c(i,t)}
+                        @opened-changed=${e=>{i=e.detail.value,a()}}
                     >
-                        <cosmoz-button
-                            slot="controls"
-                            variant="tertiary"
-                            size="sm"
-                            aria-label="Close"
-                            @click=${q}
-                        >
-                            ✕
-                        </cosmoz-button>
+                        ${q}
                         <h2
                             slot="header"
                             style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
@@ -415,21 +418,13 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
                             The top-most slideout. Press Esc to close just this one.
                         </div>
                     </cosmoz-slideout>
-                `,t);return r`
-            <cosmoz-button variant="primary" @click=${()=>c(r`
+                `,t),o=()=>{i=!0,a()},s=()=>c(r`
                     <cosmoz-slideout
                         aria-label="First"
-                        @close=${()=>c(i,e)}
+                        .opened=${n}
+                        @opened-changed=${e=>{n=e.detail.value,s()}}
                     >
-                        <cosmoz-button
-                            slot="controls"
-                            variant="tertiary"
-                            size="sm"
-                            aria-label="Close"
-                            @click=${q}
-                        >
-                            ✕
-                        </cosmoz-button>
+                        ${q}
                         <h2
                             slot="header"
                             style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
@@ -440,16 +435,17 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
                             style="padding: 12px 24px; color: var(--cz-color-text-tertiary);"
                         >
                             <p style="margin: 0 0 12px;">The underlying slideout.</p>
-                            <cosmoz-button variant="secondary" size="sm" @click=${n}>
+                            <cosmoz-button variant="secondary" size="sm" @click=${o}>
                                 Open a second slideout
                             </cosmoz-button>
                         </div>
                     </cosmoz-slideout>
-                `,e)}>
+                `,e);return s(),a(),r`
+            <cosmoz-button variant="primary" @click=${()=>{n=!0,s()}}>
                 Open first
             </cosmoz-button>
             ${e}${t}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{let i=()=>t.querySelectorAll(`cosmoz-slideout`).length,a=()=>[...t.querySelectorAll(`cosmoz-slideout`)].map(e=>e.getAttribute(`aria-label`));await r.click(await e.findByShadowRole(`button`,{name:/open first/iu})),await n(`opens a second slideout above the first`,async()=>{await K(()=>G(i()).toBe(1)),await r.click(await e.findByShadowRole(`button`,{name:/open a second slideout/iu})),await K(()=>G(i()).toBe(2))}),await n(`Escape closes the most recent slideout first`,async()=>{await r.keyboard(`{Escape}`),await K(()=>G(a()).toEqual([`First`]))})}},Y.parameters={...Y.parameters,docs:{...Y.parameters?.docs,source:{originalSource:`{
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{let i=()=>[...t.querySelectorAll(`cosmoz-slideout`)].filter(e=>e.shadowRoot.querySelector(`[popover]`).matches(`:popover-open`)),a=()=>i().length,o=()=>i().map(e=>e.getAttribute(`aria-label`));await r.click(await e.findByShadowRole(`button`,{name:/open first/iu})),await n(`opens a second slideout above the first`,async()=>{await G(()=>W(a()).toBe(1)),await r.click(await e.findByShadowRole(`button`,{name:/open a second slideout/iu})),await G(()=>W(a()).toBe(2))}),await n(`Escape closes the most recent slideout first`,async()=>{await r.keyboard(`{Escape}`),await G(()=>W(o()).toEqual([`First`]))})}},Y.parameters={...Y.parameters,docs:{...Y.parameters?.docs,source:{originalSource:`{
   render: () => {
     const mount = document.createElement('div');
     const status = document.createElement('p');
@@ -461,13 +457,17 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
       count += 1;
       status.textContent = \`Background clicks: \${count}\`;
     };
-    const open = () => render(html\`
-                    <cosmoz-slideout
-                        variant="panel"
+    let opened = false;
+    const rerender = () => render(html\`
+                    <cosmoz-slideout-panel
+                        .opened=\${opened}
                         heading="Supplier"
                         subtitle="Quick preview"
                         closeable
-                        @close=\${() => render(nothing, mount)}
+                        @opened-changed=\${(e: CustomEvent) => {
+      opened = e.detail.value;
+      rerender();
+    }}
                     >
                         <p style="margin: 0; color: var(--cz-color-text-tertiary);">
                             The page behind remains interactive. This is useful for
@@ -481,8 +481,13 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
                                 Close
                             </cosmoz-button>
                         </div>
-                    </cosmoz-slideout>
+                    </cosmoz-slideout-panel>
                 \`, mount);
+    rerender();
+    const open = () => {
+      opened = true;
+      rerender();
+    };
     return html\`
             <div
                 style="display: flex; gap: calc(var(--cz-spacing) * 3); align-items: center;"
@@ -506,7 +511,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
     await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open panel/iu
     }));
-    const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
+    const el = canvasElement.querySelector('cosmoz-slideout-panel') as SlideoutEl;
     const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
     await step('background controls remain clickable while open', async () => {
       await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
@@ -519,13 +524,17 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
 }`,...Y.parameters?.docs?.source}}},X.parameters={...X.parameters,docs:{...X.parameters?.docs,source:{originalSource:`{
   render: () => {
     const mount = document.createElement('div');
-    const open = () => render(html\`
-                    <cosmoz-slideout
-                        variant="panel"
+    let opened = false;
+    const rerender = () => render(html\`
+                    <cosmoz-slideout-panel
+                        .opened=\${opened}
                         heading="Edit profile"
                         subtitle="Focus returns to the opener on close"
                         closeable
-                        @close=\${() => render(nothing, mount)}
+                        @opened-changed=\${(e: CustomEvent) => {
+      opened = e.detail.value;
+      rerender();
+    }}
                     >
                         <div style="display: grid; gap: calc(var(--cz-spacing) * 4);">
                             <cosmoz-input
@@ -537,8 +546,13 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
                                 .value=\${'alex@acme.se'}
                             ></cosmoz-input>
                         </div>
-                    </cosmoz-slideout>
+                    </cosmoz-slideout-panel>
                 \`, mount);
+    rerender();
+    const open = () => {
+      opened = true;
+      rerender();
+    };
     return html\`
             <cosmoz-button variant="primary" @click=\${open}>
                 Edit profile
@@ -556,7 +570,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
       name: /edit profile/iu
     });
     await userEvent.click(trigger);
-    const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
+    const el = canvasElement.querySelector('cosmoz-slideout-panel') as SlideoutEl;
     const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
     await step('moves focus into the dialog surface', async () => {
       await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
@@ -564,22 +578,26 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
     });
     await step('returns focus to the opener after close', async () => {
       el.shadowRoot!.querySelector<HTMLElement>('cosmoz-button[aria-label="Close"]')!.click();
-      await waitFor(() => expect(canvasElement.querySelector('cosmoz-slideout')).toBeNull());
+      await waitFor(() => expect(surface.matches(':popover-open')).toBe(false));
       await waitFor(() => expect(document.activeElement).toBe(canvasElement.querySelector('cosmoz-button')));
     });
   }
 }`,...X.parameters?.docs?.source}}},Z.parameters={...Z.parameters,docs:{...Z.parameters?.docs,source:{originalSource:`{
   render: () => {
     const mount = document.createElement('div');
-    const open = () => render(html\`
-                    <cosmoz-slideout
-                        variant="panel"
+    let opened = false;
+    const rerender = () => render(html\`
+                    <cosmoz-slideout-panel
+                        .opened=\${opened}
                         heading="Guarded draft"
                         subtitle="Escape disabled, autofocus disabled"
                         closeable
                         no-escape
                         no-autofocus
-                        @close=\${() => render(nothing, mount)}
+                        @opened-changed=\${(e: CustomEvent) => {
+      opened = e.detail.value;
+      rerender();
+    }}
                     >
                         <p>
                             Use <code>no-escape</code> when accidental dismissal would be
@@ -594,8 +612,13 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
                                 Close explicitly
                             </cosmoz-button>
                         </div>
-                    </cosmoz-slideout>
+                    </cosmoz-slideout-panel>
                 \`, mount);
+    rerender();
+    const open = () => {
+      opened = true;
+      rerender();
+    };
     return html\`
             <cosmoz-button variant="primary" @click=\${open}>
                 Open guarded draft
@@ -613,7 +636,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
       name: /open guarded draft/iu
     });
     await userEvent.click(trigger);
-    const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
+    const el = canvasElement.querySelector('cosmoz-slideout-panel') as SlideoutEl;
     const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
     await step('opens without stealing focus from the trigger', async () => {
       await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
@@ -629,21 +652,19 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
   render: () => {
     const mountA = document.createElement('div');
     const mountB = document.createElement('div');
-    const openB = () => render(html\`
+    let openedA = false;
+    let openedB = false;
+    const rerenderB = () => render(html\`
                     <cosmoz-slideout
                         aria-label="Second"
+                        .opened=\${openedB}
                         style="--cosmoz-slideout-width: min(320px, 100vw); --cosmoz-slideout-bg: var(--cz-color-bg-secondary);"
-                        @close=\${() => render(nothing, mountB)}
+                        @opened-changed=\${(e: CustomEvent) => {
+      openedB = e.detail.value;
+      rerenderB();
+    }}
                     >
-                        <cosmoz-button
-                            slot="controls"
-                            variant="tertiary"
-                            size="sm"
-                            aria-label="Close"
-                            @click=\${closeSlideout}
-                        >
-                            ✕
-                        </cosmoz-button>
+                        \${closeControl}
                         <h2
                             slot="header"
                             style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
@@ -657,20 +678,20 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
                         </div>
                     </cosmoz-slideout>
                 \`, mountB);
-    const openA = () => render(html\`
+    const openB = () => {
+      openedB = true;
+      rerenderB();
+    };
+    const rerenderA = () => render(html\`
                     <cosmoz-slideout
                         aria-label="First"
-                        @close=\${() => render(nothing, mountA)}
+                        .opened=\${openedA}
+                        @opened-changed=\${(e: CustomEvent) => {
+      openedA = e.detail.value;
+      rerenderA();
+    }}
                     >
-                        <cosmoz-button
-                            slot="controls"
-                            variant="tertiary"
-                            size="sm"
-                            aria-label="Close"
-                            @click=\${closeSlideout}
-                        >
-                            ✕
-                        </cosmoz-button>
+                        \${closeControl}
                         <h2
                             slot="header"
                             style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
@@ -687,6 +708,12 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
                         </div>
                     </cosmoz-slideout>
                 \`, mountA);
+    const openA = () => {
+      openedA = true;
+      rerenderA();
+    };
+    rerenderA();
+    rerenderB();
     return html\`
             <cosmoz-button variant="primary" @click=\${openA}>
                 Open first
@@ -700,17 +727,18 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
     step,
     userEvent
   }) => {
-    const count = () => canvasElement.querySelectorAll('cosmoz-slideout').length;
-    const labels = () => [...canvasElement.querySelectorAll('cosmoz-slideout')].map(s => s.getAttribute('aria-label'));
+    const openSurfaces = () => [...canvasElement.querySelectorAll('cosmoz-slideout')].filter(s => s.shadowRoot!.querySelector('[popover]')!.matches(':popover-open'));
+    const openCount = () => openSurfaces().length;
+    const labels = () => openSurfaces().map(s => s.getAttribute('aria-label'));
     await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open first/iu
     }));
     await step('opens a second slideout above the first', async () => {
-      await waitFor(() => expect(count()).toBe(1));
+      await waitFor(() => expect(openCount()).toBe(1));
       await userEvent.click(await canvas.findByShadowRole('button', {
         name: /open a second slideout/iu
       }));
-      await waitFor(() => expect(count()).toBe(2));
+      await waitFor(() => expect(openCount()).toBe(2));
     });
     await step('Escape closes the most recent slideout first', async () => {
       await userEvent.keyboard('{Escape}');

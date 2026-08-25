@@ -1,9 +1,9 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./iframe-rxxicwRP.js";import{d as r,f as i,t as a}from"./cosmoz-slideout-Bx0QNqgs.js";import{n as o,r as s,t as c}from"./arg-types-B_r0JqzP.js";var l,u,d,f,p;e((()=>{n(),r(),a(),o(),{expect:l,waitFor:u}=__STORYBOOK_MODULE_TEST__,d={title:`CosmozSlideout/Playground`,component:`cosmoz-slideout`,argTypes:s,args:c},f={tags:[`!autodocs`],render:e=>t`
-        <cosmoz-slideout
-            variant=${i(e.variant||void 0)}
-            heading=${i(e.heading)}
-            subtitle=${i(e.subtitle)}
-            aria-label=${i(e[`aria-label`])}
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./iframe-CqVTJ8_o.js";import{d as r,u as i}from"./src-BVV7ohPG.js";import{t as a}from"./cosmoz-slideout-panel-D522LWGK.js";import{n as o,r as s,t as c}from"./arg-types-xF7-es9m.js";var l,u,d,f,p;e((()=>{n(),i(),a(),o(),{expect:l,waitFor:u}=__STORYBOOK_MODULE_TEST__,d={title:`CosmozSlideoutPanel/Playground`,component:`cosmoz-slideout-panel`,argTypes:s,args:c},f={tags:[`!autodocs`],render:e=>t`
+        <cosmoz-slideout-panel
+            .opened=${e.opened}
+            heading=${r(e.heading)}
+            subtitle=${r(e.subtitle)}
+            aria-label=${r(e[`aria-label`])}
             ?closeable=${e.closeable}
             ?loading=${e.loading}
             ?full-screen=${e[`full-screen`]}
@@ -12,9 +12,9 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./i
             style=${`--cosmoz-slideout-width: ${e.width};`}
         >
             <p style="margin: 0; color: var(--cz-color-text-tertiary);">
-                Adjust the Controls tab. Variant, heading, subtitle, closeability,
-                loading, full-screen, dismissal options, and width update this open
-                slideout live.
+                Adjust the Controls tab. Heading, subtitle, closeability, loading,
+                full-screen, dismissal options, and width update this open slideout
+                live.
             </p>
             <div
                 slot="footer"
@@ -24,12 +24,12 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./i
                     Footer slot preview
                 </span>
             </div>
-        </cosmoz-slideout>
-    `,play:async({canvasElement:e,step:t})=>{let n=e.querySelector(`cosmoz-slideout`),r=n.shadowRoot.querySelector(`[popover]`);await t(`opens configured from the args`,async()=>{await u(()=>l(r.matches(`:popover-open`)).toBe(!0)),l(n.shadowRoot.querySelector(`cz-spinner`)).toBeNull()})}},f.parameters={...f.parameters,docs:{...f.parameters?.docs,source:{originalSource:`{
+        </cosmoz-slideout-panel>
+    `,play:async({canvasElement:e,step:t})=>{let n=e.querySelector(`cosmoz-slideout-panel`),r=n.shadowRoot.querySelector(`[popover]`);await t(`opens configured from the args`,async()=>{await u(()=>l(r.matches(`:popover-open`)).toBe(!0)),l(n.shadowRoot.querySelector(`cz-spinner`)).toBeNull()})}},f.parameters={...f.parameters,docs:{...f.parameters?.docs,source:{originalSource:`{
   tags: ['!autodocs'],
   render: args => html\`
-        <cosmoz-slideout
-            variant=\${ifDefined(args.variant || undefined)}
+        <cosmoz-slideout-panel
+            .opened=\${args.opened}
             heading=\${ifDefined(args.heading)}
             subtitle=\${ifDefined(args.subtitle)}
             aria-label=\${ifDefined(args['aria-label'])}
@@ -41,9 +41,9 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./i
             style=\${\`--cosmoz-slideout-width: \${args.width};\`}
         >
             <p style="margin: 0; color: var(--cz-color-text-tertiary);">
-                Adjust the Controls tab. Variant, heading, subtitle, closeability,
-                loading, full-screen, dismissal options, and width update this open
-                slideout live.
+                Adjust the Controls tab. Heading, subtitle, closeability, loading,
+                full-screen, dismissal options, and width update this open slideout
+                live.
             </p>
             <div
                 slot="footer"
@@ -53,13 +53,13 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./i
                     Footer slot preview
                 </span>
             </div>
-        </cosmoz-slideout>
+        </cosmoz-slideout-panel>
     \`,
   play: async ({
     canvasElement,
     step
   }) => {
-    const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+    const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
     const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
     await step('opens configured from the args', async () => {
       await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));

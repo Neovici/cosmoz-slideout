@@ -1,12 +1,11 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,ut as i}from"./iframe-rxxicwRP.js";import{t as a,u as o}from"./cosmoz-slideout-Bx0QNqgs.js";var s,c,l,u,d,f,p,m,h,g;e((()=>{o(),r(),a(),{expect:s,waitFor:c}=__STORYBOOK_MODULE_TEST__,l=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),u=(e,t)=>{let n=document.createElement(`span`);n.style.color=t,e.append(n);let r=getComputedStyle(n).color;return n.remove(),r},d={title:`CosmozSlideout/Panel Mode/States`,component:`cosmoz-slideout`,tags:[`autodocs`]},f={render:()=>{let e=document.createElement(`div`);return t`
-            <cosmoz-button variant="primary" @click=${()=>i(t`
-                    <cosmoz-slideout
-                        variant="panel"
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-CqVTJ8_o.js";import{l as i}from"./src-BVV7ohPG.js";import{t as a}from"./cosmoz-slideout-panel-D522LWGK.js";var o,s,c,l,u,d,f,p,m,h;e((()=>{i(),n(),a(),{expect:o,waitFor:s}=__STORYBOOK_MODULE_TEST__,c=e=>e.currentTarget.closest(`cosmoz-slideout-panel`).close(),l=(e,t)=>{let n=document.createElement(`span`);n.style.color=t,e.append(n);let r=getComputedStyle(n).color;return n.remove(),r},u={title:`CosmozSlideoutPanel/States`,component:`cosmoz-slideout-panel`,tags:[`autodocs`]},d={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
+                    <cosmoz-slideout-panel
+                        .opened=${n}
                         heading="Supplier detail"
                         subtitle="Fetching fresh account data"
                         closeable
                         loading
-                        @close=${()=>i(n,e)}
+                        @opened-changed=${e=>{n=e.detail.value,i()}}
                     >
                         <p style="color: var(--cz-color-text-tertiary);">
                             The loading overlay is scoped to the body, so the header and
@@ -16,23 +15,23 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                             slot="footer"
                             style="display: flex; justify-content: flex-end;"
                         >
-                            <cosmoz-button variant="secondary" @click=${l}>
+                            <cosmoz-button variant="secondary" @click=${c}>
                                 Cancel
                             </cosmoz-button>
                         </div>
-                    </cosmoz-slideout>
-                `,e)}>
+                    </cosmoz-slideout-panel>
+                `,e);return i(),t`
+            <cosmoz-button variant="primary" @click=${()=>{n=!0,i()}}>
                 Open loading panel
             </cosmoz-button>
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open loading panel/iu}));let i=t.querySelector(`cosmoz-slideout`);await n(`shows a body-scoped spinner overlay`,async()=>{await c(()=>s(i.shadowRoot.querySelector(`cz-spinner`)).not.toBeNull()),s(i.shadowRoot.querySelector(`.loading`).closest(`.content`)).not.toBeNull()})}},p={render:()=>{let e=document.createElement(`div`);return t`
-            <cosmoz-button variant="primary" @click=${()=>i(t`
-                    <cosmoz-slideout
-                        variant="panel"
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open loading panel/iu}));let i=t.querySelector(`cosmoz-slideout-panel`);await n(`shows a body-scoped spinner overlay`,async()=>{await s(()=>o(i.shadowRoot.querySelector(`cz-spinner`)).not.toBeNull()),o(i.shadowRoot.querySelector(`.loading`).closest(`.content`)).not.toBeNull()})}},f={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
+                    <cosmoz-slideout-panel
+                        .opened=${n}
                         heading="Account workspace"
                         subtitle="Temporary full-screen review"
                         closeable
-                        @close=${()=>i(n,e)}
+                        @opened-changed=${e=>{n=e.detail.value,i()}}
                     >
                         <p>
                             Use full screen for dense review tasks. The state is still owned
@@ -45,28 +44,28 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                         >
                             <cosmoz-button
                                 variant="secondary"
-                                @click=${e=>e.currentTarget.closest(`cosmoz-slideout`).toggleFullScreen()}
+                                @click=${e=>e.currentTarget.closest(`cosmoz-slideout-panel`).toggleFullScreen()}
                             >
                                 Toggle full screen
                             </cosmoz-button>
-                            <cosmoz-button variant="primary" @click=${l}>
+                            <cosmoz-button variant="primary" @click=${c}>
                                 Done
                             </cosmoz-button>
                         </div>
-                    </cosmoz-slideout>
-                `,e)}>
+                    </cosmoz-slideout-panel>
+                `,e);return i(),t`
+            <cosmoz-button variant="primary" @click=${()=>{n=!0,i()}}>
                 Open workspace
             </cosmoz-button>
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open workspace/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`toggles to viewport width through the public method`,async()=>{await r.click(await e.findByShadowRole(`button`,{name:/toggle full screen/iu})),await c(()=>s(i).toHaveAttribute(`full-screen`)),await c(()=>s(Math.round(a.getBoundingClientRect().width)).toBe(window.innerWidth))})}},m=[`--cosmoz-slideout-bg: var(--cz-color-bg-secondary)`,`--cosmoz-slideout-panel-divider: var(--cz-color-border-secondary)`].join(`; `),h={render:()=>{let e=document.createElement(`div`);return t`
-            <cosmoz-button variant="primary" @click=${()=>i(t`
-                    <cosmoz-slideout
-                        variant="panel"
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open workspace/iu}));let i=t.querySelector(`cosmoz-slideout-panel`),a=i.shadowRoot.querySelector(`[popover]`);await n(`toggles to viewport width through the public method`,async()=>{await r.click(await e.findByShadowRole(`button`,{name:/toggle full screen/iu})),await s(()=>o(i).toHaveAttribute(`full-screen`)),await s(()=>o(Math.round(a.getBoundingClientRect().width)).toBe(window.innerWidth))})}},p=[`--cosmoz-slideout-bg: var(--cz-color-bg-secondary)`,`--cosmoz-slideout-panel-divider: var(--cz-color-border-secondary)`].join(`; `),m={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
+                    <cosmoz-slideout-panel
+                        .opened=${n}
                         heading="Account"
                         subtitle="Premium · since 2019"
                         closeable
-                        style=${m}
-                        @close=${()=>i(n,e)}
+                        style=${p}
+                        @opened-changed=${e=>{n=e.detail.value,i()}}
                     >
                         <p style="color: var(--cz-color-text-tertiary);">
                             Local custom properties can tune one panel without breaking global
@@ -76,26 +75,31 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                             slot="footer"
                             style="display: flex; justify-content: flex-end;"
                         >
-                            <cosmoz-button variant="primary" @click=${l}>
+                            <cosmoz-button variant="primary" @click=${c}>
                                 Done
                             </cosmoz-button>
                         </div>
-                    </cosmoz-slideout>
-                `,e)}>
+                    </cosmoz-slideout-panel>
+                `,e);return i(),t`
+            <cosmoz-button variant="primary" @click=${()=>{n=!0,i()}}>
                 Open themed surface
             </cosmoz-button>
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open themed surface/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`resolves the local surface override through tokens`,async()=>{await c(()=>s(a.matches(`:popover-open`)).toBe(!0)),s(getComputedStyle(a).backgroundColor).toBe(u(i,`var(--cz-color-bg-secondary)`))})}},f.parameters={...f.parameters,docs:{...f.parameters?.docs,source:{originalSource:`{
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open themed surface/iu}));let i=t.querySelector(`cosmoz-slideout-panel`),a=i.shadowRoot.querySelector(`[popover]`);await n(`resolves the local surface override through tokens`,async()=>{await s(()=>o(a.matches(`:popover-open`)).toBe(!0)),o(getComputedStyle(a).backgroundColor).toBe(l(i,`var(--cz-color-bg-secondary)`))})}},d.parameters={...d.parameters,docs:{...d.parameters?.docs,source:{originalSource:`{
   render: () => {
     const mount = document.createElement('div');
-    const open = () => render(html\`
-                    <cosmoz-slideout
-                        variant="panel"
+    let opened = false;
+    const rerender = () => render(html\`
+                    <cosmoz-slideout-panel
+                        .opened=\${opened}
                         heading="Supplier detail"
                         subtitle="Fetching fresh account data"
                         closeable
                         loading
-                        @close=\${() => render(nothing, mount)}
+                        @opened-changed=\${(e: CustomEvent) => {
+      opened = e.detail.value;
+      rerender();
+    }}
                     >
                         <p style="color: var(--cz-color-text-tertiary);">
                             The loading overlay is scoped to the body, so the header and
@@ -109,8 +113,13 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                                 Cancel
                             </cosmoz-button>
                         </div>
-                    </cosmoz-slideout>
+                    </cosmoz-slideout-panel>
                 \`, mount);
+    rerender();
+    const open = () => {
+      opened = true;
+      rerender();
+    };
     return html\`
             <cosmoz-button variant="primary" @click=\${open}>
                 Open loading panel
@@ -127,22 +136,26 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
     await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open loading panel/iu
     }));
-    const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+    const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
     await step('shows a body-scoped spinner overlay', async () => {
       await waitFor(() => expect(el.shadowRoot!.querySelector('cz-spinner')).not.toBeNull());
       expect(el.shadowRoot!.querySelector<HTMLElement>('.loading')!.closest('.content')).not.toBeNull();
     });
   }
-}`,...f.parameters?.docs?.source}}},p.parameters={...p.parameters,docs:{...p.parameters?.docs,source:{originalSource:`{
+}`,...d.parameters?.docs?.source}}},f.parameters={...f.parameters,docs:{...f.parameters?.docs,source:{originalSource:`{
   render: () => {
     const mount = document.createElement('div');
-    const open = () => render(html\`
-                    <cosmoz-slideout
-                        variant="panel"
+    let opened = false;
+    const rerender = () => render(html\`
+                    <cosmoz-slideout-panel
+                        .opened=\${opened}
                         heading="Account workspace"
                         subtitle="Temporary full-screen review"
                         closeable
-                        @close=\${() => render(nothing, mount)}
+                        @opened-changed=\${(e: CustomEvent) => {
+      opened = e.detail.value;
+      rerender();
+    }}
                     >
                         <p>
                             Use full screen for dense review tasks. The state is still owned
@@ -155,7 +168,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                         >
                             <cosmoz-button
                                 variant="secondary"
-                                @click=\${(e: Event) => ((e.currentTarget as HTMLElement).closest('cosmoz-slideout') as PanelEl).toggleFullScreen()}
+                                @click=\${(e: Event) => ((e.currentTarget as HTMLElement).closest('cosmoz-slideout-panel') as PanelEl).toggleFullScreen()}
                             >
                                 Toggle full screen
                             </cosmoz-button>
@@ -163,8 +176,13 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                                 Done
                             </cosmoz-button>
                         </div>
-                    </cosmoz-slideout>
+                    </cosmoz-slideout-panel>
                 \`, mount);
+    rerender();
+    const open = () => {
+      opened = true;
+      rerender();
+    };
     return html\`
             <cosmoz-button variant="primary" @click=\${open}>
                 Open workspace
@@ -181,7 +199,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
     await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open workspace/iu
     }));
-    const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+    const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
     const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
     await step('toggles to viewport width through the public method', async () => {
       await userEvent.click(await canvas.findByShadowRole('button', {
@@ -191,17 +209,21 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
       await waitFor(() => expect(Math.round(surface.getBoundingClientRect().width)).toBe(window.innerWidth));
     });
   }
-}`,...p.parameters?.docs?.source}}},h.parameters={...h.parameters,docs:{...h.parameters?.docs,source:{originalSource:`{
+}`,...f.parameters?.docs?.source}}},m.parameters={...m.parameters,docs:{...m.parameters?.docs,source:{originalSource:`{
   render: () => {
     const mount = document.createElement('div');
-    const open = () => render(html\`
-                    <cosmoz-slideout
-                        variant="panel"
+    let opened = false;
+    const rerender = () => render(html\`
+                    <cosmoz-slideout-panel
+                        .opened=\${opened}
                         heading="Account"
                         subtitle="Premium · since 2019"
                         closeable
                         style=\${themedSurface}
-                        @close=\${() => render(nothing, mount)}
+                        @opened-changed=\${(e: CustomEvent) => {
+      opened = e.detail.value;
+      rerender();
+    }}
                     >
                         <p style="color: var(--cz-color-text-tertiary);">
                             Local custom properties can tune one panel without breaking global
@@ -215,8 +237,13 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                                 Done
                             </cosmoz-button>
                         </div>
-                    </cosmoz-slideout>
+                    </cosmoz-slideout-panel>
                 \`, mount);
+    rerender();
+    const open = () => {
+      opened = true;
+      rerender();
+    };
     return html\`
             <cosmoz-button variant="primary" @click=\${open}>
                 Open themed surface
@@ -233,11 +260,11 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
     await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open themed surface/iu
     }));
-    const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+    const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
     const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
     await step('resolves the local surface override through tokens', async () => {
       await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
       expect(getComputedStyle(surface).backgroundColor).toBe(cssColor(el, 'var(--cz-color-bg-secondary)'));
     });
   }
-}`,...h.parameters?.docs?.source}}},g=[`Loading`,`FullScreen`,`ThemedSurface`]}))();export{p as FullScreen,f as Loading,h as ThemedSurface,g as __namedExportsOrder,d as default};
+}`,...m.parameters?.docs?.source}}},h=[`Loading`,`FullScreen`,`ThemedSurface`]}))();export{f as FullScreen,d as Loading,m as ThemedSurface,h as __namedExportsOrder,u as default};
