@@ -1,0 +1,1 @@
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-DoR0vQvp.js";import{f as n,r,t as i}from"./src-BPtKnL2i.js";var a=e((()=>{n(),i(),customElements.define(`cosmoz-slideout`,r(()=>t`<slot></slot>`))}));export{a as t};
