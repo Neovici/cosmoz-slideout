@@ -1,6 +1,12 @@
 import type { Meta } from '@storybook/web-components';
 
 export const slideoutArgTypes: Meta['argTypes'] = {
+	opened: {
+		control: 'boolean',
+		description:
+			'Show/hide the slideout. Reactive, two-way (bind `.opened` and listen for `opened-changed`); the element self-closes on Escape / `close()`.',
+		table: { category: 'State', defaultValue: { summary: 'false' } },
+	},
 	'aria-label': {
 		control: 'text',
 		description: 'Accessible label mirrored onto the surface (role="dialog").',
@@ -43,6 +49,7 @@ export const slideoutArgTypes: Meta['argTypes'] = {
 };
 
 export const defaultSlideoutArgs: Meta['args'] = {
+	opened: true,
 	'aria-label': 'Slideout',
 	loading: false,
 	'full-screen': false,
@@ -52,13 +59,6 @@ export const defaultSlideoutArgs: Meta['args'] = {
 };
 
 export const panelArgTypes: Meta['argTypes'] = {
-	variant: {
-		control: 'select',
-		options: ['', 'panel'],
-		description:
-			'Opt into the design-system panel UI (styled header/body/footer, close button). Only "panel" is defined; leave empty for the bare shell.',
-		table: { category: 'Panel' },
-	},
 	heading: {
 		control: 'text',
 		description: 'Default header title rendered inside the panel UI.',
@@ -78,7 +78,7 @@ export const panelArgTypes: Meta['argTypes'] = {
 };
 
 export const defaultPanelArgs: Meta['args'] = {
-	variant: 'panel',
+	opened: true,
 	heading: 'Supplier preview',
 	subtitle: 'Supplier #4021 · Stockholm, SE',
 	closeable: true,

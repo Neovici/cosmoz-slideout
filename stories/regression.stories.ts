@@ -1,8 +1,9 @@
 import '@neovici/cosmoz-button/cosmoz-button';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import { html, nothing, render } from 'lit-html';
+import { html, render } from 'lit-html';
 import { expect, waitFor } from 'storybook/test';
 import '../src/cosmoz-slideout';
+import '../src/cosmoz-slideout-panel';
 
 type PanelEl = HTMLElement & { close(): void };
 
@@ -28,21 +29,30 @@ type Story = StoryObj;
 export const GlobalDarkMode: Story = {
 	render: () => {
 		const mount = document.createElement('div');
-		const open = () =>
+		let opened = false;
+		const rerender = () =>
 			render(
 				html`
-					<cosmoz-slideout
-						variant="panel"
+					<cosmoz-slideout-panel
+						.opened=${opened}
 						heading="Theme check"
 						subtitle="Follows root token mode"
 						closeable
-						@close=${() => render(nothing, mount)}
+						@opened-changed=${(e: CustomEvent) => {
+							opened = e.detail.value;
+							rerender();
+						}}
 					>
 						<p>The open panel should follow root token changes immediately.</p>
-					</cosmoz-slideout>
+					</cosmoz-slideout-panel>
 				`,
 				mount
 			);
+		rerender();
+		const open = () => {
+			opened = true;
+			rerender();
+		};
 
 		return html`
 			<cosmoz-button variant="primary" @click=${open}>
@@ -56,7 +66,7 @@ export const GlobalDarkMode: Story = {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open theme check/iu })
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
 		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		try {
@@ -77,71 +87,32 @@ export const GlobalDarkMode: Story = {
 	},
 };
 
-export const PropertyBoundVariant: Story = {
-	render: () => {
-		const mount = document.createElement('div');
-		const open = () =>
-			render(
-				html`
-					<cosmoz-slideout
-						.variant=${'panel'}
-						.heading=${'Property-bound panel'}
-						.closeable=${true}
-						@close=${() => render(nothing, mount)}
-					>
-						<p>Panel padding must apply even without a variant attribute.</p>
-					</cosmoz-slideout>
-				`,
-				mount
-			);
-
-		return html`
-			<cosmoz-button variant="primary" @click=${open}>
-				Open property-bound panel
-			</cosmoz-button>
-			${mount}
-		`;
-	},
-	play: async ({ canvas, canvasElement, step, userEvent }) => {
-		await userEvent.click(
-			await canvas.findByShadowRole('button', {
-				name: /open property-bound panel/iu,
-			})
-		);
-		const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
-		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
-
-		await step(
-			'renders panel UI with real padding despite no variant attribute',
-			async () => {
-				await waitFor(() =>
-					expect(surface.matches(':popover-open')).toBe(true)
-				);
-				expect(el.hasAttribute('variant')).toBe(false);
-				const body = el.shadowRoot!.querySelector<HTMLElement>('.body')!;
-				expect(body).not.toBeNull();
-				expect(getComputedStyle(body).paddingLeft).not.toBe('0px');
-			}
-		);
-	},
-};
-
 export const PropertyBoundFullScreen: Story = {
 	render: () => {
 		const mount = document.createElement('div');
-		const open = () =>
+		let opened = false;
+		const rerender = () =>
 			render(
 				html`
 					<cosmoz-slideout
 						aria-label="Property-bound full screen"
+						.opened=${opened}
 						.fullScreen=${true}
-						@close=${() => render(nothing, mount)}
+						@opened-changed=${(e: CustomEvent) => {
+							opened = e.detail.value;
+							rerender();
+						}}
 					>
 						<p>Full-screen width must apply without a full-screen attribute.</p>
 					</cosmoz-slideout>
 				`,
 				mount
 			);
+		rerender();
+		const open = () => {
+			opened = true;
+			rerender();
+		};
 
 		return html`
 			<cosmoz-button variant="primary" @click=${open}>
@@ -179,19 +150,29 @@ export const PropertyBoundFullScreen: Story = {
 export const FocusRestoreWithNoAutofocus: Story = {
 	render: () => {
 		const mount = document.createElement('div');
-		const open = () =>
+		let opened = false;
+		const rerender = () =>
 			render(
 				html`
 					<cosmoz-slideout
 						no-autofocus
 						aria-label="Guarded draft"
-						@close=${() => render(nothing, mount)}
+						.opened=${opened}
+						@opened-changed=${(e: CustomEvent) => {
+							opened = e.detail.value;
+							rerender();
+						}}
 					>
 						<cosmoz-button id="inner">Focus me</cosmoz-button>
 					</cosmoz-slideout>
 				`,
 				mount
 			);
+		rerender();
+		const open = () => {
+			opened = true;
+			rerender();
+		};
 
 		return html`
 			<cosmoz-button variant="primary" @click=${open}>
@@ -216,13 +197,15 @@ export const FocusRestoreWithNoAutofocus: Story = {
 				expect(el.contains(document.activeElement)).toBe(true);
 				el.close();
 				await waitFor(() =>
-					expect(canvasElement.querySelector('cosmoz-slideout')).toBeNull()
+					expect(surface.matches(':popover-open')).toBe(false)
 				);
 
-				const active = document.activeElement as
-					| (Element & { shadowRoot?: ShadowRoot | null })
-					| null;
-				expect(active?.shadowRoot?.activeElement).toBe(opener);
+				await waitFor(() => {
+					const active = document.activeElement as
+						| (Element & { shadowRoot?: ShadowRoot | null })
+						| null;
+					expect(active?.shadowRoot?.activeElement).toBe(opener);
+				});
 			}
 		);
 	},

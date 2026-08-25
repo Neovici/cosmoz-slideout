@@ -1,14 +1,18 @@
 import '@neovici/cosmoz-button/cosmoz-button';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import { html, nothing, render } from 'lit-html';
+import { html, render } from 'lit-html';
 import { expect, waitFor } from 'storybook/test';
-import '../src/cosmoz-slideout';
+import '../src/cosmoz-slideout-panel';
 
-type PanelEl = HTMLElement & { close(): void; toggleFullScreen(): void };
+type PanelEl = HTMLElement & {
+	close(): void;
+	toggleFullScreen(): void;
+	opened?: boolean;
+};
 
 const closePanel = (e: Event) =>
 	(
-		(e.currentTarget as HTMLElement).closest('cosmoz-slideout') as PanelEl
+		(e.currentTarget as HTMLElement).closest('cosmoz-slideout-panel') as PanelEl
 	).close();
 
 const cssColor = (scope: HTMLElement, value: string) => {
@@ -21,8 +25,8 @@ const cssColor = (scope: HTMLElement, value: string) => {
 };
 
 const meta: Meta = {
-	title: 'CosmozSlideout/Panel Mode/States',
-	component: 'cosmoz-slideout',
+	title: 'CosmozSlideoutPanel/States',
+	component: 'cosmoz-slideout-panel',
 	tags: ['autodocs'],
 };
 
@@ -33,16 +37,20 @@ type Story = StoryObj;
 export const Loading: Story = {
 	render: () => {
 		const mount = document.createElement('div');
-		const open = () =>
+		let opened = false;
+		const rerender = () =>
 			render(
 				html`
-					<cosmoz-slideout
-						variant="panel"
+					<cosmoz-slideout-panel
+						.opened=${opened}
 						heading="Supplier detail"
 						subtitle="Fetching fresh account data"
 						closeable
 						loading
-						@close=${() => render(nothing, mount)}
+						@opened-changed=${(e: CustomEvent) => {
+							opened = e.detail.value;
+							rerender();
+						}}
 					>
 						<p style="color: var(--cz-color-text-tertiary);">
 							The loading overlay is scoped to the body, so the header and
@@ -56,10 +64,15 @@ export const Loading: Story = {
 								Cancel
 							</cosmoz-button>
 						</div>
-					</cosmoz-slideout>
+					</cosmoz-slideout-panel>
 				`,
 				mount
 			);
+		rerender();
+		const open = () => {
+			opened = true;
+			rerender();
+		};
 
 		return html`
 			<cosmoz-button variant="primary" @click=${open}>
@@ -72,7 +85,7 @@ export const Loading: Story = {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open loading panel/iu })
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
 
 		await step('shows a body-scoped spinner overlay', async () => {
 			await waitFor(() =>
@@ -90,15 +103,19 @@ export const Loading: Story = {
 export const FullScreen: Story = {
 	render: () => {
 		const mount = document.createElement('div');
-		const open = () =>
+		let opened = false;
+		const rerender = () =>
 			render(
 				html`
-					<cosmoz-slideout
-						variant="panel"
+					<cosmoz-slideout-panel
+						.opened=${opened}
 						heading="Account workspace"
 						subtitle="Temporary full-screen review"
 						closeable
-						@close=${() => render(nothing, mount)}
+						@opened-changed=${(e: CustomEvent) => {
+							opened = e.detail.value;
+							rerender();
+						}}
 					>
 						<p>
 							Use full screen for dense review tasks. The state is still owned
@@ -114,7 +131,7 @@ export const FullScreen: Story = {
 								@click=${(e: Event) =>
 									(
 										(e.currentTarget as HTMLElement).closest(
-											'cosmoz-slideout'
+											'cosmoz-slideout-panel'
 										) as PanelEl
 									).toggleFullScreen()}
 							>
@@ -124,10 +141,15 @@ export const FullScreen: Story = {
 								Done
 							</cosmoz-button>
 						</div>
-					</cosmoz-slideout>
+					</cosmoz-slideout-panel>
 				`,
 				mount
 			);
+		rerender();
+		const open = () => {
+			opened = true;
+			rerender();
+		};
 
 		return html`
 			<cosmoz-button variant="primary" @click=${open}>
@@ -140,7 +162,7 @@ export const FullScreen: Story = {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open workspace/iu })
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
 		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		await step(
@@ -170,16 +192,20 @@ const themedSurface = [
 export const ThemedSurface: Story = {
 	render: () => {
 		const mount = document.createElement('div');
-		const open = () =>
+		let opened = false;
+		const rerender = () =>
 			render(
 				html`
-					<cosmoz-slideout
-						variant="panel"
+					<cosmoz-slideout-panel
+						.opened=${opened}
 						heading="Account"
 						subtitle="Premium · since 2019"
 						closeable
 						style=${themedSurface}
-						@close=${() => render(nothing, mount)}
+						@opened-changed=${(e: CustomEvent) => {
+							opened = e.detail.value;
+							rerender();
+						}}
 					>
 						<p style="color: var(--cz-color-text-tertiary);">
 							Local custom properties can tune one panel without breaking global
@@ -193,10 +219,15 @@ export const ThemedSurface: Story = {
 								Done
 							</cosmoz-button>
 						</div>
-					</cosmoz-slideout>
+					</cosmoz-slideout-panel>
 				`,
 				mount
 			);
+		rerender();
+		const open = () => {
+			opened = true;
+			rerender();
+		};
 
 		return html`
 			<cosmoz-button variant="primary" @click=${open}>
@@ -209,7 +240,7 @@ export const ThemedSurface: Story = {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open themed surface/iu })
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
 		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		await step(

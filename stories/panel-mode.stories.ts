@@ -1,32 +1,31 @@
 import '@neovici/cosmoz-button/cosmoz-button';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import { html, nothing, render } from 'lit-html';
+import { html, render } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { expect, waitFor } from 'storybook/test';
-import '../src/cosmoz-slideout';
+import '../src/cosmoz-slideout-panel';
 import { defaultPanelArgs, panelArgTypes } from './arg-types';
 
-// The `variant="panel"` preset on the same `<cosmoz-slideout>` element: styled
+// `<cosmoz-slideout-panel>` is a separate, batteries-included element: styled
 // header/body/footer UI, a built-in close button, and token-backed spacing/
 // typography. It shares identical lifecycle, events, and Escape/focus behavior with
 // the bare shell (`CosmozSlideout/Shell`) - only the UI differs.
 //
 // Every story below renders from its `args`, so the Controls tab actually drives it -
-// change a control, then (re)click the trigger to see it (the trigger/mount pattern,
-// shared with the Shell stories, replays the whole render on open so autodocs doesn't
-// pop every story at once; an already-open instance won't update live). Each story
-// still sets its own `args` override for the specific values its narrative depends on.
+// change a control, then (re)click the trigger to see it. The element stays mounted
+// and reacts to its `opened` property (two-way via `opened-changed`); the trigger
+// flips `opened` to true and the panel self-closes back to false on Escape / close.
 
-type PanelEl = HTMLElement & { close(): void };
+type PanelEl = HTMLElement & { close(): void; opened?: boolean };
 
 const closePanel = (e: Event) =>
 	(
-		(e.currentTarget as HTMLElement).closest('cosmoz-slideout') as PanelEl
+		(e.currentTarget as HTMLElement).closest('cosmoz-slideout-panel') as PanelEl
 	).close();
 
 const meta: Meta = {
-	title: 'CosmozSlideout/Panel Mode',
-	component: 'cosmoz-slideout',
+	title: 'CosmozSlideoutPanel',
+	component: 'cosmoz-slideout-panel',
 	tags: ['autodocs'],
 	argTypes: panelArgTypes,
 	args: defaultPanelArgs,
@@ -44,11 +43,12 @@ export const Default: Story = {
 	},
 	render: (args) => {
 		const mount = document.createElement('div');
-		const open = () =>
+		let opened = false;
+		const rerender = () =>
 			render(
 				html`
-					<cosmoz-slideout
-						variant=${ifDefined((args.variant as string) || undefined)}
+					<cosmoz-slideout-panel
+						.opened=${opened}
 						heading=${ifDefined(args.heading as string | undefined)}
 						subtitle=${ifDefined(args.subtitle as string | undefined)}
 						aria-label=${ifDefined(args['aria-label'] as string | undefined)}
@@ -58,7 +58,10 @@ export const Default: Story = {
 						?no-escape=${args['no-escape']}
 						?no-autofocus=${args['no-autofocus']}
 						style=${`--cosmoz-slideout-width: ${args.width};`}
-						@close=${() => render(nothing, mount)}
+						@opened-changed=${(e: CustomEvent) => {
+							opened = e.detail.value;
+							rerender();
+						}}
 					>
 						<p>
 							Preferred vendor for packaging materials since 2019. Net 30 terms,
@@ -75,10 +78,15 @@ export const Default: Story = {
 								Save
 							</cosmoz-button>
 						</div>
-					</cosmoz-slideout>
+					</cosmoz-slideout-panel>
 				`,
 				mount
 			);
+		rerender();
+		const open = () => {
+			opened = true;
+			rerender();
+		};
 
 		return html`
 			<cosmoz-button variant="primary" @click=${open}>Open panel</cosmoz-button>
@@ -89,7 +97,7 @@ export const Default: Story = {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open panel/iu })
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
 		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		await step('opens with built-in header UI and footer actions', async () => {
@@ -110,9 +118,7 @@ export const Default: Story = {
 			el.shadowRoot!.querySelector<HTMLElement>(
 				'cosmoz-button[aria-label="Close"]'
 			)!.click();
-			await waitFor(() =>
-				expect(canvasElement.querySelector('cosmoz-slideout')).toBeNull()
-			);
+			await waitFor(() => expect(surface.matches(':popover-open')).toBe(false));
 		});
 	},
 };
@@ -126,11 +132,12 @@ export const CustomHeader: Story = {
 	},
 	render: (args) => {
 		const mount = document.createElement('div');
-		const open = () =>
+		let opened = false;
+		const rerender = () =>
 			render(
 				html`
-					<cosmoz-slideout
-						variant=${ifDefined((args.variant as string) || undefined)}
+					<cosmoz-slideout-panel
+						.opened=${opened}
 						heading=${ifDefined(args.heading as string | undefined)}
 						subtitle=${ifDefined(args.subtitle as string | undefined)}
 						aria-label=${ifDefined(args['aria-label'] as string | undefined)}
@@ -140,7 +147,10 @@ export const CustomHeader: Story = {
 						?no-escape=${args['no-escape']}
 						?no-autofocus=${args['no-autofocus']}
 						style=${`--cosmoz-slideout-width: ${args.width};`}
-						@close=${() => render(nothing, mount)}
+						@opened-changed=${(e: CustomEvent) => {
+							opened = e.detail.value;
+							rerender();
+						}}
 					>
 						<div
 							slot="header"
@@ -155,10 +165,15 @@ export const CustomHeader: Story = {
 							The title slot replaces the generated heading while the panel
 							keeps its padding, close button, and body layout.
 						</p>
-					</cosmoz-slideout>
+					</cosmoz-slideout-panel>
 				`,
 				mount
 			);
+		rerender();
+		const open = () => {
+			opened = true;
+			rerender();
+		};
 
 		return html`
 			<cosmoz-button variant="primary" @click=${open}>
@@ -171,7 +186,7 @@ export const CustomHeader: Story = {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open custom header/iu })
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
 		const header = el.shadowRoot!.querySelector<HTMLElement>('.header')!;
 
 		await step(
@@ -194,11 +209,12 @@ export const BodyOnly: Story = {
 	},
 	render: (args) => {
 		const mount = document.createElement('div');
-		const open = () =>
+		let opened = false;
+		const rerender = () =>
 			render(
 				html`
-					<cosmoz-slideout
-						variant=${ifDefined((args.variant as string) || undefined)}
+					<cosmoz-slideout-panel
+						.opened=${opened}
 						heading=${ifDefined(args.heading as string | undefined)}
 						subtitle=${ifDefined(args.subtitle as string | undefined)}
 						aria-label=${ifDefined(args['aria-label'] as string | undefined)}
@@ -208,19 +224,28 @@ export const BodyOnly: Story = {
 						?no-escape=${args['no-escape']}
 						?no-autofocus=${args['no-autofocus']}
 						style=${`--cosmoz-slideout-width: ${args.width};`}
-						@close=${() => render(nothing, mount)}
+						@opened-changed=${(e: CustomEvent) => {
+							opened = e.detail.value;
+							rerender();
+						}}
 					>
 						<p>
 							A panel can be just a right-hand reading surface. With no heading,
 							close button, custom header, or footer, the UI stays out of the
-							way - <code>variant="panel"</code> alone is what gives the body
-							its padding and gap, independent of any other affordance.
+							way - <code>&lt;cosmoz-slideout-panel&gt;</code> alone is what
+							gives the body its padding and gap, independent of any other
+							affordance.
 						</p>
 						<p>Press <kbd>Esc</kbd> to dismiss it.</p>
-					</cosmoz-slideout>
+					</cosmoz-slideout-panel>
 				`,
 				mount
 			);
+		rerender();
+		const open = () => {
+			opened = true;
+			rerender();
+		};
 
 		return html`
 			<cosmoz-button variant="primary" @click=${open}>Open notes</cosmoz-button>
@@ -231,7 +256,7 @@ export const BodyOnly: Story = {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open notes/iu })
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
 		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		await step('hides empty header and footer regions', async () => {
@@ -257,11 +282,12 @@ export const ScrollableContent: Story = {
 	render: (args) => {
 		const mount = document.createElement('div');
 		const rows = Array.from({ length: 50 }, (_, i) => i + 1);
-		const open = () =>
+		let opened = false;
+		const rerender = () =>
 			render(
 				html`
-					<cosmoz-slideout
-						variant=${ifDefined((args.variant as string) || undefined)}
+					<cosmoz-slideout-panel
+						.opened=${opened}
 						heading=${ifDefined(args.heading as string | undefined)}
 						subtitle=${ifDefined(args.subtitle as string | undefined)}
 						aria-label=${ifDefined(args['aria-label'] as string | undefined)}
@@ -271,7 +297,10 @@ export const ScrollableContent: Story = {
 						?no-escape=${args['no-escape']}
 						?no-autofocus=${args['no-autofocus']}
 						style=${`--cosmoz-slideout-width: ${args.width};`}
-						@close=${() => render(nothing, mount)}
+						@opened-changed=${(e: CustomEvent) => {
+							opened = e.detail.value;
+							rerender();
+						}}
 					>
 						${rows.map(
 							(row) => html`
@@ -291,10 +320,15 @@ export const ScrollableContent: Story = {
 								Close
 							</cosmoz-button>
 						</div>
-					</cosmoz-slideout>
+					</cosmoz-slideout-panel>
 				`,
 				mount
 			);
+		rerender();
+		const open = () => {
+			opened = true;
+			rerender();
+		};
 
 		return html`
 			<cosmoz-button variant="primary" @click=${open}>
@@ -307,7 +341,7 @@ export const ScrollableContent: Story = {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open activity/iu })
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
 		const content = el.shadowRoot!.querySelector<HTMLElement>('.content')!;
 		const header = el.shadowRoot!.querySelector<HTMLElement>('.header')!;
 		const footer = el.shadowRoot!.querySelector<HTMLElement>('.footer')!;

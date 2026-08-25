@@ -3,10 +3,10 @@ import { xCloseIcon } from '@neovici/cosmoz-icons/untitled';
 import { html, useEffect, useRef } from '@pionjs/pion';
 import { nothing } from 'lit-html';
 import { regions, type SlideoutRegions } from './index';
-import type { SlideoutElement } from './types';
+import type { PanelElement } from './types';
 import { usePanel } from './use-panel';
 
-const closeButton = (host: SlideoutElement) => html`
+const closeButton = (host: PanelElement) => html`
 	<cosmoz-button
 		class="close"
 		part="close"
@@ -27,7 +27,7 @@ const defaultTitle = (
 	${subtitle ? html`<p class="subtitle">${subtitle}</p>` : nothing}
 `;
 
-export const usePanelView = (host: SlideoutElement): SlideoutRegions => {
+export const usePanelView = (host: PanelElement): SlideoutRegions => {
 	const { hasHeaderContent, hasFooterContent, onHeaderSlot, onFooterSlot } =
 		usePanel(host);
 
@@ -37,7 +37,7 @@ export const usePanelView = (host: SlideoutElement): SlideoutRegions => {
 		heading || subtitle || closeable || hasHeaderContent
 	);
 
-	const effectiveHeading = host.variant === 'panel' ? heading : undefined;
+	const effectiveHeading = heading;
 	const ariaLabel = host.getAttribute('aria-label');
 	const autoAriaLabel = useRef<string | null>(null);
 

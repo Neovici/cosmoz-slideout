@@ -1,16 +1,29 @@
 import '@neovici/cosmoz-button/cosmoz-button';
 import '@neovici/cosmoz-input/input';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import { html, nothing, render } from 'lit-html';
+import { html, render } from 'lit-html';
 import { expect, waitFor } from 'storybook/test';
 import '../src/cosmoz-slideout';
+import '../src/cosmoz-slideout-panel';
 
 type SlideoutEl = HTMLElement & { close(): void };
 
 const closeSlideout = (e: Event) =>
-	(
-		(e.currentTarget as HTMLElement).closest('cosmoz-slideout') as SlideoutEl
-	).close();
+	(e.currentTarget as HTMLElement)
+		.closest<SlideoutEl>('cosmoz-slideout, cosmoz-slideout-panel')
+		?.close();
+
+const closeControl = html`
+	<cosmoz-button
+		slot="controls"
+		variant="tertiary"
+		size="sm"
+		aria-label="Close"
+		@click=${closeSlideout}
+	>
+		✕
+	</cosmoz-button>
+`;
 
 const meta: Meta = {
 	title: 'CosmozSlideout/Interaction',
@@ -35,15 +48,19 @@ export const NonModal: Story = {
 			count += 1;
 			status.textContent = `Background clicks: ${count}`;
 		};
-		const open = () =>
+		let opened = false;
+		const rerender = () =>
 			render(
 				html`
-					<cosmoz-slideout
-						variant="panel"
+					<cosmoz-slideout-panel
+						.opened=${opened}
 						heading="Supplier"
 						subtitle="Quick preview"
 						closeable
-						@close=${() => render(nothing, mount)}
+						@opened-changed=${(e: CustomEvent) => {
+							opened = e.detail.value;
+							rerender();
+						}}
 					>
 						<p style="margin: 0; color: var(--cz-color-text-tertiary);">
 							The page behind remains interactive. This is useful for
@@ -57,10 +74,15 @@ export const NonModal: Story = {
 								Close
 							</cosmoz-button>
 						</div>
-					</cosmoz-slideout>
+					</cosmoz-slideout-panel>
 				`,
 				mount
 			);
+		rerender();
+		const open = () => {
+			opened = true;
+			rerender();
+		};
 
 		return html`
 			<div
@@ -80,7 +102,9 @@ export const NonModal: Story = {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open panel/iu })
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
+		const el = canvasElement.querySelector(
+			'cosmoz-slideout-panel'
+		) as SlideoutEl;
 		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		await step('background controls remain clickable while open', async () => {
@@ -98,15 +122,19 @@ export const NonModal: Story = {
 export const FocusRestore: Story = {
 	render: () => {
 		const mount = document.createElement('div');
-		const open = () =>
+		let opened = false;
+		const rerender = () =>
 			render(
 				html`
-					<cosmoz-slideout
-						variant="panel"
+					<cosmoz-slideout-panel
+						.opened=${opened}
 						heading="Edit profile"
 						subtitle="Focus returns to the opener on close"
 						closeable
-						@close=${() => render(nothing, mount)}
+						@opened-changed=${(e: CustomEvent) => {
+							opened = e.detail.value;
+							rerender();
+						}}
 					>
 						<div style="display: grid; gap: calc(var(--cz-spacing) * 4);">
 							<cosmoz-input
@@ -118,10 +146,15 @@ export const FocusRestore: Story = {
 								.value=${'alex@acme.se'}
 							></cosmoz-input>
 						</div>
-					</cosmoz-slideout>
+					</cosmoz-slideout-panel>
 				`,
 				mount
 			);
+		rerender();
+		const open = () => {
+			opened = true;
+			rerender();
+		};
 
 		return html`
 			<cosmoz-button variant="primary" @click=${open}>
@@ -135,7 +168,9 @@ export const FocusRestore: Story = {
 			name: /edit profile/iu,
 		});
 		await userEvent.click(trigger);
-		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
+		const el = canvasElement.querySelector(
+			'cosmoz-slideout-panel'
+		) as SlideoutEl;
 		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		await step('moves focus into the dialog surface', async () => {
@@ -146,9 +181,7 @@ export const FocusRestore: Story = {
 			el.shadowRoot!.querySelector<HTMLElement>(
 				'cosmoz-button[aria-label="Close"]'
 			)!.click();
-			await waitFor(() =>
-				expect(canvasElement.querySelector('cosmoz-slideout')).toBeNull()
-			);
+			await waitFor(() => expect(surface.matches(':popover-open')).toBe(false));
 			await waitFor(() =>
 				expect(document.activeElement).toBe(
 					canvasElement.querySelector('cosmoz-button')
@@ -161,17 +194,21 @@ export const FocusRestore: Story = {
 export const DismissalOptions: Story = {
 	render: () => {
 		const mount = document.createElement('div');
-		const open = () =>
+		let opened = false;
+		const rerender = () =>
 			render(
 				html`
-					<cosmoz-slideout
-						variant="panel"
+					<cosmoz-slideout-panel
+						.opened=${opened}
 						heading="Guarded draft"
 						subtitle="Escape disabled, autofocus disabled"
 						closeable
 						no-escape
 						no-autofocus
-						@close=${() => render(nothing, mount)}
+						@opened-changed=${(e: CustomEvent) => {
+							opened = e.detail.value;
+							rerender();
+						}}
 					>
 						<p>
 							Use <code>no-escape</code> when accidental dismissal would be
@@ -186,10 +223,15 @@ export const DismissalOptions: Story = {
 								Close explicitly
 							</cosmoz-button>
 						</div>
-					</cosmoz-slideout>
+					</cosmoz-slideout-panel>
 				`,
 				mount
 			);
+		rerender();
+		const open = () => {
+			opened = true;
+			rerender();
+		};
 
 		return html`
 			<cosmoz-button variant="primary" @click=${open}>
@@ -203,7 +245,9 @@ export const DismissalOptions: Story = {
 			name: /open guarded draft/iu,
 		});
 		await userEvent.click(trigger);
-		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
+		const el = canvasElement.querySelector(
+			'cosmoz-slideout-panel'
+		) as SlideoutEl;
 		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		await step('opens without stealing focus from the trigger', async () => {
@@ -222,24 +266,22 @@ export const Stacking: Story = {
 	render: () => {
 		const mountA = document.createElement('div');
 		const mountB = document.createElement('div');
+		let openedA = false;
+		let openedB = false;
 
-		const openB = () =>
+		const rerenderB = () =>
 			render(
 				html`
 					<cosmoz-slideout
 						aria-label="Second"
+						.opened=${openedB}
 						style="--cosmoz-slideout-width: min(320px, 100vw); --cosmoz-slideout-bg: var(--cz-color-bg-secondary);"
-						@close=${() => render(nothing, mountB)}
+						@opened-changed=${(e: CustomEvent) => {
+							openedB = e.detail.value;
+							rerenderB();
+						}}
 					>
-						<cosmoz-button
-							slot="controls"
-							variant="tertiary"
-							size="sm"
-							aria-label="Close"
-							@click=${closeSlideout}
-						>
-							✕
-						</cosmoz-button>
+						${closeControl}
 						<h2
 							slot="header"
 							style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
@@ -255,23 +297,23 @@ export const Stacking: Story = {
 				`,
 				mountB
 			);
+		const openB = () => {
+			openedB = true;
+			rerenderB();
+		};
 
-		const openA = () =>
+		const rerenderA = () =>
 			render(
 				html`
 					<cosmoz-slideout
 						aria-label="First"
-						@close=${() => render(nothing, mountA)}
+						.opened=${openedA}
+						@opened-changed=${(e: CustomEvent) => {
+							openedA = e.detail.value;
+							rerenderA();
+						}}
 					>
-						<cosmoz-button
-							slot="controls"
-							variant="tertiary"
-							size="sm"
-							aria-label="Close"
-							@click=${closeSlideout}
-						>
-							✕
-						</cosmoz-button>
+						${closeControl}
 						<h2
 							slot="header"
 							style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
@@ -290,6 +332,13 @@ export const Stacking: Story = {
 				`,
 				mountA
 			);
+		const openA = () => {
+			openedA = true;
+			rerenderA();
+		};
+
+		rerenderA();
+		rerenderB();
 
 		return html`
 			<cosmoz-button variant="primary" @click=${openA}>
@@ -299,24 +348,24 @@ export const Stacking: Story = {
 		`;
 	},
 	play: async ({ canvas, canvasElement, step, userEvent }) => {
-		const count = () =>
-			canvasElement.querySelectorAll('cosmoz-slideout').length;
-		const labels = () =>
-			[...canvasElement.querySelectorAll('cosmoz-slideout')].map((s) =>
-				s.getAttribute('aria-label')
+		const openSurfaces = () =>
+			[...canvasElement.querySelectorAll('cosmoz-slideout')].filter((s) =>
+				s.shadowRoot!.querySelector('[popover]')!.matches(':popover-open')
 			);
-
+		const openCount = () => openSurfaces().length;
+		const labels = () =>
+			openSurfaces().map((s) => s.getAttribute('aria-label'));
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open first/iu })
 		);
 		await step('opens a second slideout above the first', async () => {
-			await waitFor(() => expect(count()).toBe(1));
+			await waitFor(() => expect(openCount()).toBe(1));
 			await userEvent.click(
 				await canvas.findByShadowRole('button', {
 					name: /open a second slideout/iu,
 				})
 			);
-			await waitFor(() => expect(count()).toBe(2));
+			await waitFor(() => expect(openCount()).toBe(2));
 		});
 		await step('Escape closes the most recent slideout first', async () => {
 			await userEvent.keyboard('{Escape}');

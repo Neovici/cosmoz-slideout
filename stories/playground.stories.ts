@@ -2,14 +2,14 @@ import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { expect, waitFor } from 'storybook/test';
-import '../src/cosmoz-slideout';
+import '../src/cosmoz-slideout-panel';
 import { defaultPanelArgs, panelArgTypes } from './arg-types';
 
 type PanelEl = HTMLElement & { close(): void };
 
 const meta: Meta = {
-	title: 'CosmozSlideout/Playground',
-	component: 'cosmoz-slideout',
+	title: 'CosmozSlideoutPanel/Playground',
+	component: 'cosmoz-slideout-panel',
 	argTypes: panelArgTypes,
 	args: defaultPanelArgs,
 };
@@ -21,8 +21,8 @@ type Story = StoryObj;
 export const Playground: Story = {
 	tags: ['!autodocs'],
 	render: (args) => html`
-		<cosmoz-slideout
-			variant=${ifDefined(args.variant || undefined)}
+		<cosmoz-slideout-panel
+			.opened=${args.opened}
 			heading=${ifDefined(args.heading)}
 			subtitle=${ifDefined(args.subtitle)}
 			aria-label=${ifDefined(args['aria-label'])}
@@ -34,9 +34,9 @@ export const Playground: Story = {
 			style=${`--cosmoz-slideout-width: ${args.width};`}
 		>
 			<p style="margin: 0; color: var(--cz-color-text-tertiary);">
-				Adjust the Controls tab. Variant, heading, subtitle, closeability,
-				loading, full-screen, dismissal options, and width update this open
-				slideout live.
+				Adjust the Controls tab. Heading, subtitle, closeability, loading,
+				full-screen, dismissal options, and width update this open slideout
+				live.
 			</p>
 			<div
 				slot="footer"
@@ -46,10 +46,10 @@ export const Playground: Story = {
 					Footer slot preview
 				</span>
 			</div>
-		</cosmoz-slideout>
+		</cosmoz-slideout-panel>
 	`,
 	play: async ({ canvasElement, step }) => {
-		const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
 		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 		await step('opens configured from the args', async () => {
 			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));

@@ -1,19 +1,22 @@
 # cosmoz-slideout
 
-A top-layer slideout (drawer / sidebar) web component built with pionjs and lit-html, `<cosmoz-slideout>`.
+A top-layer slideout (drawer / sidebar) web component built with pionjs and lit-html.
 
-It renders in the browser top-layer via the native **Popover API** (`<div popover="manual">`), is
-**non-modal** (the page behind stays interactive), and slides in **from the right** the moment it is
-added to the DOM - like a dialog, there is no `opened` property. It owns the top-layer surface, the slide
-animation, and the close lifecycle.
+This package ships **two custom elements**:
 
-The default mode is a low-level shell: header, buttons, footer actions, and styling are the parent's
-responsibility (beyond the sensible width/surface defaults below). Set `variant="panel"` on the same
-element to opt into a batteries-included, design-system-styled preset - a heading/subtitle, a built-in
-close button, and styled header/body/footer regions - built on `@neovici/cosmoz-button`,
-`@neovici/cosmoz-icons`, and `@neovici/cosmoz-tokens`, which this package always depends on. Both modes
-share one implementation - identical `close()`, lifecycle, events, Escape stack, and focus behavior; only
-the UI differs.
+- **`<cosmoz-slideout>`** - the low-level shell. It renders in the browser top-layer via the
+  native **Popover API** (`<div popover="manual">`), is **non-modal** (the page behind stays
+  interactive), and slides in **from the right** when its reactive **`opened`** property becomes
+  true. Header, buttons, footer actions, and styling are the parent's responsibility (beyond the
+  sensible width/surface defaults below).
+- **`<cosmoz-slideout-panel>`** - a batteries-included, design-system-styled preset built on the
+  shell: a heading/subtitle, a built-in close button, and styled header/body/footer regions, from
+  `@neovici/cosmoz-button`, `@neovici/cosmoz-icons`, and `@neovici/cosmoz-tokens` (which this
+  package always depends on). It shares the shell's identical `opened` lifecycle, `close()`,
+  events, Escape stack, and focus behavior - only the UI differs.
+
+Both are driven by the same `opened` property: the element **does not open merely by being in the
+DOM** - it stays connected and slides in/out as `opened` toggles.
 
 ## Installation
 
@@ -21,87 +24,122 @@ the UI differs.
 npm i @neovici/cosmoz-slideout
 ```
 
+```js
+// the bare shell
+import "@neovici/cosmoz-slideout/cosmoz-slideout";
+// the styled preset (separate entrypoint)
+import "@neovici/cosmoz-slideout/cosmoz-slideout-panel";
+```
+
+## Opening & closing
+
+`opened` is a **reactive, two-way property** (the dominant pion pattern, via `useProperty`). Bind
+the **property** (`.opened=${x}`, not the `opened` attribute) and listen for `opened-changed`; the
+element self-closes on Escape and `close()` and emits `opened-changed` so your state stays in sync.
+The element persists in the DOM across open/close cycles - there is no add-to-open / remove-to-close
+dance.
+
+```html
+<!-- lit-html two-way binding -->
+<cosmoz-slideout-panel
+	.opened=${this.open}
+	@opened-changed=${(e) => (this.open = e.detail.value)}
+	heading="Acme"
+	closeable
+>
+	<p>…body…</p>
+</cosmoz-slideout-panel>
+```
+
+Or with pion's `lift` directive: `@opened-changed=${lift(setOpen)}`. Imperatively, call `open()` /
+`close()` on the element.
+
 ## API
 
-### Attributes
+Unless noted, everything below applies to **both** elements; the `heading` / `subtitle` /
+`closeable` inputs and the styled regions are **`<cosmoz-slideout-panel>` only**.
 
-- `variant` - `"panel"` opts into the styled preset (heading/subtitle, built-in close button, styled
-  header/body/footer). Omit it (or any other value) for the bare shell. This is the only defined value
-  today. Every attribute on this element also works as a property binding (e.g. lit-html's
-  `.variant=${'panel'}`) - the component reads the live property either way, and panel mode's own CSS
-  is scoped to its rendered structure (`.header`/`.body`/`.footer`), not to the `variant` attribute, so
-  it renders correctly however `variant` was set.
-- `heading`, `subtitle` - text for the default panel header. Only rendered when `variant="panel"`.
-- `closeable` - render the built-in close button in the panel header. Only applies when `variant="panel"`.
-  This only controls the **button** - it is independent of Escape-to-close (below), which is still active
-  by default. For a panel with no built-in dismissal at all, omit `closeable` **and** set `no-escape`.
-- `full-screen` - when present the surface covers the whole document. This is a **parent-driven
-  state** - there is no built-in toggle; the parent flips the attribute (e.g. from its own button).
-- `no-escape` - disable the built-in Escape-to-close. Applies regardless of `variant`/`closeable`.
+### Attributes & properties
+
+- `opened` - **property** (bind `.opened`): show/hide the slideout. Reactive and two-way (pairs
+  with the `opened-changed` event). Default `false`. It is reflected out to an `opened` **attribute**
+  for styling/devtools, but consumer input must be the property (`opened` is not an observed
+  attribute).
+- `heading`, `subtitle` - _(panel only)_ text for the default panel header.
+- `closeable` - _(panel only)_ render the built-in close button in the panel header. This only
+  controls the **button** - it is independent of Escape-to-close (below), which is still active by
+  default. For a panel with no built-in dismissal at all, omit `closeable` **and** set `no-escape`.
+- `full-screen` - when present the surface covers the whole document. A **parent-driven state**;
+  flip the attribute or call `toggleFullScreen()`.
+- `no-escape` - disable the built-in Escape-to-close.
 - `no-autofocus` - do not move focus into the surface on open.
 - `loading` - overlay a spinner over the content.
-- `aria-label` / `aria-labelledby` - mirrored onto the surface (`role="dialog"`) to label the drawer. In
-  panel mode, `aria-label` defaults to `heading` when not set explicitly. Note: `aria-labelledby` is an
-  IDREF and only resolves to an element in the **same tree** as the surface - i.e. a heading rendered by a
-  `slideout()` render fn. A **slotted** heading lives in the light DOM, so reference it with `aria-label`
-  (a plain string) instead.
+- `aria-label` / `aria-labelledby` - mirrored onto the surface (`role="dialog"`) to label the
+  drawer. In the panel, `aria-label` defaults to `heading` when not set explicitly. Note:
+  `aria-labelledby` is an IDREF and only resolves to an element in the **same tree** as the surface
+  (a `slideout()` render-fn heading). A **slotted** heading lives in the light DOM, so reference it
+  with `aria-label` (a plain string) instead.
 
 ### Slots
 
 - _default_ - the body / main content (scrollable).
-- `header` - non-scrolling header region. Empty unless filled. In panel mode, a slotted `header`
+- `header` - non-scrolling header region. Empty unless filled. In the panel, a slotted `header`
   replaces the generated heading/subtitle but keeps the styled UI (padding, close button).
-- `controls` - top-right corner controls (e.g. the parent's own close / full-screen buttons in shell
-  mode). Empty unless filled.
-- `footer` - non-scrolling footer region (e.g. actions). Empty unless filled. In panel mode it renders
-  inside the styled footer (padding, divider).
+- `controls` - top-right corner controls (e.g. the parent's own close / full-screen buttons in the
+  shell). Empty unless filled.
+- `footer` - non-scrolling footer region (e.g. actions). Empty unless filled. In the panel it
+  renders inside the styled footer (padding, divider).
 
-Panel-mode regions are content-conditional and symmetric: the header renders (with its UI) when
-`heading`, `subtitle`, `closeable`, or a slotted `header` is present; the footer renders when `footer` is
-filled.
+The panel's regions are content-conditional and symmetric: the header renders (with its UI) when
+`heading`, `subtitle`, `closeable`, or a slotted `header` is present; the footer renders when
+`footer` is filled.
 
 ```html
 <!-- shell: everything is hand-composed -->
-<cosmoz-slideout aria-label="Edit supplier">
+<cosmoz-slideout .opened="${open}" aria-label="Edit supplier">
 	<h2 slot="header">Edit supplier</h2>
 	…body…
 	<div slot="footer">…actions…</div>
 </cosmoz-slideout>
 
 <!-- panel: zero UI markup, styled header (heading/subtitle + close) and footer -->
-<cosmoz-slideout
-	variant="panel"
+<cosmoz-slideout-panel
+	.opened="${open}"
 	heading="Acme"
 	subtitle="Supplier #4021"
 	closeable
 >
 	<p>…body…</p>
 	<div slot="footer">…actions…</div>
-</cosmoz-slideout>
+</cosmoz-slideout-panel>
 
 <!-- panel with a custom title: swap the slot, keep the styled UI + close -->
-<cosmoz-slideout variant="panel" closeable>
+<cosmoz-slideout-panel .opened="${open}" closeable>
 	<my-title slot="header">…</my-title>
 	<p>…body…</p>
-</cosmoz-slideout>
+</cosmoz-slideout-panel>
 
 <!-- no button AND no Escape: closeable alone only removes the button -->
-<cosmoz-slideout variant="panel" heading="Guarded draft" no-escape>
+<cosmoz-slideout-panel .opened="${open}" heading="Guarded draft" no-escape>
 	<p>…body…</p>
-</cosmoz-slideout>
+</cosmoz-slideout-panel>
 ```
 
 ### Methods
 
-- `close()` - play the slide-out animation; `close` fires when it finishes.
+- `open()` - set `opened` to true (play the slide-in).
+- `close()` - set `opened` to false (play the slide-out); `close` fires when it finishes.
 - `toggleFullScreen()` - toggle the `full-screen` state (also settable via the attribute).
 
 ### Events
 
-- `opened` - dispatched once the slide-in animation settles (bubbles).
-- `close` - dispatched after the slide-out animation (bubbles). The parent removes the element here.
-- `full-screen-changed` - dispatched when the `full-screen` state changes;
-  `detail = { fullScreen }` (bubbles).
+- `opened-changed` - dispatched when the `opened` state flips; `detail = { value }` (bubbles up as
+  a plain `CustomEvent`). Use it for two-way binding. Filter on `detail.value === true` if you need
+  "just opened" specifically (a benign `opened-changed(false)` fires once at construction).
+- `close` - dispatched after the slide-out animation settles (bubbles). Useful for teardown timing;
+  the element is **not** removed.
+- `full-screen-changed` - dispatched when the `full-screen` state changes; `detail = { fullScreen }`
+  (bubbles).
 
 ### Properties
 
@@ -112,8 +150,9 @@ filled.
 ### Composables
 
 For building a richer app-specific element via the `slideout()` factory, the underlying hooks are
-exported: `useClose` (open/close lifecycle + `close()`) and `useFullScreen` (`{ fullScreen, toggle }` +
-the `full-screen-changed` event). Deep-linking the full-screen state to the URL is left to the consumer.
+exported: `useClose` (the `opened` lifecycle + `open()`/`close()`) and `useFullScreen`
+(`{ fullScreen, toggle }` + the `full-screen-changed` event). Deep-linking any state to the URL is
+left to the consumer.
 
 ### CSS `::part()`
 
@@ -121,19 +160,19 @@ the `full-screen-changed` event). Deep-linking the full-screen state to the URL 
 - `controls` - the top-right controls slot.
 - `content` - the scrollable body wrapper.
 - `loading` - the loading overlay.
-- `header`, `body`, `footer`, `close` - panel-mode UI (only present when `variant="panel"`).
+- `header`, `body`, `footer`, `close` - panel UI (`<cosmoz-slideout-panel>` only).
 
 ### Accessibility
 
 The surface is a `role="dialog"` with `aria-modal="false"` (it is non-modal by design). Label it via
 `aria-label` / `aria-labelledby` on the host. On open, focus moves into the surface (opt out with
 `no-autofocus`); on close, focus returns to the opener **when focus was still inside the drawer at the
-moment `close()` was triggered** (that check is captured then, before the popover hides). Escape closes
-the **top-most** open slideout only. Because the drawer is non-modal, the page behind stays reachable -
+moment it closed** (that check is captured then, before the popover hides). Escape closes the
+**top-most** open slideout only. Because the drawer is non-modal, the page behind stays reachable -
 this is intentional (quick-glance panels).
 
-The opener that focus is restored to is whatever was focused **when the element was inserted**. Append
-the slideout synchronously inside the opening handler (e.g. the click); if you append it after an
+The opener that focus is restored to is whatever was focused **at the moment `opened` became true**.
+Set `opened` synchronously inside the opening handler (e.g. the click); if you set it after an
 `await`, the original opener may no longer be focused and restoration is skipped.
 
 ### CSS custom properties
@@ -161,7 +200,7 @@ honors dark mode), and falls back to the plain value shown below otherwise. Ever
 
 `prefers-reduced-motion: reduce` disables the transition regardless.
 
-**Panel mode (`variant="panel"`) only:**
+**`<cosmoz-slideout-panel>` only:**
 
 - `--cosmoz-slideout-panel-padding-x` - header/body/footer horizontal padding (default `--cz-spacing * 4`).
 - `--cosmoz-slideout-panel-gap` - vertical gap between body children (default `--cz-spacing * 6`).
@@ -170,21 +209,20 @@ honors dark mode), and falls back to the plain value shown below otherwise. Ever
 
 ## Notes & caveats
 
+- **Bind the property, not the attribute.** `opened` is not an observed attribute, so `?opened=${x}`
+  / a bare `opened` in static HTML will **not** drive the component - use the property binding
+  (`.opened=${x}`) or set `el.opened` / call `open()`/`close()`.
 - **Multiple open slideouts** all render pinned to the right edge and therefore stack on top of one
   another (they share the same position). Escape targets the most-recently-opened one.
 - The `controls` slot floats in the top-right corner over the header region - leave room in your
   header for it, or place your controls there instead.
 - The `loading` overlay covers the body (default slot) only, not the header/footer.
-- **Removing the element without calling `close()` first** skips the slide-out animation and does
-  **not** dispatch `close` or call `onClose`. If you rely on either, always `close()` and remove the
-  element on the `close` event.
 - **`closeable="false"` does not disable Escape.** It only hides the panel's built-in close button;
   Escape-to-close is a separate, core behavior controlled by `no-escape` and stays active either way.
   Combine `no-escape` with omitting `closeable` for a panel with no built-in dismissal at all.
-- **Panel mode always pulls in its UI dependencies.** `@neovici/cosmoz-button`, `@neovici/cosmoz-icons`,
-  and `@neovici/cosmoz-tokens` are regular `dependencies` of this package, imported by the single
-  `cosmoz-slideout` module regardless of whether any instance uses `variant="panel"`. There is no
-  separate, dependency-free entrypoint for the shell.
+- **`<cosmoz-slideout-panel>` always pulls in its UI dependencies.** `@neovici/cosmoz-button`,
+  `@neovici/cosmoz-icons`, and `@neovici/cosmoz-tokens` are regular `dependencies` of this package.
+  Import the shell entrypoint (`/cosmoz-slideout`) when you don't need the panel chrome.
 
 ## Development
 

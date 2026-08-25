@@ -56,6 +56,10 @@
       "types": "./dist/cosmoz-slideout.d.ts",
       "default": "./dist/cosmoz-slideout.js"
     },
+    "./cosmoz-slideout-panel": {
+      "types": "./dist/cosmoz-slideout-panel.d.ts",
+      "default": "./dist/cosmoz-slideout-panel.js"
+    },
     "./use-close": {
       "types": "./dist/use-close.d.ts",
       "default": "./dist/use-close.js"

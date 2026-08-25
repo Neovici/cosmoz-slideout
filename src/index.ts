@@ -1,6 +1,11 @@
 import { normalize } from '@neovici/cosmoz-tokens/normalize';
 import '@neovici/cosmoz-utils/elements/cz-spinner';
-import { component, ComponentOptions, html } from '@pionjs/pion';
+import {
+	component,
+	ComponentOptions,
+	html,
+	useLayoutEffect,
+} from '@pionjs/pion';
 import { nothing } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { when } from 'lit-html/directives/when.js';
@@ -14,9 +19,14 @@ export { useFullScreen } from './use-full-screen';
 export type { Props, SlideoutElement };
 
 export const useSlideout = (host: SlideoutElement) => {
-	const { close } = useClose(host);
+	const { close, open } = useClose(host);
 	const { fullScreen, toggle } = useFullScreen(host);
-	return { close, fullScreen, toggleFullScreen: toggle };
+
+	useLayoutEffect(() => {
+		host.toggleAttribute('opened', !!host.opened);
+	}, [host.opened]);
+
+	return { close, open, fullScreen, toggleFullScreen: toggle };
 };
 
 export type SlideoutRegions = {

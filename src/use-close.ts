@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from '@pionjs/pion';
+import { useCallback, useEffect, useProperty, useRef } from '@pionjs/pion';
 import type { SlideoutElement } from './types';
 import { animationTimeoutMs, dropFrom } from './utils';
 
@@ -8,145 +8,144 @@ const dropFromStack = (surface: HTMLElement) => dropFrom(openSurfaces, surface);
 const surfaceOf = (host: HTMLElement) =>
 	host.shadowRoot?.querySelector<HTMLElement>('[popover]') ?? undefined;
 
-const activate = (host: SlideoutElement, surface: HTMLElement) => {
-	if (!surface.matches(':popover-open')) {
-		surface.showPopover();
-	}
-
-	openSurfaces.push(surface);
-
-	if (host.noAutofocus) {
-		return;
-	}
-
-	surface.focus({ preventScroll: true });
-};
-
-const restoreFocus = (opener: HTMLElement | null) => {
+const restoreFocus = (opener: HTMLElement | null | undefined) => {
 	if (opener?.isConnected) opener.focus({ preventScroll: true });
 };
 
 /**
- * Wire open/close lifecycle onto the popover surface. Returns a cleanup fn.
- * - shows the popover on connect (slide-in) and moves focus into it;
- * - escape closes the top-most slideout (unless `no-escape` is set);
- * - `opened` is dispatched once the slide-in settles;
- * - on close, the slide-out plays, then a bubbling `close` event fires, focus
- *   returns to the opener, and `onClose` is called - the element is NOT removed;
- *   the parent owns that.
+ * Wire the open/close lifecycle onto the popover surface, driven by the reactive
+ * `opened` property (two-way, via `useProperty` - consumers bind `.opened` and
+ * `@opened-changed`). The element persists in the DOM across open/close cycles.
+ *
+ * - `opened` false -> true shows the popover (slide-in) and moves focus into it;
+ * - `opened` true -> false plays the slide-out, then dispatches a bubbling `close`
+ *   event, restores focus to the opener, and calls `onClose` - the element is NOT
+ *   removed; it stays connected and can be re-opened;
+ * - escape closes the top-most slideout (unless `no-escape` is set) by flipping
+ *   `opened` to false.
+ *
+ * The surface is `popover="manual"` (no light-dismiss), so it only opens/closes via
+ * our own show/hide - close detection keys off `transitionend`, with an
+ * `animationTimeoutMs` fallback for reduced-motion / detached surfaces.
  */
-const wireLifecycle = (
-	host: SlideoutElement,
-	surface: HTMLElement,
-	close: () => void,
-	shouldRestore: { current: boolean | undefined }
-) => {
-	const opener = document.activeElement as HTMLElement | null;
-	let closing = false,
-		opened = false,
-		finished = false,
-		closeTimer = 0;
+export const useClose = (host: SlideoutElement) => {
+	const [opened, setOpened] = useProperty<boolean>('opened', false);
 
-	const dispatchOpened = () => {
-		if (opened || closing) {
+	const opener = useRef<HTMLElement | null>(null); // captured at open time
+	const shouldRestore = useRef(false); // captured at close time
+	const closing = useRef(false);
+	const closeTimer = useRef(0);
+
+	const finish = useCallback(() => {
+		if (!closing.current) {
 			return;
 		}
 
-		opened = true;
-		host.dispatchEvent(new Event('opened', { bubbles: true }));
-	};
+		closing.current = false;
+		window.clearTimeout(closeTimer.current);
 
-	const finish = () => {
-		if (finished) {
-			return;
-		}
-
-		finished = true;
-		dropFromStack(surface);
+		const surface = surfaceOf(host);
+		if (surface) dropFromStack(surface);
 
 		if (shouldRestore.current) {
-			restoreFocus(opener);
+			restoreFocus(opener.current);
 		}
 
 		host.dispatchEvent(new Event('close', { bubbles: true }));
 		host.onClose?.();
-	};
-
-	const onTransitionEnd = (e: TransitionEvent) => {
-		if (e.target !== surface || e.propertyName !== 'translate') {
-			return;
-		}
-
-		if (closing) {
-			finish();
-		} else {
-			dispatchOpened();
-		}
-	};
-
-	const onToggle = (e: Event) => {
-		if ((e as ToggleEvent).newState !== 'closed') {
-			return;
-		}
-
-		closing = true;
-		closeTimer = window.setTimeout(finish, animationTimeoutMs(surface));
-	};
-
-	const onKeydown = (e: KeyboardEvent) => {
-		if (
-			e.key === 'Escape' &&
-			!host.noEscape &&
-			openSurfaces[openSurfaces.length - 1] === surface
-		) {
-			e.preventDefault();
-			close();
-		}
-	};
-
-	surface.addEventListener('transitionend', onTransitionEnd as EventListener);
-	surface.addEventListener('toggle', onToggle);
-	document.addEventListener('keydown', onKeydown);
-
-	activate(host, surface);
-
-	const openTimer = window.setTimeout(
-		dispatchOpened,
-		animationTimeoutMs(surface)
-	);
-
-	return () => {
-		window.clearTimeout(openTimer);
-		window.clearTimeout(closeTimer);
-		dropFromStack(surface);
-		surface.removeEventListener(
-			'transitionend',
-			onTransitionEnd as EventListener
-		);
-		surface.removeEventListener('toggle', onToggle);
-		document.removeEventListener('keydown', onKeydown);
-	};
-};
-
-export const useClose = (host: SlideoutElement) => {
-	const shouldRestore = useRef(false);
-	const close = useCallback(() => {
-		const surface = surfaceOf(host);
-		if (surface?.matches(':popover-open')) {
-			shouldRestore.current = host.contains(document.activeElement);
-			surface.hidePopover();
-		}
 	}, []);
+
+	const open = useCallback(() => {
+		if (!host.opened) setOpened(true);
+	}, []);
+	const close = useCallback(() => {
+		if (host.opened) setOpened(false);
+	}, []);
+	host.open = open;
 	host.close = close;
 
+	const activate = useCallback((surface: HTMLElement) => {
+		opener.current = document.activeElement as HTMLElement | null;
+		closing.current = false; // cancel a stale close cycle...
+		window.clearTimeout(closeTimer.current); // ...and its fallback timer
+
+		if (!surface.matches(':popover-open')) {
+			surface.showPopover(); // @starting-style plays the slide-in
+		}
+		if (openSurfaces.indexOf(surface) === -1) {
+			openSurfaces.push(surface);
+		}
+		if (!host.noAutofocus) {
+			surface.focus({ preventScroll: true });
+		}
+	}, []);
+
+	const deactivate = useCallback((surface: HTMLElement) => {
+		if (!surface.matches(':popover-open')) {
+			return; // initial mount / never opened - nothing to close
+		}
+
+		shouldRestore.current = host.contains(document.activeElement);
+		dropFromStack(surface);
+		closing.current = true;
+		window.clearTimeout(closeTimer.current);
+		closeTimer.current = window.setTimeout(finish, animationTimeoutMs(surface));
+		surface.hidePopover(); // plays the slide-out -> transitionend -> finish
+	}, []);
+
+	// mount-only: persistent listeners
 	useEffect(() => {
 		const surface = surfaceOf(host);
 		if (!surface) {
 			return;
 		}
 
-		return wireLifecycle(host, surface, close, shouldRestore);
+		const onTransitionEnd = (e: TransitionEvent) => {
+			if (
+				e.target === surface &&
+				e.propertyName === 'translate' &&
+				closing.current
+			) {
+				finish();
+			}
+		};
+
+		const onKeydown = (e: KeyboardEvent) => {
+			if (
+				e.key === 'Escape' &&
+				!host.noEscape &&
+				openSurfaces[openSurfaces.length - 1] === surface
+			) {
+				e.preventDefault();
+				close();
+			}
+		};
+
+		surface.addEventListener('transitionend', onTransitionEnd as EventListener);
+		document.addEventListener('keydown', onKeydown);
+
+		return () => {
+			window.clearTimeout(closeTimer.current);
+			dropFromStack(surface);
+			surface.removeEventListener(
+				'transitionend',
+				onTransitionEnd as EventListener
+			);
+			document.removeEventListener('keydown', onKeydown);
+		};
 	}, []);
 
-	return { close };
+	useEffect(() => {
+		const surface = surfaceOf(host);
+		if (!surface) {
+			return;
+		}
+		if (opened) {
+			activate(surface);
+		} else {
+			deactivate(surface);
+		}
+	}, [opened]);
+
+	return { close, open };
 };

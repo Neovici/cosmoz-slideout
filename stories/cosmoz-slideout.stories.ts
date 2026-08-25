@@ -1,7 +1,7 @@
 import '@neovici/cosmoz-button/cosmoz-button';
 import { xCloseIcon } from '@neovici/cosmoz-icons/untitled';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import { html, nothing, render } from 'lit-html';
+import { html, render } from 'lit-html';
 import { expect, waitFor } from 'storybook/test';
 import '../src/cosmoz-slideout';
 
@@ -24,12 +24,17 @@ type Story = StoryObj;
 export const Minimal: Story = {
 	render: () => {
 		const mount = document.createElement('div');
-		const open = () =>
+		let opened = false;
+		const rerender = () =>
 			render(
 				html`
 					<cosmoz-slideout
 						aria-label="Release notes"
-						@close=${() => render(nothing, mount)}
+						.opened=${opened}
+						@opened-changed=${(e: CustomEvent) => {
+							opened = e.detail.value;
+							rerender();
+						}}
 					>
 						<div
 							style="padding: 24px; line-height: 1.6; color: var(--cz-color-text-tertiary);"
@@ -44,6 +49,11 @@ export const Minimal: Story = {
 				`,
 				mount
 			);
+		rerender();
+		const open = () => {
+			opened = true;
+			rerender();
+		};
 		return html`
 			<cosmoz-button variant="primary" @click=${open}>
 				Open bare slideout
@@ -62,7 +72,7 @@ export const Minimal: Story = {
 			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
 			expect(el.querySelector('cosmoz-button')).toBeNull();
 		});
-		await step('renders no panel UI without variant="panel"', async () => {
+		await step('the bare shell renders no panel UI', async () => {
 			expect(el.shadowRoot!.querySelector('.header')).toBeNull();
 			expect(el.shadowRoot!.querySelector('.body')).toBeNull();
 			expect(el.shadowRoot!.querySelector('.footer')).toBeNull();
@@ -70,26 +80,29 @@ export const Minimal: Story = {
 				el.shadowRoot!.querySelector('cosmoz-button[aria-label="Close"]')
 			).toBeNull();
 		});
-		await step('Escape is the only dismissal and removes it', async () => {
+		await step('Escape is the only dismissal', async () => {
 			await userEvent.keyboard('{Escape}');
-			await waitFor(() =>
-				expect(canvasElement.querySelector('cosmoz-slideout')).toBeNull()
-			);
+			await waitFor(() => expect(surface.matches(':popover-open')).toBe(false));
 		});
 	},
 };
 
 // The full-manual path: UI composed by hand via the `controls` / `header` /
-// `footer` slots. (For zero-markup styled UI, use `variant="panel"` instead.)
+// `footer` slots. (For zero-markup styled UI, use `<cosmoz-slideout-panel>` instead.)
 export const SlottedRegions: Story = {
 	render: () => {
 		const mount = document.createElement('div');
-		const open = () =>
+		let opened = false;
+		const rerender = () =>
 			render(
 				html`
 					<cosmoz-slideout
 						aria-label="Edit supplier"
-						@close=${() => render(nothing, mount)}
+						.opened=${opened}
+						@opened-changed=${(e: CustomEvent) => {
+							opened = e.detail.value;
+							rerender();
+						}}
 					>
 						<cosmoz-button
 							slot="controls"
@@ -127,6 +140,11 @@ export const SlottedRegions: Story = {
 				`,
 				mount
 			);
+		rerender();
+		const open = () => {
+			opened = true;
+			rerender();
+		};
 		return html`
 			<cosmoz-button variant="primary" @click=${open}
 				>Edit supplier</cosmoz-button
@@ -157,12 +175,12 @@ export const SlottedRegions: Story = {
 				[...el.querySelectorAll<HTMLElement>('cosmoz-button')]
 					.find((b) => /^save$/iu.test((b.textContent ?? '').trim()))!
 					.click();
-				expect(surface.matches(':popover-open')).toBe(false);
+				await waitFor(() =>
+					expect(surface.matches(':popover-open')).toBe(false)
+				);
+				// while sliding out (`:not(:popover-open)`) the column layout must hold
 				expect(getComputedStyle(surface).display).toBe('flex');
 				expect(getComputedStyle(surface).flexDirection).toBe('column');
-				await waitFor(() =>
-					expect(canvasElement.querySelector('cosmoz-slideout')).toBeNull()
-				);
 			}
 		);
 	},

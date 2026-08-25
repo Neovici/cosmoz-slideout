@@ -1,18 +1,19 @@
 import '@neovici/cosmoz-button/cosmoz-button';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import { html as litHtml, nothing, render } from 'lit-html';
+import { html as litHtml, render } from 'lit-html';
 import { expect, waitFor } from 'storybook/test';
-import '../src/cosmoz-slideout';
+import '../src/cosmoz-slideout-panel';
 
 type PanelEl = HTMLElement & {
+	open(): void;
 	close(): void;
 	toggleFullScreen(): void;
 	onClose?: () => void;
 };
 
 const meta: Meta = {
-	title: 'CosmozSlideout/Lifecycle',
-	component: 'cosmoz-slideout',
+	title: 'CosmozSlideoutPanel/Lifecycle',
+	component: 'cosmoz-slideout-panel',
 	tags: ['autodocs'],
 };
 
@@ -32,26 +33,28 @@ export const Events: Story = {
 			item.textContent = message;
 			log.append(item);
 		};
-		const open = () => {
-			log.replaceChildren();
+		let opened = false;
+		const rerender = () =>
 			render(
 				litHtml`
-					<cosmoz-slideout
-						variant="panel"
+					<cosmoz-slideout-panel
+						.opened=${opened}
 						heading="Lifecycle"
 						subtitle="Events and imperative callbacks"
 						closeable
-						@opened=${() => addLog('opened')}
+						@opened-changed=${(e: CustomEvent) => {
+							opened = e.detail.value;
+							if (opened) addLog('opened');
+							rerender();
+						}}
 						@full-screen-changed=${(e: CustomEvent) =>
 							addLog(`full-screen: ${e.detail.fullScreen}`)}
-						@close=${() => {
-							addLog('close event');
-							render(nothing, mount);
-						}}
+						@close=${() => addLog('close event')}
 					>
 						<p>
-							The parent owns removal. It waits for <code>close</code>, then clears
-							the mount point after the slide-out animation completes.
+							The element persists in the DOM. It emits <code>opened-changed</code>
+							and, on close, <code>close</code> once the slide-out animation
+							completes.
 						</p>
 						<div
 							slot="footer"
@@ -62,7 +65,7 @@ export const Events: Story = {
 								@click=${(e: Event) =>
 									(
 										(e.currentTarget as HTMLElement).closest(
-											'cosmoz-slideout'
+											'cosmoz-slideout-panel'
 										) as PanelEl
 									).toggleFullScreen()}
 							>
@@ -73,19 +76,23 @@ export const Events: Story = {
 								@click=${(e: Event) =>
 									(
 										(e.currentTarget as HTMLElement).closest(
-											'cosmoz-slideout'
+											'cosmoz-slideout-panel'
 										) as PanelEl
 									).close()}
 							>
 								Close
 							</cosmoz-button>
 						</div>
-					</cosmoz-slideout>
+					</cosmoz-slideout-panel>
 				`,
 				mount
 			);
-			const el = mount.querySelector('cosmoz-slideout') as PanelEl;
-			el.onClose = () => addLog('onClose callback');
+		rerender();
+		const el = mount.querySelector('cosmoz-slideout-panel') as PanelEl;
+		el.onClose = () => addLog('onClose callback');
+		const open = () => {
+			log.replaceChildren();
+			el.open();
 		};
 
 		return litHtml`
@@ -106,7 +113,7 @@ export const Events: Story = {
 				name: /open lifecycle panel/iu,
 			})
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
 
 		await step('dispatches opened after the entrance transition', async () => {
 			await waitFor(() => expect(logItems()).toContain('opened'));
