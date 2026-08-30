@@ -65,33 +65,8 @@ export default css`
 		width: var(--cosmoz-slideout-full-screen-width, 100vw);
 	}
 
-	slot[name="controls"] {
-		position: absolute;
-		top: 8px;
-		right: 8px;
-		display: flex;
-		gap: 4px;
-		z-index: 3;
-	}
-
-	.content {
-		position: relative;
+	[popover] > ::slotted(*) {
 		flex: 1;
 		min-height: 0;
-		overflow: auto;
-		overscroll-behavior: contain;
-	}
-
-	.loading {
-		position: absolute;
-		inset: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background: var(
-			--cosmoz-slideout-loading-color,
-			color-mix(in srgb, var(--cz-color-bg-primary, #fff) 70%, transparent)
-		);
-		z-index: 2;
 	}
 `;

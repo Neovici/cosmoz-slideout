@@ -121,8 +121,16 @@ export const useClose = (host: SlideoutElement) => {
 			}
 		};
 
+		const onRequestClose = (e: Event) => {
+			if (host.opened) {
+				e.stopPropagation();
+				close();
+			}
+		};
+
 		surface.addEventListener('transitionend', onTransitionEnd as EventListener);
 		document.addEventListener('keydown', onKeydown);
+		host.addEventListener('request-close', onRequestClose);
 
 		return () => {
 			window.clearTimeout(closeTimer.current);
@@ -132,6 +140,7 @@ export const useClose = (host: SlideoutElement) => {
 				onTransitionEnd as EventListener
 			);
 			document.removeEventListener('keydown', onKeydown);
+			host.removeEventListener('request-close', onRequestClose);
 		};
 	}, []);
 

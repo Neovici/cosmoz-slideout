@@ -1,7 +1,6 @@
 export interface Props {
 	opened?: boolean;
 	fullScreen?: boolean;
-	loading?: boolean;
 	noAutofocus?: boolean;
 	noEscape?: boolean;
 	onClose?: () => void;
@@ -12,10 +11,11 @@ export interface Props {
 
 export type SlideoutElement = HTMLElement & Props;
 
-export interface PanelProps extends Props {
+export interface PanelProps {
 	heading?: string;
 	subtitle?: string;
 	closeable?: boolean;
+	loading?: boolean;
 }
 
 export type PanelElement = HTMLElement & PanelProps;

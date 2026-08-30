@@ -13,7 +13,7 @@ const closeFrom = (e: Event) =>
 
 const closeControl = html`
 	<cosmoz-button
-		slot="controls"
+		style="position: absolute; top: 8px; right: 8px; z-index: 1;"
 		variant="tertiary"
 		size="sm"
 		aria-label="Close"
@@ -49,17 +49,20 @@ export const Width: Story = {
 						}}
 						style="--cosmoz-slideout-width: 640px;"
 					>
-						${closeControl}
-						<h2
-							slot="header"
-							style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
-						>
-							Wide panel
-						</h2>
 						<div
-							style="padding: 12px 24px; color: var(--cz-color-text-tertiary);"
+							style="position: relative; display: flex; flex-direction: column; height: 100%;"
 						>
-							The width is 640px until the viewport becomes narrower.
+							${closeControl}
+							<h2
+								style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
+							>
+								Wide panel
+							</h2>
+							<div
+								style="padding: 12px 24px; color: var(--cz-color-text-tertiary);"
+							>
+								The width is 640px until the viewport becomes narrower.
+							</div>
 						</div>
 					</cosmoz-slideout>
 				`,
@@ -115,26 +118,30 @@ export const SurfaceTokens: Story = {
 						}}
 						style=${mutedSurface}
 					>
-						${closeControl}
-						<h2
-							slot="header"
-							style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
+						<div
+							style="position: relative; display: flex; flex-direction: column; height: 100%;"
 						>
-							Muted surface
-						</h2>
-						<div style="padding: 12px 24px;">
-							This is the bare shell (not the
-							<code>&lt;cosmoz-slideout-panel&gt;</code> preset), yet its
-							surface is still fully themeable. Its
-							<code>--cosmoz-slideout-*</code> overrides accept either a design
-							token or a plain value: here <code>--cosmoz-slideout-bg</code> and
-							the text color resolve to <code>@neovici/cosmoz-tokens</code>
-							<code>--cz-*</code> tokens - so the drawer stays on-theme and
-							follows dark mode - while <code>--cosmoz-slideout-shadow</code> is
-							a one-off value. The only difference from
-							<code>&lt;cosmoz-slideout-panel&gt;</code> is that the shell
-							leaves the inner UI - this header and close button - for the
-							parent to author.
+							${closeControl}
+							<h2
+								style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
+							>
+								Muted surface
+							</h2>
+							<div style="padding: 12px 24px;">
+								This is the bare shell (not the
+								<code>&lt;cosmoz-slideout-panel&gt;</code> preset), yet its
+								surface is still fully themeable. Its
+								<code>--cosmoz-slideout-*</code> overrides accept either a
+								design token or a plain value: here
+								<code>--cosmoz-slideout-bg</code> and the text color resolve to
+								<code>@neovici/cosmoz-tokens</code> <code>--cz-*</code> tokens -
+								so the drawer stays on-theme and follows dark mode - while
+								<code>--cosmoz-slideout-shadow</code> is a one-off value. The
+								only difference from
+								<code>&lt;cosmoz-slideout-panel&gt;</code> is that the shell
+								leaves the inner UI - this header and close button - for the
+								parent to author.
+							</div>
 						</div>
 					</cosmoz-slideout>
 				`,
@@ -182,17 +189,20 @@ export const SlowMotion: Story = {
 						}}
 						style="--cosmoz-slideout-duration: 1.2s;"
 					>
-						${closeControl}
-						<h2
-							slot="header"
-							style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
-						>
-							Slow panel
-						</h2>
 						<div
-							style="padding: 12px 24px; color: var(--cz-color-text-tertiary);"
+							style="position: relative; display: flex; flex-direction: column; height: 100%;"
 						>
-							The entrance and exit animation duration are custom properties.
+							${closeControl}
+							<h2
+								style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
+							>
+								Slow panel
+							</h2>
+							<div
+								style="padding: 12px 24px; color: var(--cz-color-text-tertiary);"
+							>
+								The entrance and exit animation duration are custom properties.
+							</div>
 						</div>
 					</cosmoz-slideout>
 				`,

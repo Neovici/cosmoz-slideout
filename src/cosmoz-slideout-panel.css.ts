@@ -1,6 +1,14 @@
 import { tagged as css } from '@neovici/cosmoz-utils';
 
 export default css`
+	:host {
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
+		height: 100%;
+		overflow: hidden;
+	}
+
 	.header,
 	.body,
 	.footer {
@@ -48,10 +56,28 @@ export default css`
 	}
 
 	.body {
+		position: relative;
+		flex: 1;
+		min-height: 0;
+		overflow: auto;
+		overscroll-behavior: contain;
 		display: flex;
 		flex-direction: column;
 		gap: var(--cosmoz-slideout-panel-gap, calc(var(--cz-spacing, 4px) * 6));
 		padding: 0 var(--_px);
+	}
+
+	.loading {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: var(
+			--cosmoz-slideout-loading-color,
+			color-mix(in srgb, var(--cz-color-bg-primary, #fff) 70%, transparent)
+		);
+		z-index: 2;
 	}
 
 	.footer {

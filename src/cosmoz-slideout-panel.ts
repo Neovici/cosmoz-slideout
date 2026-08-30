@@ -1,22 +1,32 @@
+import { normalize } from '@neovici/cosmoz-tokens/normalize';
+import { component } from '@pionjs/pion';
 import panelStyles from './cosmoz-slideout-panel.css';
-import { slideout } from './index';
-import { usePanelView } from './panel';
+import { renderPanel } from './panel';
 import type { PanelElement, PanelProps } from './types';
 
 /**
- * `<cosmoz-slideout-panel>` - the batteries-included preset.
+ * `<cosmoz-slideout-panel>` - the batteries-included content preset.
  *
- * A `<cosmoz-slideout>` (same top-layer surface, `opened` lifecycle, events, Escape
- * stack, and focus behavior) with the design-system chrome added: a styled
- * header/body/footer, a `heading`/`subtitle`, and a built-in close button
- * (`closeable`). Built on `@neovici/cosmoz-button`, `@neovici/cosmoz-icons`, and
- * `@neovici/cosmoz-tokens`. Every region is overridable by slotting; for a fully raw
- * surface use the bare `<cosmoz-slideout>`.
+ * Presentational only: it renders the design-system UI (styled header/body/
+ * footer, `heading`/`subtitle`, a built-in close button via `closeable`, and a
+ * `loading` overlay) and is meant to be slotted into a `<cosmoz-slideout>`, which
+ * owns the surface and the open/close lifecycle. The close button asks the
+ * surrounding surface to close by dispatching a bubbling `request-close` event -
+ * it holds no reference to the slideout. Built on `@neovici/cosmoz-button`,
+ * `@neovici/cosmoz-icons`, and `@neovici/cosmoz-tokens`.
+ *
+ * ```html
+ * <cosmoz-slideout opened>
+ *   <cosmoz-slideout-panel heading="Details" subtitle="Read-only" closeable>
+ *     …content…
+ *   </cosmoz-slideout-panel>
+ * </cosmoz-slideout>
+ * ```
  */
 customElements.define(
 	'cosmoz-slideout-panel',
-	slideout<PanelProps>((host: PanelElement) => usePanelView(host), {
-		observedAttributes: ['heading', 'subtitle', 'closeable'],
-		styleSheets: [panelStyles],
+	component<PanelProps>((host: PanelElement) => renderPanel(host), {
+		observedAttributes: ['heading', 'subtitle', 'closeable', 'loading'],
+		styleSheets: [normalize, panelStyles],
 	})
 );

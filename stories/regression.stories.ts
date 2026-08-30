@@ -5,7 +5,7 @@ import { expect, waitFor } from 'storybook/test';
 import '../src/cosmoz-slideout';
 import '../src/cosmoz-slideout-panel';
 
-type PanelEl = HTMLElement & { close(): void };
+type SlideoutEl = HTMLElement & { close(): void };
 
 const cssColor = (scope: HTMLElement, value: string) => {
 	const probe = document.createElement('span');
@@ -33,18 +33,23 @@ export const GlobalDarkMode: Story = {
 		const rerender = () =>
 			render(
 				html`
-					<cosmoz-slideout-panel
+					<cosmoz-slideout
 						.opened=${opened}
-						heading="Theme check"
-						subtitle="Follows root token mode"
-						closeable
 						@opened-changed=${(e: CustomEvent) => {
 							opened = e.detail.value;
 							rerender();
 						}}
 					>
-						<p>The open panel should follow root token changes immediately.</p>
-					</cosmoz-slideout-panel>
+						<cosmoz-slideout-panel
+							heading="Theme check"
+							subtitle="Follows root token mode"
+							closeable
+						>
+							<p>
+								The open panel should follow root token changes immediately.
+							</p>
+						</cosmoz-slideout-panel>
+					</cosmoz-slideout>
 				`,
 				mount
 			);
@@ -66,7 +71,7 @@ export const GlobalDarkMode: Story = {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open theme check/iu })
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
+		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
 		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		try {
@@ -127,7 +132,7 @@ export const PropertyBoundFullScreen: Story = {
 				name: /open property-bound full screen/iu,
 			})
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
 		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		await step(
@@ -186,7 +191,7 @@ export const FocusRestoreWithNoAutofocus: Story = {
 			name: /open guarded draft/iu,
 		});
 		await userEvent.click(opener);
-		const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
 		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 		await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
 

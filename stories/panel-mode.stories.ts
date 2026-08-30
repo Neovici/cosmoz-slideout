@@ -1,27 +1,59 @@
 import '@neovici/cosmoz-button/cosmoz-button';
-import type { Meta, StoryObj } from '@storybook/web-components';
+import type { Args, Meta, StoryObj } from '@storybook/web-components';
 import { html, render } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { expect, waitFor } from 'storybook/test';
+import '../src/cosmoz-slideout';
 import '../src/cosmoz-slideout-panel';
 import { defaultPanelArgs, panelArgTypes } from './arg-types';
 
-// `<cosmoz-slideout-panel>` is a separate, batteries-included element: styled
-// header/body/footer UI, a built-in close button, and token-backed spacing/
-// typography. It shares identical lifecycle, events, and Escape/focus behavior with
-// the bare shell (`CosmozSlideout/Shell`) - only the UI differs.
+// `<cosmoz-slideout-panel>` is presentational content nested inside a
+// `<cosmoz-slideout>`: the shell owns the surface, the `opened` / `full-screen`
+// lifecycle, Escape and focus; the panel adds the styled header/body/footer UI, a
+// built-in close button, and token-backed spacing/typography. 99% of the time you
+// use them together.
 //
-// Every story below renders from its `args`, so the Controls tab actually drives it -
-// change a control, then (re)click the trigger to see it. The element stays mounted
-// and reacts to its `opened` property (two-way via `opened-changed`); the trigger
-// flips `opened` to true and the panel self-closes back to false on Escape / close.
+// Every story below renders from its `args`, so the Controls tab drives it - change
+// a control, then (re)click the trigger to see it. The elements stay mounted; the
+// shell reacts to its `opened` property (two-way via `opened-changed`), the trigger
+// flips `opened` to true and the shell self-closes on Escape / close.
 
-type PanelEl = HTMLElement & { close(): void; opened?: boolean };
+type ShellEl = HTMLElement & { close(): void; opened?: boolean };
 
 const closePanel = (e: Event) =>
-	(
-		(e.currentTarget as HTMLElement).closest('cosmoz-slideout-panel') as PanelEl
-	).close();
+	(e.currentTarget as HTMLElement).closest<ShellEl>('cosmoz-slideout')?.close();
+
+// shell (surface + lifecycle) wrapping the panel (content) - the canonical pairing
+const panelInShell = (
+	args: Args,
+	opened: boolean,
+	onOpenedChanged: (value: boolean) => void,
+	body: unknown
+) => html`
+	<cosmoz-slideout
+		.opened=${opened}
+		aria-label=${ifDefined(args['aria-label'] as string | undefined)}
+		?full-screen=${args['full-screen']}
+		?no-escape=${args['no-escape']}
+		?no-autofocus=${args['no-autofocus']}
+		style=${`--cosmoz-slideout-width: ${args.width};`}
+		@opened-changed=${(e: CustomEvent) => onOpenedChanged(e.detail.value)}
+	>
+		<cosmoz-slideout-panel
+			heading=${ifDefined(args.heading as string | undefined)}
+			subtitle=${ifDefined(args.subtitle as string | undefined)}
+			?closeable=${args.closeable}
+			?loading=${args.loading}
+		>
+			${body}
+		</cosmoz-slideout-panel>
+	</cosmoz-slideout>
+`;
+
+const trigger = (label: string, open: () => void, mount: HTMLElement) => html`
+	<cosmoz-button variant="primary" @click=${open}>${label}</cosmoz-button>
+	${mount}
+`;
 
 const meta: Meta = {
 	title: 'CosmozSlideoutPanel',
@@ -46,23 +78,14 @@ export const Default: Story = {
 		let opened = false;
 		const rerender = () =>
 			render(
-				html`
-					<cosmoz-slideout-panel
-						.opened=${opened}
-						heading=${ifDefined(args.heading as string | undefined)}
-						subtitle=${ifDefined(args.subtitle as string | undefined)}
-						aria-label=${ifDefined(args['aria-label'] as string | undefined)}
-						?closeable=${args.closeable}
-						?loading=${args.loading}
-						?full-screen=${args['full-screen']}
-						?no-escape=${args['no-escape']}
-						?no-autofocus=${args['no-autofocus']}
-						style=${`--cosmoz-slideout-width: ${args.width};`}
-						@opened-changed=${(e: CustomEvent) => {
-							opened = e.detail.value;
-							rerender();
-						}}
-					>
+				panelInShell(
+					args,
+					opened,
+					(value) => {
+						opened = value;
+						rerender();
+					},
+					html`
 						<p>
 							Preferred vendor for packaging materials since 2019. Net 30 terms,
 							VAT SE556677889901.
@@ -78,46 +101,48 @@ export const Default: Story = {
 								Save
 							</cosmoz-button>
 						</div>
-					</cosmoz-slideout-panel>
-				`,
+					`
+				),
 				mount
 			);
 		rerender();
-		const open = () => {
-			opened = true;
-			rerender();
-		};
-
-		return html`
-			<cosmoz-button variant="primary" @click=${open}>Open panel</cosmoz-button>
-			${mount}
-		`;
+		return trigger(
+			'Open panel',
+			() => {
+				opened = true;
+				rerender();
+			},
+			mount
+		);
 	},
 	play: async ({ canvas, canvasElement, step, userEvent }) => {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open panel/iu })
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
-		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+		const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
+		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
+		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		await step('opens with built-in header UI and footer actions', async () => {
 			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
-			expect(el.shadowRoot!.querySelector('.heading')!.textContent).toMatch(
+			expect(panel.shadowRoot!.querySelector('.heading')!.textContent).toMatch(
 				/Acme Industries/u
 			);
 			expect(
-				el.shadowRoot!.querySelector('cosmoz-button[aria-label="Close"]')
+				panel.shadowRoot!.querySelector('cosmoz-button[aria-label="Close"]')
 			).not.toBeNull();
 			await waitFor(() =>
 				expect(
-					el.shadowRoot!.querySelector<HTMLElement>('.footer')!.hidden
+					panel.shadowRoot!.querySelector<HTMLElement>('.footer')!.hidden
 				).toBe(false)
 			);
 		});
 		await step('the built-in close button dismisses the panel', async () => {
-			el.shadowRoot!.querySelector<HTMLElement>(
-				'cosmoz-button[aria-label="Close"]'
-			)!.click();
+			panel
+				.shadowRoot!.querySelector<HTMLElement>(
+					'cosmoz-button[aria-label="Close"]'
+				)!
+				.click();
 			await waitFor(() => expect(surface.matches(':popover-open')).toBe(false));
 		});
 	},
@@ -135,23 +160,14 @@ export const CustomHeader: Story = {
 		let opened = false;
 		const rerender = () =>
 			render(
-				html`
-					<cosmoz-slideout-panel
-						.opened=${opened}
-						heading=${ifDefined(args.heading as string | undefined)}
-						subtitle=${ifDefined(args.subtitle as string | undefined)}
-						aria-label=${ifDefined(args['aria-label'] as string | undefined)}
-						?closeable=${args.closeable}
-						?loading=${args.loading}
-						?full-screen=${args['full-screen']}
-						?no-escape=${args['no-escape']}
-						?no-autofocus=${args['no-autofocus']}
-						style=${`--cosmoz-slideout-width: ${args.width};`}
-						@opened-changed=${(e: CustomEvent) => {
-							opened = e.detail.value;
-							rerender();
-						}}
-					>
+				panelInShell(
+					args,
+					opened,
+					(value) => {
+						opened = value;
+						rerender();
+					},
+					html`
 						<div
 							slot="header"
 							style="display: flex; flex-direction: column; gap: 4px;"
@@ -165,35 +181,32 @@ export const CustomHeader: Story = {
 							The title slot replaces the generated heading while the panel
 							keeps its padding, close button, and body layout.
 						</p>
-					</cosmoz-slideout-panel>
-				`,
+					`
+				),
 				mount
 			);
 		rerender();
-		const open = () => {
-			opened = true;
-			rerender();
-		};
-
-		return html`
-			<cosmoz-button variant="primary" @click=${open}>
-				Open custom header
-			</cosmoz-button>
-			${mount}
-		`;
+		return trigger(
+			'Open custom header',
+			() => {
+				opened = true;
+				rerender();
+			},
+			mount
+		);
 	},
 	play: async ({ canvas, canvasElement, step, userEvent }) => {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open custom header/iu })
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
-		const header = el.shadowRoot!.querySelector<HTMLElement>('.header')!;
+		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
+		const header = panel.shadowRoot!.querySelector<HTMLElement>('.header')!;
 
 		await step(
 			'projects slotted title content inside the panel header',
 			async () => {
 				await waitFor(() => expect(header.hidden).toBe(false));
-				expect(el.shadowRoot!.querySelector('.heading')).toBeNull();
+				expect(panel.shadowRoot!.querySelector('.heading')).toBeNull();
 				await canvas.findByShadowText(/Customer health/u);
 			}
 		);
@@ -212,23 +225,14 @@ export const BodyOnly: Story = {
 		let opened = false;
 		const rerender = () =>
 			render(
-				html`
-					<cosmoz-slideout-panel
-						.opened=${opened}
-						heading=${ifDefined(args.heading as string | undefined)}
-						subtitle=${ifDefined(args.subtitle as string | undefined)}
-						aria-label=${ifDefined(args['aria-label'] as string | undefined)}
-						?closeable=${args.closeable}
-						?loading=${args.loading}
-						?full-screen=${args['full-screen']}
-						?no-escape=${args['no-escape']}
-						?no-autofocus=${args['no-autofocus']}
-						style=${`--cosmoz-slideout-width: ${args.width};`}
-						@opened-changed=${(e: CustomEvent) => {
-							opened = e.detail.value;
-							rerender();
-						}}
-					>
+				panelInShell(
+					args,
+					opened,
+					(value) => {
+						opened = value;
+						rerender();
+					},
+					html`
 						<p>
 							A panel can be just a right-hand reading surface. With no heading,
 							close button, custom header, or footer, the UI stays out of the
@@ -237,37 +241,37 @@ export const BodyOnly: Story = {
 							affordance.
 						</p>
 						<p>Press <kbd>Esc</kbd> to dismiss it.</p>
-					</cosmoz-slideout-panel>
-				`,
+					`
+				),
 				mount
 			);
 		rerender();
-		const open = () => {
-			opened = true;
-			rerender();
-		};
-
-		return html`
-			<cosmoz-button variant="primary" @click=${open}>Open notes</cosmoz-button>
-			${mount}
-		`;
+		return trigger(
+			'Open notes',
+			() => {
+				opened = true;
+				rerender();
+			},
+			mount
+		);
 	},
 	play: async ({ canvas, canvasElement, step, userEvent }) => {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open notes/iu })
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
-		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+		const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
+		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
+		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		await step('hides empty header and footer regions', async () => {
 			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
-			expect(el.shadowRoot!.querySelector<HTMLElement>('.header')!.hidden).toBe(
-				true
-			);
-			expect(el.shadowRoot!.querySelector<HTMLElement>('.footer')!.hidden).toBe(
-				true
-			);
-			expect(el.shadowRoot!.querySelector('.body')).not.toBeNull();
+			expect(
+				panel.shadowRoot!.querySelector<HTMLElement>('.header')!.hidden
+			).toBe(true);
+			expect(
+				panel.shadowRoot!.querySelector<HTMLElement>('.footer')!.hidden
+			).toBe(true);
+			expect(panel.shadowRoot!.querySelector('.body')).not.toBeNull();
 		});
 	},
 };
@@ -285,23 +289,14 @@ export const ScrollableContent: Story = {
 		let opened = false;
 		const rerender = () =>
 			render(
-				html`
-					<cosmoz-slideout-panel
-						.opened=${opened}
-						heading=${ifDefined(args.heading as string | undefined)}
-						subtitle=${ifDefined(args.subtitle as string | undefined)}
-						aria-label=${ifDefined(args['aria-label'] as string | undefined)}
-						?closeable=${args.closeable}
-						?loading=${args.loading}
-						?full-screen=${args['full-screen']}
-						?no-escape=${args['no-escape']}
-						?no-autofocus=${args['no-autofocus']}
-						style=${`--cosmoz-slideout-width: ${args.width};`}
-						@opened-changed=${(e: CustomEvent) => {
-							opened = e.detail.value;
-							rerender();
-						}}
-					>
+				panelInShell(
+					args,
+					opened,
+					(value) => {
+						opened = value;
+						rerender();
+					},
+					html`
 						${rows.map(
 							(row) => html`
 								<p style="margin: 0; color: var(--cz-color-text-tertiary);">
@@ -320,38 +315,35 @@ export const ScrollableContent: Story = {
 								Close
 							</cosmoz-button>
 						</div>
-					</cosmoz-slideout-panel>
-				`,
+					`
+				),
 				mount
 			);
 		rerender();
-		const open = () => {
-			opened = true;
-			rerender();
-		};
-
-		return html`
-			<cosmoz-button variant="primary" @click=${open}>
-				Open activity
-			</cosmoz-button>
-			${mount}
-		`;
+		return trigger(
+			'Open activity',
+			() => {
+				opened = true;
+				rerender();
+			},
+			mount
+		);
 	},
 	play: async ({ canvas, canvasElement, step, userEvent }) => {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open activity/iu })
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
-		const content = el.shadowRoot!.querySelector<HTMLElement>('.content')!;
-		const header = el.shadowRoot!.querySelector<HTMLElement>('.header')!;
-		const footer = el.shadowRoot!.querySelector<HTMLElement>('.footer')!;
+		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
+		const body = panel.shadowRoot!.querySelector<HTMLElement>('.body')!;
+		const header = panel.shadowRoot!.querySelector<HTMLElement>('.header')!;
+		const footer = panel.shadowRoot!.querySelector<HTMLElement>('.footer')!;
 
 		await step(
 			'scrolls the body while header and footer stay outside it',
 			async () => {
-				await waitFor(() => expect(content.scrollHeight).toBeGreaterThan(0));
-				expect(header.closest('.content')).toBeNull();
-				expect(footer.closest('.content')).toBeNull();
+				await waitFor(() => expect(body.scrollHeight).toBeGreaterThan(0));
+				expect(header.closest('.body')).toBeNull();
+				expect(footer.closest('.body')).toBeNull();
 			}
 		);
 	},

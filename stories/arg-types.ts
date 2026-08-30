@@ -15,13 +15,8 @@ export const slideoutArgTypes: Meta['argTypes'] = {
 	'aria-labelledby': {
 		control: 'text',
 		description:
-			'IDREF label mirrored onto the surface. The target must be in the same tree as the surface (a `slideout()` render-fn heading), not a slotted one.',
+			'IDREF label mirrored onto the surface. The target must live in the same tree as the surface (the shell), not a slotted one.',
 		table: { category: 'Accessibility' },
-	},
-	loading: {
-		control: 'boolean',
-		description: 'Overlay a spinner over the body.',
-		table: { category: 'State', defaultValue: { summary: 'false' } },
 	},
 	'full-screen': {
 		control: 'boolean',
@@ -51,7 +46,6 @@ export const slideoutArgTypes: Meta['argTypes'] = {
 export const defaultSlideoutArgs: Meta['args'] = {
 	opened: true,
 	'aria-label': 'Slideout',
-	loading: false,
 	'full-screen': false,
 	'no-escape': false,
 	'no-autofocus': false,
@@ -72,6 +66,11 @@ export const panelArgTypes: Meta['argTypes'] = {
 	closeable: {
 		control: 'boolean',
 		description: 'Render the built-in close button in the header UI.',
+		table: { category: 'Panel', defaultValue: { summary: 'false' } },
+	},
+	loading: {
+		control: 'boolean',
+		description: 'Overlay a spinner over the panel body.',
 		table: { category: 'Panel', defaultValue: { summary: 'false' } },
 	},
 	...slideoutArgTypes,

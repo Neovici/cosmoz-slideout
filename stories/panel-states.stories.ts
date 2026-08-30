@@ -2,18 +2,17 @@ import '@neovici/cosmoz-button/cosmoz-button';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html, render } from 'lit-html';
 import { expect, waitFor } from 'storybook/test';
+import '../src/cosmoz-slideout';
 import '../src/cosmoz-slideout-panel';
 
-type PanelEl = HTMLElement & {
+type ShellEl = HTMLElement & {
 	close(): void;
 	toggleFullScreen(): void;
 	opened?: boolean;
 };
 
 const closePanel = (e: Event) =>
-	(
-		(e.currentTarget as HTMLElement).closest('cosmoz-slideout-panel') as PanelEl
-	).close();
+	(e.currentTarget as HTMLElement).closest<ShellEl>('cosmoz-slideout')?.close();
 
 const cssColor = (scope: HTMLElement, value: string) => {
 	const probe = document.createElement('span');
@@ -41,30 +40,33 @@ export const Loading: Story = {
 		const rerender = () =>
 			render(
 				html`
-					<cosmoz-slideout-panel
+					<cosmoz-slideout
 						.opened=${opened}
-						heading="Supplier detail"
-						subtitle="Fetching fresh account data"
-						closeable
-						loading
 						@opened-changed=${(e: CustomEvent) => {
 							opened = e.detail.value;
 							rerender();
 						}}
 					>
-						<p style="color: var(--cz-color-text-tertiary);">
-							The loading overlay is scoped to the body, so the header and
-							footer remain readable and usable.
-						</p>
-						<div
-							slot="footer"
-							style="display: flex; justify-content: flex-end;"
+						<cosmoz-slideout-panel
+							heading="Supplier detail"
+							subtitle="Fetching fresh account data"
+							closeable
+							loading
 						>
-							<cosmoz-button variant="secondary" @click=${closePanel}>
-								Cancel
-							</cosmoz-button>
-						</div>
-					</cosmoz-slideout-panel>
+							<p style="color: var(--cz-color-text-tertiary);">
+								The loading overlay is scoped to the body, so the header and
+								footer remain readable and usable.
+							</p>
+							<div
+								slot="footer"
+								style="display: flex; justify-content: flex-end;"
+							>
+								<cosmoz-button variant="secondary" @click=${closePanel}>
+									Cancel
+								</cosmoz-button>
+							</div>
+						</cosmoz-slideout-panel>
+					</cosmoz-slideout>
 				`,
 				mount
 			);
@@ -85,16 +87,16 @@ export const Loading: Story = {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open loading panel/iu })
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
+		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
 
 		await step('shows a body-scoped spinner overlay', async () => {
 			await waitFor(() =>
-				expect(el.shadowRoot!.querySelector('cz-spinner')).not.toBeNull()
+				expect(panel.shadowRoot!.querySelector('cz-spinner')).not.toBeNull()
 			);
 			expect(
-				el
+				panel
 					.shadowRoot!.querySelector<HTMLElement>('.loading')!
-					.closest('.content')
+					.closest('.body')
 			).not.toBeNull();
 		});
 	},
@@ -107,41 +109,42 @@ export const FullScreen: Story = {
 		const rerender = () =>
 			render(
 				html`
-					<cosmoz-slideout-panel
+					<cosmoz-slideout
 						.opened=${opened}
-						heading="Account workspace"
-						subtitle="Temporary full-screen review"
-						closeable
 						@opened-changed=${(e: CustomEvent) => {
 							opened = e.detail.value;
 							rerender();
 						}}
 					>
-						<p>
-							Use full screen for dense review tasks. The state is still owned
-							by the parent; this story wires a footer action to the public
-							method.
-						</p>
-						<div
-							slot="footer"
-							style="display: flex; justify-content: flex-end; gap: 8px;"
+						<cosmoz-slideout-panel
+							heading="Account workspace"
+							subtitle="Temporary full-screen review"
+							closeable
 						>
-							<cosmoz-button
-								variant="secondary"
-								@click=${(e: Event) =>
-									(
-										(e.currentTarget as HTMLElement).closest(
-											'cosmoz-slideout-panel'
-										) as PanelEl
-									).toggleFullScreen()}
+							<p>
+								Use full screen for dense review tasks. The state is owned by
+								the shell; this story wires a footer action to its public
+								method.
+							</p>
+							<div
+								slot="footer"
+								style="display: flex; justify-content: flex-end; gap: 8px;"
 							>
-								Toggle full screen
-							</cosmoz-button>
-							<cosmoz-button variant="primary" @click=${closePanel}>
-								Done
-							</cosmoz-button>
-						</div>
-					</cosmoz-slideout-panel>
+								<cosmoz-button
+									variant="secondary"
+									@click=${(e: Event) =>
+										(e.currentTarget as HTMLElement)
+											.closest<ShellEl>('cosmoz-slideout')
+											?.toggleFullScreen()}
+								>
+									Toggle full screen
+								</cosmoz-button>
+								<cosmoz-button variant="primary" @click=${closePanel}>
+									Done
+								</cosmoz-button>
+							</div>
+						</cosmoz-slideout-panel>
+					</cosmoz-slideout>
 				`,
 				mount
 			);
@@ -162,8 +165,8 @@ export const FullScreen: Story = {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open workspace/iu })
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
-		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+		const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
+		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		await step(
 			'toggles to viewport width through the public method',
@@ -173,7 +176,7 @@ export const FullScreen: Story = {
 						name: /toggle full screen/iu,
 					})
 				);
-				await waitFor(() => expect(el).toHaveAttribute('full-screen'));
+				await waitFor(() => expect(shell).toHaveAttribute('full-screen'));
 				await waitFor(() =>
 					expect(Math.round(surface.getBoundingClientRect().width)).toBe(
 						window.innerWidth
@@ -196,30 +199,33 @@ export const ThemedSurface: Story = {
 		const rerender = () =>
 			render(
 				html`
-					<cosmoz-slideout-panel
+					<cosmoz-slideout
 						.opened=${opened}
-						heading="Account"
-						subtitle="Premium · since 2019"
-						closeable
 						style=${themedSurface}
 						@opened-changed=${(e: CustomEvent) => {
 							opened = e.detail.value;
 							rerender();
 						}}
 					>
-						<p style="color: var(--cz-color-text-tertiary);">
-							Local custom properties can tune one panel without breaking global
-							light/dark token behavior.
-						</p>
-						<div
-							slot="footer"
-							style="display: flex; justify-content: flex-end;"
+						<cosmoz-slideout-panel
+							heading="Account"
+							subtitle="Premium · since 2019"
+							closeable
 						>
-							<cosmoz-button variant="primary" @click=${closePanel}>
-								Done
-							</cosmoz-button>
-						</div>
-					</cosmoz-slideout-panel>
+							<p style="color: var(--cz-color-text-tertiary);">
+								Local custom properties can tune one panel without breaking
+								global light/dark token behavior.
+							</p>
+							<div
+								slot="footer"
+								style="display: flex; justify-content: flex-end;"
+							>
+								<cosmoz-button variant="primary" @click=${closePanel}>
+									Done
+								</cosmoz-button>
+							</div>
+						</cosmoz-slideout-panel>
+					</cosmoz-slideout>
 				`,
 				mount
 			);
@@ -240,8 +246,8 @@ export const ThemedSurface: Story = {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open themed surface/iu })
 		);
-		const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
-		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+		const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
+		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		await step(
 			'resolves the local surface override through tokens',
@@ -250,7 +256,7 @@ export const ThemedSurface: Story = {
 					expect(surface.matches(':popover-open')).toBe(true)
 				);
 				expect(getComputedStyle(surface).backgroundColor).toBe(
-					cssColor(el, 'var(--cz-color-bg-secondary)')
+					cssColor(shell, 'var(--cz-color-bg-secondary)')
 				);
 			}
 		);

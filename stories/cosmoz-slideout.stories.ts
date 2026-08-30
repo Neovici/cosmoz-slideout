@@ -87,9 +87,10 @@ export const Minimal: Story = {
 	},
 };
 
-// The full-manual path: UI composed by hand via the `controls` / `header` /
-// `footer` slots. (For zero-markup styled UI, use `<cosmoz-slideout-panel>` instead.)
-export const SlottedRegions: Story = {
+// The full-manual path: the shell exposes one blank slot, so chrome is composed by
+// hand inside a single wrapper. (For zero-markup styled UI, use
+// `<cosmoz-slideout-panel>` instead.)
+export const ComposedChrome: Story = {
 	render: () => {
 		const mount = document.createElement('div');
 		let opened = false;
@@ -104,37 +105,37 @@ export const SlottedRegions: Story = {
 							rerender();
 						}}
 					>
-						<cosmoz-button
-							slot="controls"
-							variant="tertiary"
-							size="sm"
-							aria-label="Close"
-							@click=${closeFrom}
-						>
-							${xCloseIcon({ slot: 'prefix' })}
-						</cosmoz-button>
-						<h2
-							slot="header"
-							style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
-						>
-							Edit supplier
-						</h2>
-						<div
-							style="padding: 12px 24px; line-height: 1.6; color: var(--cz-color-text-tertiary);"
-						>
-							<p style="margin: 0 0 8px;">Acme Industries · Supplier #4021</p>
-							<p style="margin: 0;">Net 30 terms · VAT SE556677889901.</p>
-						</div>
-						<div
-							slot="footer"
-							style="display: flex; justify-content: flex-end; gap: 8px; padding: 16px 24px; border-top: 1px solid var(--cz-color-border-secondary);"
-						>
-							<cosmoz-button variant="secondary" @click=${closeFrom}>
-								Cancel
-							</cosmoz-button>
-							<cosmoz-button variant="primary" @click=${closeFrom}
-								>Save</cosmoz-button
+						<div style="display: flex; flex-direction: column; height: 100%;">
+							<header
+								style="position: relative; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
 							>
+								Edit supplier
+								<cosmoz-button
+									style="position: absolute; top: 8px; right: 8px;"
+									variant="tertiary"
+									size="sm"
+									aria-label="Close"
+									@click=${closeFrom}
+								>
+									${xCloseIcon({ slot: 'prefix' })}
+								</cosmoz-button>
+							</header>
+							<div
+								style="flex: 1; min-height: 0; overflow: auto; padding: 12px 24px; line-height: 1.6; color: var(--cz-color-text-tertiary);"
+							>
+								<p style="margin: 0 0 8px;">Acme Industries · Supplier #4021</p>
+								<p style="margin: 0;">Net 30 terms · VAT SE556677889901.</p>
+							</div>
+							<footer
+								style="display: flex; justify-content: flex-end; gap: 8px; padding: 16px 24px; border-top: 1px solid var(--cz-color-border-secondary);"
+							>
+								<cosmoz-button variant="secondary" @click=${closeFrom}>
+									Cancel
+								</cosmoz-button>
+								<cosmoz-button variant="primary" @click=${closeFrom}
+									>Save</cosmoz-button
+								>
+							</footer>
 						</div>
 					</cosmoz-slideout>
 				`,
@@ -159,16 +160,11 @@ export const SlottedRegions: Story = {
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
 		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
-		await step(
-			'projects header / controls / footer into the shell',
-			async () => {
-				await waitFor(() =>
-					expect(surface.matches(':popover-open')).toBe(true)
-				);
-				expect(surface).toHaveAttribute('role', 'dialog');
-				await canvas.findByText(/Net 30 terms/u);
-			}
-		);
+		await step('projects hand-composed chrome into the shell', async () => {
+			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
+			expect(surface).toHaveAttribute('role', 'dialog');
+			await canvas.findByText(/Net 30 terms/u);
+		});
 		await step(
 			'closing keeps the column layout (no content cramming)',
 			async () => {
