@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-DoR0vQvp.js";import{l as i}from"./src-BPtKnL2i.js";import{r as a,t as o}from"./untitled-ocxRJ49a.js";import{t as s}from"./cosmoz-slideout-B39eCyo_.js";var c,l,u,d,f,p,m;e((()=>{i(),o(),n(),s(),{expect:c,waitFor:l}=__STORYBOOK_MODULE_TEST__,u=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),d={title:`CosmozSlideout/Shell`,component:`cosmoz-slideout`,tags:[`autodocs`]},f={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-DWBJWh4P.js";import{a as i,t as a}from"./cosmoz-slideout-C7zBUPKs.js";import{r as o,t as s}from"./untitled-Bizlt9el.js";var c,l,u,d,f,p,m;e((()=>{i(),s(),n(),a(),{expect:c,waitFor:l}=__STORYBOOK_MODULE_TEST__,u=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),d={title:`CosmozSlideout/Shell`,component:`cosmoz-slideout`,tags:[`autodocs`]},f={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
                     <cosmoz-slideout
                         aria-label="Release notes"
                         .opened=${n}
@@ -25,37 +25,37 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                         .opened=${n}
                         @opened-changed=${e=>{n=e.detail.value,i()}}
                     >
-                        <cosmoz-button
-                            slot="controls"
-                            variant="tertiary"
-                            size="sm"
-                            aria-label="Close"
-                            @click=${u}
-                        >
-                            ${a({slot:`prefix`})}
-                        </cosmoz-button>
-                        <h2
-                            slot="header"
-                            style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
-                        >
-                            Edit supplier
-                        </h2>
-                        <div
-                            style="padding: 12px 24px; line-height: 1.6; color: var(--cz-color-text-tertiary);"
-                        >
-                            <p style="margin: 0 0 8px;">Acme Industries · Supplier #4021</p>
-                            <p style="margin: 0;">Net 30 terms · VAT SE556677889901.</p>
-                        </div>
-                        <div
-                            slot="footer"
-                            style="display: flex; justify-content: flex-end; gap: 8px; padding: 16px 24px; border-top: 1px solid var(--cz-color-border-secondary);"
-                        >
-                            <cosmoz-button variant="secondary" @click=${u}>
-                                Cancel
-                            </cosmoz-button>
-                            <cosmoz-button variant="primary" @click=${u}
-                                >Save</cosmoz-button
+                        <div style="display: flex; flex-direction: column; height: 100%;">
+                            <header
+                                style="position: relative; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
                             >
+                                Edit supplier
+                                <cosmoz-button
+                                    style="position: absolute; top: 8px; right: 8px;"
+                                    variant="tertiary"
+                                    size="sm"
+                                    aria-label="Close"
+                                    @click=${u}
+                                >
+                                    ${o({slot:`prefix`})}
+                                </cosmoz-button>
+                            </header>
+                            <div
+                                style="flex: 1; min-height: 0; overflow: auto; padding: 12px 24px; line-height: 1.6; color: var(--cz-color-text-tertiary);"
+                            >
+                                <p style="margin: 0 0 8px;">Acme Industries · Supplier #4021</p>
+                                <p style="margin: 0;">Net 30 terms · VAT SE556677889901.</p>
+                            </div>
+                            <footer
+                                style="display: flex; justify-content: flex-end; gap: 8px; padding: 16px 24px; border-top: 1px solid var(--cz-color-border-secondary);"
+                            >
+                                <cosmoz-button variant="secondary" @click=${u}>
+                                    Cancel
+                                </cosmoz-button>
+                                <cosmoz-button variant="primary" @click=${u}
+                                    >Save</cosmoz-button
+                                >
+                            </footer>
                         </div>
                     </cosmoz-slideout>
                 `,e);return i(),t`
@@ -63,7 +63,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                 >Edit supplier</cosmoz-button
             >
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/edit supplier/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`projects header / controls / footer into the shell`,async()=>{await l(()=>c(a.matches(`:popover-open`)).toBe(!0)),c(a).toHaveAttribute(`role`,`dialog`),await e.findByText(/Net 30 terms/u)}),await n(`closing keeps the column layout (no content cramming)`,async()=>{[...i.querySelectorAll(`cosmoz-button`)].find(e=>/^save$/iu.test((e.textContent??``).trim())).click(),await l(()=>c(a.matches(`:popover-open`)).toBe(!1)),c(getComputedStyle(a).display).toBe(`flex`),c(getComputedStyle(a).flexDirection).toBe(`column`)})}},f.parameters={...f.parameters,docs:{...f.parameters?.docs,source:{originalSource:`{
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/edit supplier/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`projects hand-composed chrome into the shell`,async()=>{await l(()=>c(a.matches(`:popover-open`)).toBe(!0)),c(a).toHaveAttribute(`role`,`dialog`),await e.findByText(/Net 30 terms/u)}),await n(`closing keeps the column layout (no content cramming)`,async()=>{[...i.querySelectorAll(`cosmoz-button`)].find(e=>/^save$/iu.test((e.textContent??``).trim())).click(),await l(()=>c(a.matches(`:popover-open`)).toBe(!1)),c(getComputedStyle(a).display).toBe(`flex`),c(getComputedStyle(a).flexDirection).toBe(`column`)})}},f.parameters={...f.parameters,docs:{...f.parameters?.docs,source:{originalSource:`{
   render: () => {
     const mount = document.createElement('div');
     let opened = false;
@@ -138,39 +138,39 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       rerender();
     }}
                     >
-                        <cosmoz-button
-                            slot="controls"
-                            variant="tertiary"
-                            size="sm"
-                            aria-label="Close"
-                            @click=\${closeFrom}
-                        >
-                            \${xCloseIcon({
+                        <div style="display: flex; flex-direction: column; height: 100%;">
+                            <header
+                                style="position: relative; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
+                            >
+                                Edit supplier
+                                <cosmoz-button
+                                    style="position: absolute; top: 8px; right: 8px;"
+                                    variant="tertiary"
+                                    size="sm"
+                                    aria-label="Close"
+                                    @click=\${closeFrom}
+                                >
+                                    \${xCloseIcon({
       slot: 'prefix'
     })}
-                        </cosmoz-button>
-                        <h2
-                            slot="header"
-                            style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
-                        >
-                            Edit supplier
-                        </h2>
-                        <div
-                            style="padding: 12px 24px; line-height: 1.6; color: var(--cz-color-text-tertiary);"
-                        >
-                            <p style="margin: 0 0 8px;">Acme Industries · Supplier #4021</p>
-                            <p style="margin: 0;">Net 30 terms · VAT SE556677889901.</p>
-                        </div>
-                        <div
-                            slot="footer"
-                            style="display: flex; justify-content: flex-end; gap: 8px; padding: 16px 24px; border-top: 1px solid var(--cz-color-border-secondary);"
-                        >
-                            <cosmoz-button variant="secondary" @click=\${closeFrom}>
-                                Cancel
-                            </cosmoz-button>
-                            <cosmoz-button variant="primary" @click=\${closeFrom}
-                                >Save</cosmoz-button
+                                </cosmoz-button>
+                            </header>
+                            <div
+                                style="flex: 1; min-height: 0; overflow: auto; padding: 12px 24px; line-height: 1.6; color: var(--cz-color-text-tertiary);"
                             >
+                                <p style="margin: 0 0 8px;">Acme Industries · Supplier #4021</p>
+                                <p style="margin: 0;">Net 30 terms · VAT SE556677889901.</p>
+                            </div>
+                            <footer
+                                style="display: flex; justify-content: flex-end; gap: 8px; padding: 16px 24px; border-top: 1px solid var(--cz-color-border-secondary);"
+                            >
+                                <cosmoz-button variant="secondary" @click=\${closeFrom}>
+                                    Cancel
+                                </cosmoz-button>
+                                <cosmoz-button variant="primary" @click=\${closeFrom}
+                                    >Save</cosmoz-button
+                                >
+                            </footer>
                         </div>
                     </cosmoz-slideout>
                 \`, mount);
@@ -197,7 +197,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     }));
     const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
     const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
-    await step('projects header / controls / footer into the shell', async () => {
+    await step('projects hand-composed chrome into the shell', async () => {
       await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
       expect(surface).toHaveAttribute('role', 'dialog');
       await canvas.findByText(/Net 30 terms/u);
@@ -210,4 +210,4 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       expect(getComputedStyle(surface).flexDirection).toBe('column');
     });
   }
-}`,...p.parameters?.docs?.source}}},m=[`Minimal`,`SlottedRegions`]}))();export{f as Minimal,p as SlottedRegions,m as __namedExportsOrder,d as default};
+}`,...p.parameters?.docs?.source}}},m=[`Minimal`,`ComposedChrome`]}))();export{p as ComposedChrome,f as Minimal,m as __namedExportsOrder,d as default};

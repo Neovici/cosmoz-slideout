@@ -1,6 +1,6 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-DoR0vQvp.js";import{l as i}from"./src-BPtKnL2i.js";import{t as a}from"./cosmoz-slideout-B39eCyo_.js";var o,s,c,l,u,d,f,p,m,h;e((()=>{i(),n(),a(),{expect:o,waitFor:s}=__STORYBOOK_MODULE_TEST__,c=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),l=t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-DWBJWh4P.js";import{a as i,t as a}from"./cosmoz-slideout-C7zBUPKs.js";var o,s,c,l,u,d,f,p,m,h;e((()=>{i(),n(),a(),{expect:o,waitFor:s}=__STORYBOOK_MODULE_TEST__,c=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),l=t`
     <cosmoz-button
-        slot="controls"
+        style="position: absolute; top: 8px; right: 8px; z-index: 1;"
         variant="tertiary"
         size="sm"
         aria-label="Close"
@@ -15,17 +15,20 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                         @opened-changed=${e=>{n=e.detail.value,i()}}
                         style="--cosmoz-slideout-width: 640px;"
                     >
-                        ${l}
-                        <h2
-                            slot="header"
-                            style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
-                        >
-                            Wide panel
-                        </h2>
                         <div
-                            style="padding: 12px 24px; color: var(--cz-color-text-tertiary);"
+                            style="position: relative; display: flex; flex-direction: column; height: 100%;"
                         >
-                            The width is 640px until the viewport becomes narrower.
+                            ${l}
+                            <h2
+                                style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
+                            >
+                                Wide panel
+                            </h2>
+                            <div
+                                style="padding: 12px 24px; color: var(--cz-color-text-tertiary);"
+                            >
+                                The width is 640px until the viewport becomes narrower.
+                            </div>
                         </div>
                     </cosmoz-slideout>
                 `,e);return i(),t`
@@ -38,26 +41,30 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                         @opened-changed=${e=>{n=e.detail.value,i()}}
                         style=${f}
                     >
-                        ${l}
-                        <h2
-                            slot="header"
-                            style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
+                        <div
+                            style="position: relative; display: flex; flex-direction: column; height: 100%;"
                         >
-                            Muted surface
-                        </h2>
-                        <div style="padding: 12px 24px;">
-                            This is the bare shell (not the
-                            <code>&lt;cosmoz-slideout-panel&gt;</code> preset), yet its
-                            surface is still fully themeable. Its
-                            <code>--cosmoz-slideout-*</code> overrides accept either a design
-                            token or a plain value: here <code>--cosmoz-slideout-bg</code> and
-                            the text color resolve to <code>@neovici/cosmoz-tokens</code>
-                            <code>--cz-*</code> tokens - so the drawer stays on-theme and
-                            follows dark mode - while <code>--cosmoz-slideout-shadow</code> is
-                            a one-off value. The only difference from
-                            <code>&lt;cosmoz-slideout-panel&gt;</code> is that the shell
-                            leaves the inner UI - this header and close button - for the
-                            parent to author.
+                            ${l}
+                            <h2
+                                style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
+                            >
+                                Muted surface
+                            </h2>
+                            <div style="padding: 12px 24px;">
+                                This is the bare shell (not the
+                                <code>&lt;cosmoz-slideout-panel&gt;</code> preset), yet its
+                                surface is still fully themeable. Its
+                                <code>--cosmoz-slideout-*</code> overrides accept either a
+                                design token or a plain value: here
+                                <code>--cosmoz-slideout-bg</code> and the text color resolve to
+                                <code>@neovici/cosmoz-tokens</code> <code>--cz-*</code> tokens -
+                                so the drawer stays on-theme and follows dark mode - while
+                                <code>--cosmoz-slideout-shadow</code> is a one-off value. The
+                                only difference from
+                                <code>&lt;cosmoz-slideout-panel&gt;</code> is that the shell
+                                leaves the inner UI - this header and close button - for the
+                                parent to author.
+                            </div>
                         </div>
                     </cosmoz-slideout>
                 `,e);return i(),t`
@@ -72,17 +79,20 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                         @opened-changed=${e=>{n=e.detail.value,i()}}
                         style="--cosmoz-slideout-duration: 1.2s;"
                     >
-                        ${l}
-                        <h2
-                            slot="header"
-                            style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
-                        >
-                            Slow panel
-                        </h2>
                         <div
-                            style="padding: 12px 24px; color: var(--cz-color-text-tertiary);"
+                            style="position: relative; display: flex; flex-direction: column; height: 100%;"
                         >
-                            The entrance and exit animation duration are custom properties.
+                            ${l}
+                            <h2
+                                style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
+                            >
+                                Slow panel
+                            </h2>
+                            <div
+                                style="padding: 12px 24px; color: var(--cz-color-text-tertiary);"
+                            >
+                                The entrance and exit animation duration are custom properties.
+                            </div>
                         </div>
                     </cosmoz-slideout>
                 `,e);return i(),t`
@@ -102,17 +112,20 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     }}
                         style="--cosmoz-slideout-width: 640px;"
                     >
-                        \${closeControl}
-                        <h2
-                            slot="header"
-                            style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
-                        >
-                            Wide panel
-                        </h2>
                         <div
-                            style="padding: 12px 24px; color: var(--cz-color-text-tertiary);"
+                            style="position: relative; display: flex; flex-direction: column; height: 100%;"
                         >
-                            The width is 640px until the viewport becomes narrower.
+                            \${closeControl}
+                            <h2
+                                style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
+                            >
+                                Wide panel
+                            </h2>
+                            <div
+                                style="padding: 12px 24px; color: var(--cz-color-text-tertiary);"
+                            >
+                                The width is 640px until the viewport becomes narrower.
+                            </div>
                         </div>
                     </cosmoz-slideout>
                 \`, mount);
@@ -156,26 +169,30 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     }}
                         style=\${mutedSurface}
                     >
-                        \${closeControl}
-                        <h2
-                            slot="header"
-                            style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
+                        <div
+                            style="position: relative; display: flex; flex-direction: column; height: 100%;"
                         >
-                            Muted surface
-                        </h2>
-                        <div style="padding: 12px 24px;">
-                            This is the bare shell (not the
-                            <code>&lt;cosmoz-slideout-panel&gt;</code> preset), yet its
-                            surface is still fully themeable. Its
-                            <code>--cosmoz-slideout-*</code> overrides accept either a design
-                            token or a plain value: here <code>--cosmoz-slideout-bg</code> and
-                            the text color resolve to <code>@neovici/cosmoz-tokens</code>
-                            <code>--cz-*</code> tokens - so the drawer stays on-theme and
-                            follows dark mode - while <code>--cosmoz-slideout-shadow</code> is
-                            a one-off value. The only difference from
-                            <code>&lt;cosmoz-slideout-panel&gt;</code> is that the shell
-                            leaves the inner UI - this header and close button - for the
-                            parent to author.
+                            \${closeControl}
+                            <h2
+                                style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
+                            >
+                                Muted surface
+                            </h2>
+                            <div style="padding: 12px 24px;">
+                                This is the bare shell (not the
+                                <code>&lt;cosmoz-slideout-panel&gt;</code> preset), yet its
+                                surface is still fully themeable. Its
+                                <code>--cosmoz-slideout-*</code> overrides accept either a
+                                design token or a plain value: here
+                                <code>--cosmoz-slideout-bg</code> and the text color resolve to
+                                <code>@neovici/cosmoz-tokens</code> <code>--cz-*</code> tokens -
+                                so the drawer stays on-theme and follows dark mode - while
+                                <code>--cosmoz-slideout-shadow</code> is a one-off value. The
+                                only difference from
+                                <code>&lt;cosmoz-slideout-panel&gt;</code> is that the shell
+                                leaves the inner UI - this header and close button - for the
+                                parent to author.
+                            </div>
                         </div>
                     </cosmoz-slideout>
                 \`, mount);
@@ -221,17 +238,20 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     }}
                         style="--cosmoz-slideout-duration: 1.2s;"
                     >
-                        \${closeControl}
-                        <h2
-                            slot="header"
-                            style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
-                        >
-                            Slow panel
-                        </h2>
                         <div
-                            style="padding: 12px 24px; color: var(--cz-color-text-tertiary);"
+                            style="position: relative; display: flex; flex-direction: column; height: 100%;"
                         >
-                            The entrance and exit animation duration are custom properties.
+                            \${closeControl}
+                            <h2
+                                style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
+                            >
+                                Slow panel
+                            </h2>
+                            <div
+                                style="padding: 12px 24px; color: var(--cz-color-text-tertiary);"
+                            >
+                                The entrance and exit animation duration are custom properties.
+                            </div>
                         </div>
                     </cosmoz-slideout>
                 \`, mount);

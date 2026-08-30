@@ -1,19 +1,24 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-DoR0vQvp.js";import{l as i}from"./src-BPtKnL2i.js";import{t as a}from"./cosmoz-slideout-B39eCyo_.js";import{t as o}from"./cosmoz-slideout-panel-JPaM_H4p.js";var s,c,l,u,d,f,p,m;e((()=>{i(),n(),a(),o(),{expect:s,waitFor:c}=__STORYBOOK_MODULE_TEST__,l=(e,t)=>{let n=document.createElement(`span`);n.style.color=t,e.append(n);let r=getComputedStyle(n).color;return n.remove(),r},u={title:`CosmozSlideout/Test`,component:`cosmoz-slideout`,tags:[`!autodocs`]},d={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
-                    <cosmoz-slideout-panel
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-DWBJWh4P.js";import{a as i,t as a}from"./cosmoz-slideout-C7zBUPKs.js";import{t as o}from"./cosmoz-slideout-panel-CGzjyQPH.js";var s,c,l,u,d,f,p,m;e((()=>{i(),n(),a(),o(),{expect:s,waitFor:c}=__STORYBOOK_MODULE_TEST__,l=(e,t)=>{let n=document.createElement(`span`);n.style.color=t,e.append(n);let r=getComputedStyle(n).color;return n.remove(),r},u={title:`CosmozSlideout/Test`,component:`cosmoz-slideout`,tags:[`!autodocs`]},d={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
+                    <cosmoz-slideout
                         .opened=${n}
-                        heading="Theme check"
-                        subtitle="Follows root token mode"
-                        closeable
                         @opened-changed=${e=>{n=e.detail.value,i()}}
                     >
-                        <p>The open panel should follow root token changes immediately.</p>
-                    </cosmoz-slideout-panel>
+                        <cosmoz-slideout-panel
+                            heading="Theme check"
+                            subtitle="Follows root token mode"
+                            closeable
+                        >
+                            <p>
+                                The open panel should follow root token changes immediately.
+                            </p>
+                        </cosmoz-slideout-panel>
+                    </cosmoz-slideout>
                 `,e);return i(),t`
             <cosmoz-button variant="primary" @click=${()=>{n=!0,i()}}>
                 Open theme check
             </cosmoz-button>
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{let i=document.documentElement.classList.contains(`dark-mode`);await r.click(await e.findByShadowRole(`button`,{name:/open theme check/iu}));let a=t.querySelector(`cosmoz-slideout-panel`),o=a.shadowRoot.querySelector(`[popover]`);try{await n(`recomputes surface colors when root theme changes`,async()=>{document.documentElement.classList.toggle(`dark-mode`,!i),await c(()=>s(getComputedStyle(o).backgroundColor).toBe(l(a,`var(--cz-color-bg-primary)`)))})}finally{document.documentElement.classList.toggle(`dark-mode`,i)}}},f={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{let i=document.documentElement.classList.contains(`dark-mode`);await r.click(await e.findByShadowRole(`button`,{name:/open theme check/iu}));let a=t.querySelector(`cosmoz-slideout`),o=a.shadowRoot.querySelector(`[popover]`);try{await n(`recomputes surface colors when root theme changes`,async()=>{document.documentElement.classList.toggle(`dark-mode`,!i),await c(()=>s(getComputedStyle(o).backgroundColor).toBe(l(a,`var(--cz-color-bg-primary)`)))})}finally{document.documentElement.classList.toggle(`dark-mode`,i)}}},f={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
                     <cosmoz-slideout
                         aria-label="Property-bound full screen"
                         .opened=${n}
@@ -46,18 +51,23 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     const mount = document.createElement('div');
     let opened = false;
     const rerender = () => render(html\`
-                    <cosmoz-slideout-panel
+                    <cosmoz-slideout
                         .opened=\${opened}
-                        heading="Theme check"
-                        subtitle="Follows root token mode"
-                        closeable
                         @opened-changed=\${(e: CustomEvent) => {
       opened = e.detail.value;
       rerender();
     }}
                     >
-                        <p>The open panel should follow root token changes immediately.</p>
-                    </cosmoz-slideout-panel>
+                        <cosmoz-slideout-panel
+                            heading="Theme check"
+                            subtitle="Follows root token mode"
+                            closeable
+                        >
+                            <p>
+                                The open panel should follow root token changes immediately.
+                            </p>
+                        </cosmoz-slideout-panel>
+                    </cosmoz-slideout>
                 \`, mount);
     rerender();
     const open = () => {
@@ -81,7 +91,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open theme check/iu
     }));
-    const el = canvasElement.querySelector('cosmoz-slideout-panel') as PanelEl;
+    const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
     const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
     try {
       await step('recomputes surface colors when root theme changes', async () => {
@@ -130,7 +140,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open property-bound full screen/iu
     }));
-    const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+    const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
     const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
     await step('syncs the full-screen attribute and width from the property alone', async () => {
       await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
@@ -177,7 +187,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       name: /open guarded draft/iu
     });
     await userEvent.click(opener);
-    const el = canvasElement.querySelector('cosmoz-slideout') as PanelEl;
+    const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
     const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
     await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
     await step('restores focus to the opener when the user focused inside despite no-autofocus', async () => {
