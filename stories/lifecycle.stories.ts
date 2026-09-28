@@ -4,6 +4,7 @@ import { html as litHtml, render } from 'lit-html';
 import { expect, waitFor } from 'storybook/test';
 import '../src/cosmoz-slideout';
 import '../src/cosmoz-slideout-panel';
+import { storyDoc } from './story-docs';
 
 type SlideoutEl = HTMLElement & {
 	open(): void;
@@ -13,8 +14,8 @@ type SlideoutEl = HTMLElement & {
 };
 
 const meta: Meta = {
-	title: 'CosmozSlideoutPanel/Lifecycle',
-	component: 'cosmoz-slideout-panel',
+	title: 'CosmozSlideout/Events',
+	component: 'cosmoz-slideout',
 	tags: ['autodocs'],
 };
 
@@ -23,6 +24,11 @@ export default meta;
 type Story = StoryObj;
 
 export const Events: Story = {
+	parameters: storyDoc(
+		'The surface event & callback lifecycle: `open` / `opened-changed` / ' +
+			'`full-screen-changed` / `close` (+ the `onClose` callback). The element ' +
+			'persists in the DOM across open/close cycles.'
+	),
 	render: () => {
 		const mount = document.createElement('div');
 		const log = document.createElement('ol');

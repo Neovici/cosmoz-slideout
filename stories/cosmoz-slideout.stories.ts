@@ -4,6 +4,7 @@ import type { Meta, StoryObj } from '@storybook/web-components';
 import { html, render } from 'lit-html';
 import { expect, waitFor } from 'storybook/test';
 import '../src/cosmoz-slideout';
+import { componentDoc, storyDoc } from './story-docs';
 
 type SlideoutEl = HTMLElement & { close(): void };
 const closeFrom = (e: Event) =>
@@ -15,6 +16,12 @@ const meta: Meta = {
 	title: 'CosmozSlideout/Shell',
 	component: 'cosmoz-slideout',
 	tags: ['autodocs'],
+	parameters: componentDoc(
+		'The low-level surface: it owns the popover, the `opened` lifecycle, ' +
+			'focus and Escape, and exposes a **single blank slot** - no UI of its ' +
+			'own. These stories show driving it directly; for the styled preset, ' +
+			'see **CosmozSlideoutPanel**.'
+	),
 };
 
 export default meta;
@@ -22,6 +29,10 @@ export default meta;
 type Story = StoryObj;
 
 export const Minimal: Story = {
+	parameters: storyDoc(
+		'The barest usage: bind `opened` and drop content in the default slot. ' +
+			'No header, buttons, or footer - Escape (or `close()`) dismisses it.'
+	),
 	render: () => {
 		const mount = document.createElement('div');
 		let opened = false;
@@ -87,10 +98,12 @@ export const Minimal: Story = {
 	},
 };
 
-// The full-manual path: the shell exposes one blank slot, so chrome is composed by
-// hand inside a single wrapper. (For zero-markup styled UI, use
-// `<cosmoz-slideout-panel>` instead.)
 export const ComposedChrome: Story = {
+	parameters: storyDoc(
+		'The full-manual path: hand-compose header/body/footer inside the single ' +
+			'slot (one wrapper element) when you want custom chrome. For the ' +
+			'zero-markup styled version, use `<cosmoz-slideout-panel>`.'
+	),
 	render: () => {
 		const mount = document.createElement('div');
 		let opened = false;

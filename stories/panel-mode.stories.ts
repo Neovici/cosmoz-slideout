@@ -6,6 +6,7 @@ import { expect, waitFor } from 'storybook/test';
 import '../src/cosmoz-slideout';
 import '../src/cosmoz-slideout-panel';
 import { defaultPanelArgs, panelArgTypes } from './arg-types';
+import { componentDoc, storyDoc } from './story-docs';
 
 // `<cosmoz-slideout-panel>` is presentational content nested inside a
 // `<cosmoz-slideout>`: the shell owns the surface, the `opened` / `full-screen`
@@ -61,6 +62,11 @@ const meta: Meta = {
 	tags: ['autodocs'],
 	argTypes: panelArgTypes,
 	args: defaultPanelArgs,
+	parameters: componentDoc(
+		'Presentational content nested inside a `<cosmoz-slideout>`: styled ' +
+			'header/body/footer, heading/subtitle, a built-in close button, and ' +
+			'token-backed spacing. The 99% pairing - drive it from the Controls tab.'
+	),
 };
 
 export default meta;
@@ -68,6 +74,9 @@ export default meta;
 type Story = StoryObj;
 
 export const Default: Story = {
+	parameters: storyDoc(
+		'The batteries-included panel: heading/subtitle, built-in close button, and footer actions.'
+	),
 	args: {
 		heading: 'Acme Industries',
 		subtitle: 'Supplier #4021 · Stockholm, SE',
@@ -149,6 +158,9 @@ export const Default: Story = {
 };
 
 export const CustomHeader: Story = {
+	parameters: storyDoc(
+		'Replace the generated title via the `header` slot; the panel keeps its padding, close button, and body layout.'
+	),
 	args: {
 		heading: undefined,
 		subtitle: undefined,
@@ -214,6 +226,9 @@ export const CustomHeader: Story = {
 };
 
 export const BodyOnly: Story = {
+	parameters: storyDoc(
+		'Body-only: with no heading, close button, or footer the panel just gives its body padding and gap.'
+	),
 	args: {
 		heading: undefined,
 		subtitle: undefined,
@@ -277,6 +292,9 @@ export const BodyOnly: Story = {
 };
 
 export const ScrollableContent: Story = {
+	parameters: storyDoc(
+		'Long content scrolls within the body while the header and footer stay fixed.'
+	),
 	args: {
 		heading: 'Activity',
 		subtitle: 'Latest supplier events',

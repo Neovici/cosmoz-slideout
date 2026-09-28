@@ -42,11 +42,12 @@ import "@neovici/cosmoz-slideout/cosmoz-slideout-panel";
 
 ## Opening & closing
 
-`opened` is a **reactive, two-way property** on `<cosmoz-slideout>` (the dominant pion pattern, via
-`useProperty`). Bind the **property** (`.opened=${x}`, not the `opened` attribute) and listen for
-`opened-changed`; the surface self-closes on Escape and `close()` and emits `opened-changed` so your
-state stays in sync. The element persists in the DOM across open/close cycles - there is no
-add-to-open / remove-to-close dance.
+`opened` is a **reactive, two-way** value on `<cosmoz-slideout>` backed by the `opened` **attribute**
+(via `useAttribute`). Drive it however suits you - a lit **property** binding (`.opened=${x}`), a
+boolean **attribute** binding (`?opened`), a bare `opened` in static HTML, or the `open()`/`close()`
+methods - and listen for the cancelable **`opened-changed`** event; the surface self-closes on Escape
+and `close()`, and removing the `opened` attribute (e.g. from devtools) closes it too. The element
+persists in the DOM across open/close cycles - there is no add-to-open / remove-to-close dance.
 
 ```html
 <!-- lit-html two-way binding -->
@@ -63,9 +64,10 @@ add-to-open / remove-to-close dance.
 Or with pion's `lift` directive: `@opened-changed=${lift(setOpen)}`. Imperatively, call `open()` /
 `close()` on the **`<cosmoz-slideout>`** element.
 
-A child asks the surface to close by dispatching a bubbling **`request-close`** event - the panel's
-built-in close button does exactly this, so it never needs a reference to the slideout. Your own
-buttons can do the same, or call `closest('cosmoz-slideout')?.close()`.
+A child asks the surface to close by dispatching a bubbling, **cancelable** **`request-close`** event -
+the panel's built-in close button does exactly this, so it never needs a reference to the slideout.
+Your own buttons can do the same, or call `closest('cosmoz-slideout')?.close()`. To guard a close
+("unsaved changes"), call `preventDefault()` on `request-close`, or on the cancelable `opened-changed`.
 
 ## API
 
@@ -73,9 +75,10 @@ buttons can do the same, or call `closest('cosmoz-slideout')?.close()`.
 
 #### Attributes & properties
 
-- `opened` - **property** (bind `.opened`): show/hide the slideout. Reactive and two-way (pairs with
-  the `opened-changed` event). Default `false`. It is reflected out to an `opened` **attribute** for
-  styling/devtools, but consumer input must be the property (`opened` is not an observed attribute).
+- `opened` - show/hide the slideout: a reactive, two-way **attribute** (pairs with the cancelable
+  `opened-changed` event). Drive it via the property (`.opened=${x}`), an attribute (`?opened`, or a
+  bare `opened` in markup), or `open()`/`close()`; removing the attribute (e.g. from devtools) closes
+  it. Default `false` (closed).
 - `full-screen` - when present the surface covers the whole document. Flip the attribute or call
   `toggleFullScreen()`.
 - `no-escape` - disable the built-in Escape-to-close.
@@ -94,15 +97,18 @@ buttons can do the same, or call `closest('cosmoz-slideout')?.close()`.
 
 #### Events
 
-- `opened-changed` - dispatched when the `opened` state flips; `detail = { value }` (a plain
-  `CustomEvent`). Use it for two-way binding. Filter on `detail.value === true` if you need "just
-  opened" specifically (a benign `opened-changed(false)` fires once at construction).
-- `close` - dispatched after the slide-out animation settles (bubbles). Useful for teardown timing;
-  the element is **not** removed.
+- `opened-changed` - dispatched (bubbling, **cancelable**) when the surface changes `opened` itself
+  (`open()`/`close()`, Escape, `request-close`); `detail = { value }`. Use it for two-way binding;
+  `preventDefault()` vetoes the change (an unsaved-changes guard). External writes (a direct attribute
+  edit) don't re-emit it - the mutator already knows.
+- `open` - dispatched after the slide-**in** animation settles (bubbles), symmetric with `close` -
+  handy for "scroll to top / focus the first field" timing.
+- `close` - dispatched after the slide-**out** animation settles (bubbles). Useful for teardown
+  timing; the element is **not** removed.
 - `full-screen-changed` - dispatched when the `full-screen` state changes; `detail = { fullScreen }`
   (bubbles).
-- `request-close` - **listened for**, not emitted: a bubbling event from any descendant (e.g. the
-  panel's close button) that asks the surface to close.
+- `request-close` - **listened for**, not emitted: a bubbling, **cancelable** event from any
+  descendant (e.g. the panel's close button) that asks the surface to close; `preventDefault()` vetoes.
 
 `onClose?: () => void` - a property-based alternative to the `close` event, invoked right after
 `close` fires. Set it on the element (`el.onClose = …`) if a callback is handier than a listener.
@@ -164,11 +170,37 @@ The panel's regions are content-conditional: the header renders (with its UI) wh
 </cosmoz-slideout>
 ```
 
+### Render-site helpers (`/helpers`)
+
+Typed template helpers so consumers never hand-write the bindings - their only purpose is typing
+support (they are **not** element-definition factories; import the elements separately to register
+them):
+
+```js
+import "@neovici/cosmoz-slideout/cosmoz-slideout";
+import "@neovici/cosmoz-slideout/cosmoz-slideout-panel";
+import { slideout, slideoutPanel } from "@neovici/cosmoz-slideout/helpers";
+
+slideout(
+	{ opened, onOpenedChanged: (e) => (opened = e.detail.value) },
+	slideoutPanel({ heading: "Details", closeable: true }, html`…body…`)
+);
+```
+
+`slideout(props, content)` accepts `opened`, `fullScreen`, `noEscape`, `noAutofocus`, `ariaLabel`,
+`ariaLabelledby`, `class`, `style`, and the event handlers `onOpenedChanged` / `onOpen` / `onClose` /
+`onFullScreenChanged` (so plain listeners and pion's `lift` both compose). `slideoutPanel(props,
+content)` accepts `heading`, `subtitle`, `closeable`, `loading`. Types `SlideoutProps`, `PanelProps`,
+`SlideoutElement`, and `PanelElement` are exported from the package root.
+
 ### Composables
 
-For building a richer app-specific surface via the `slideout()` factory, the underlying hooks are
-exported: `useClose` (the `opened` lifecycle + `open()`/`close()` + the `request-close` listener) and
-`useFullScreen` (`{ fullScreen, toggle }` + the `full-screen-changed` event).
+For authoring a custom surface element (your own tag) with pion's `component()`, the building blocks
+are exported from the package root: `useClose` (the `opened` lifecycle + `open()`/`close()` + the
+`request-close` listener), `useFullScreen` (`{ fullScreen, toggle }` + `full-screen-changed`),
+`useSurfaceLabel` (mirror a slotted panel's `heading` onto the host's `aria-label`), the generic
+`useAttribute` (a reactive boolean attribute with a cancelable `*-changed` event), and `renderSlideout`
+(the popover-surface template). `useSlideout` bundles the first three.
 
 ### CSS `::part()`
 
@@ -205,7 +237,7 @@ embellishment is **opt-out**: override its property (e.g. `--cosmoz-slideout-bor
   full-width once the viewport is narrower than the panel).
 - `--cosmoz-slideout-bg` - background (default `--cz-color-bg-primary`, else `#fff`).
 - `--cosmoz-slideout-color` - text color (default `--cz-color-text-primary`, else `inherit`).
-- `--cosmoz-slideout-shadow` - box-shadow (default `--cz-shadow-xl`, else `-8px 0 24px rgb(0 0 0 / 12%)`).
+- `--cosmoz-slideout-shadow` - box-shadow (default `--cz-shadow-xl`, else `-8px 0 24px rgb(10 13 18 / 18%)`).
 - `--cosmoz-slideout-border` - left edge / ring (default `1px solid --cz-color-border-secondary`; set
   `none` to remove).
 - `--cosmoz-slideout-full-screen-width` - width when `full-screen` (default `100vw`).
@@ -225,12 +257,15 @@ embellishment is **opt-out**: override its property (e.g. `--cosmoz-slideout-bor
 
 ## Notes & caveats
 
-- **Bind the property, not the attribute.** `opened` is not an observed attribute, so `?opened=${x}`
-  / a bare `opened` in static HTML will **not** drive the component - use the property binding
-  (`.opened=${x}`) or set `el.opened` / call `open()`/`close()`.
+- **`opened` is an observed attribute.** Property (`.opened`), attribute (`?opened` / bare `opened`),
+  and `open()`/`close()` all drive it, and removing the attribute closes the surface. Setting `.opened`
+  **before** the element's module has loaded (lazy/dynamic definition) is the one gap - a pre-upgrade
+  own-property can shadow the reactive accessor; prefer the attribute (or set the property after
+  definition) for markup-time state.
 - **Multiple open slideouts** all render pinned to the right edge and therefore stack on top of one
   another (they share the same position). Escape targets the most-recently-opened one.
-- The `loading` overlay covers the panel body only, not the header/footer.
+- The `loading` overlay covers the panel body only, not the header/footer, and sets `aria-busy` on
+  the body region while active.
 - **`closeable="false"` does not disable Escape.** It only hides the panel's built-in close button;
   Escape-to-close is a separate surface behavior controlled by `no-escape` (on `<cosmoz-slideout>`)
   and stays active either way.

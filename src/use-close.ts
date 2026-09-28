@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useProperty, useRef } from '@pionjs/pion';
+import { useCallback, useEffect, useRef } from '@pionjs/pion';
 import type { SlideoutElement } from './types';
+import { useAttribute } from './use-attribute';
 import { animationTimeoutMs, dropFrom } from './utils';
 
 const openSurfaces: HTMLElement[] = [];
@@ -14,42 +15,53 @@ const restoreFocus = (opener: HTMLElement | null | undefined) => {
 
 /**
  * Wire the open/close lifecycle onto the popover surface, driven by the reactive
- * `opened` property (two-way, via `useProperty` - consumers bind `.opened` and
- * `@opened-changed`). The element persists in the DOM across open/close cycles.
+ * `opened` **attribute** (two-way, via `useAttribute` - consumers bind `.opened` /
+ * `?opened` and listen for the cancelable `opened-changed`). The element persists in
+ * the DOM across open/close cycles.
  *
- * - `opened` false -> true shows the popover (slide-in) and moves focus into it;
+ * - `opened` false -> true shows the popover (slide-in), moves focus into it, and
+ *   dispatches a bubbling `open` once the enter transition settles;
  * - `opened` true -> false plays the slide-out, then dispatches a bubbling `close`
  *   event, restores focus to the opener, and calls `onClose` - the element is NOT
  *   removed; it stays connected and can be re-opened;
- * - escape closes the top-most slideout (unless `no-escape` is set) by flipping
- *   `opened` to false.
+ * - Escape closes the top-most slideout (unless `no-escape`) by flipping `opened`;
+ * - a bubbling `request-close` from a slotted child closes it too, unless a listener
+ *   calls `preventDefault()` (an "unsaved changes" veto). Removing the `opened`
+ *   attribute (e.g. from devtools) closes it as well, since `opened` is observed.
  *
- * The surface is `popover="manual"` (no light-dismiss), so it only opens/closes via
- * our own show/hide - close detection keys off `transitionend`, with an
- * `animationTimeoutMs` fallback for reduced-motion / detached surfaces.
+ * The surface is `popover="manual"` (no light-dismiss); enter/exit are detected via
+ * `transitionend`, each with an `animationTimeoutMs` fallback (reduced-motion /
+ * detached surfaces).
  */
 export const useClose = (host: SlideoutElement) => {
-	const [opened, setOpened] = useProperty<boolean>('opened', false);
+	const [opened, setOpened] = useAttribute(host, 'opened');
 
-	const opener = useRef<HTMLElement | null>(null); // captured at open time
-	const shouldRestore = useRef(false); // captured at close time
-	const closing = useRef(false);
-	const closeTimer = useRef(0);
+	const lc = useRef({
+		opener: null as HTMLElement | null,
+		shouldRestore: false,
+		closing: false,
+		opening: false,
+		closeTimer: 0,
+		openTimer: 0,
+	});
+
+	const settleOpen = useCallback(() => {
+		const s = lc.current!;
+		if (!s.opening) return;
+		s.opening = false;
+		window.clearTimeout(s.openTimer);
+		host.dispatchEvent(new Event('open', { bubbles: true }));
+	}, []);
 
 	const finish = useCallback(() => {
-		if (!closing.current) {
-			return;
-		}
-
-		closing.current = false;
-		window.clearTimeout(closeTimer.current);
+		const s = lc.current!;
+		if (!s.closing) return;
+		s.closing = false;
+		window.clearTimeout(s.closeTimer);
 
 		const surface = surfaceOf(host);
 		if (surface) dropFromStack(surface);
-
-		if (shouldRestore.current) {
-			restoreFocus(opener.current);
-		}
+		if (s.shouldRestore) restoreFocus(s.opener);
 
 		host.dispatchEvent(new Event('close', { bubbles: true }));
 		host.onClose?.();
@@ -61,13 +73,13 @@ export const useClose = (host: SlideoutElement) => {
 	const close = useCallback(() => {
 		if (host.opened) setOpened(false);
 	}, []);
-	host.open = open;
-	host.close = close;
+	Object.assign(host, { open, close });
 
 	const activate = useCallback((surface: HTMLElement) => {
-		opener.current = document.activeElement as HTMLElement | null;
-		closing.current = false; // cancel a stale close cycle...
-		window.clearTimeout(closeTimer.current); // ...and its fallback timer
+		const s = lc.current!;
+		s.opener = document.activeElement as HTMLElement | null;
+		s.closing = false; // cancel a stale close cycle...
+		window.clearTimeout(s.closeTimer); // ...and its fallback timer
 
 		if (!surface.matches(':popover-open')) {
 			surface.showPopover(); // @starting-style plays the slide-in
@@ -78,18 +90,26 @@ export const useClose = (host: SlideoutElement) => {
 		if (!host.noAutofocus) {
 			surface.focus({ preventScroll: true });
 		}
+
+		s.opening = true;
+		window.clearTimeout(s.openTimer);
+		s.openTimer = window.setTimeout(settleOpen, animationTimeoutMs(surface));
 	}, []);
 
 	const deactivate = useCallback((surface: HTMLElement) => {
+		const s = lc.current!;
+		s.opening = false;
+		window.clearTimeout(s.openTimer);
+
 		if (!surface.matches(':popover-open')) {
-			return; // initial mount / never opened - nothing to close
+			return;
 		}
 
-		shouldRestore.current = host.contains(document.activeElement);
+		s.shouldRestore = host.contains(document.activeElement);
 		dropFromStack(surface);
-		closing.current = true;
-		window.clearTimeout(closeTimer.current);
-		closeTimer.current = window.setTimeout(finish, animationTimeoutMs(surface));
+		s.closing = true;
+		window.clearTimeout(s.closeTimer);
+		s.closeTimer = window.setTimeout(finish, animationTimeoutMs(surface));
 		surface.hidePopover(); // plays the slide-out -> transitionend -> finish
 	}, []);
 
@@ -101,12 +121,13 @@ export const useClose = (host: SlideoutElement) => {
 		}
 
 		const onTransitionEnd = (e: TransitionEvent) => {
-			if (
-				e.target === surface &&
-				e.propertyName === 'translate' &&
-				closing.current
-			) {
+			if (e.target !== surface || e.propertyName !== 'translate') {
+				return;
+			}
+			if (lc.current!.closing) {
 				finish();
+			} else {
+				settleOpen();
 			}
 		};
 
@@ -122,7 +143,7 @@ export const useClose = (host: SlideoutElement) => {
 		};
 
 		const onRequestClose = (e: Event) => {
-			if (host.opened) {
+			if (host.opened && !e.defaultPrevented) {
 				e.stopPropagation();
 				close();
 			}
@@ -133,7 +154,8 @@ export const useClose = (host: SlideoutElement) => {
 		host.addEventListener('request-close', onRequestClose);
 
 		return () => {
-			window.clearTimeout(closeTimer.current);
+			window.clearTimeout(lc.current!.closeTimer);
+			window.clearTimeout(lc.current!.openTimer);
 			dropFromStack(surface);
 			surface.removeEventListener(
 				'transitionend',

@@ -67,6 +67,14 @@
     "./use-full-screen": {
       "types": "./dist/use-full-screen.d.ts",
       "default": "./dist/use-full-screen.js"
+    },
+    "./use-attribute": {
+      "types": "./dist/use-attribute.d.ts",
+      "default": "./dist/use-attribute.js"
+    },
+    "./helpers": {
+      "types": "./dist/helpers.d.ts",
+      "default": "./dist/helpers.js"
     }
   },
   "dependencies": {

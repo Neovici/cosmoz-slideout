@@ -5,6 +5,7 @@ import { html, render, type TemplateResult } from 'lit-html';
 import { expect, waitFor } from 'storybook/test';
 import '../src/cosmoz-slideout';
 import '../src/cosmoz-slideout-panel';
+import { componentDoc, storyDoc } from './story-docs';
 
 type SlideoutEl = HTMLElement & { close(): void };
 
@@ -64,6 +65,9 @@ const meta: Meta = {
 	title: 'CosmozSlideout/Interaction',
 	component: 'cosmoz-slideout',
 	tags: ['autodocs'],
+	parameters: componentDoc(
+		'Interaction & focus: non-modal, focus, dismissal, stacking.'
+	),
 };
 
 export default meta;
@@ -71,6 +75,9 @@ export default meta;
 type Story = StoryObj;
 
 export const NonModal: Story = {
+	parameters: storyDoc(
+		'Non-modal: the page behind stays interactive while open.'
+	),
 	render: () => {
 		const mount = document.createElement('div');
 		const status = document.createElement('p');
@@ -155,6 +162,9 @@ export const NonModal: Story = {
 };
 
 export const FocusRestore: Story = {
+	parameters: storyDoc(
+		'Focus moves into the surface on open, back to the opener on close.'
+	),
 	render: shellStory(
 		'Edit profile',
 		false,
@@ -205,6 +215,9 @@ export const FocusRestore: Story = {
 };
 
 export const DismissalOptions: Story = {
+	parameters: storyDoc(
+		'`no-escape` / `no-autofocus`: opt out of Escape and autofocus.'
+	),
 	render: shellStory(
 		'Open guarded draft',
 		true,
@@ -268,6 +281,9 @@ const stackChrome = (title: string, body: unknown) => html`
 `;
 
 export const Stacking: Story = {
+	parameters: storyDoc(
+		'Multiple slideouts stack; Escape closes only the top-most.'
+	),
 	render: () => {
 		const mountA = document.createElement('div');
 		const mountB = document.createElement('div');

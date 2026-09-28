@@ -1,7 +1,7 @@
 import '@neovici/cosmoz-button/cosmoz-button';
 import { xCloseIcon } from '@neovici/cosmoz-icons/untitled';
 import '@neovici/cosmoz-utils/elements/cz-spinner';
-import { html, useEffect, useRef } from '@pionjs/pion';
+import { html } from '@pionjs/pion';
 import { nothing } from 'lit-html';
 import { when } from 'lit-html/directives/when.js';
 import type { PanelElement } from './types';
@@ -9,7 +9,11 @@ import { usePanel } from './use-panel';
 
 const requestClose = (host: PanelElement) =>
 	host.dispatchEvent(
-		new Event('request-close', { bubbles: true, composed: true })
+		new Event('request-close', {
+			bubbles: true,
+			composed: true,
+			cancelable: true,
+		})
 	);
 
 const closeButton = (host: PanelElement) => html`
@@ -33,34 +37,6 @@ const defaultTitle = (
 	${subtitle ? html`<p class="subtitle">${subtitle}</p>` : nothing}
 `;
 
-const useSurfaceLabel = (host: PanelElement, heading: string | undefined) => {
-	const ours = useRef<string | null>(null);
-
-	useEffect(() => {
-		const surface = host.closest('cosmoz-slideout');
-		if (!surface || surface.hasAttribute('aria-labelledby')) return;
-
-		const current = surface.getAttribute('aria-label');
-		const authored = current !== null && current !== ours.current;
-		if (authored) return;
-
-		if (heading) {
-			surface.setAttribute('aria-label', heading);
-			ours.current = heading;
-		} else if (current !== null) {
-			surface.removeAttribute('aria-label');
-			ours.current = null;
-		}
-
-		return () => {
-			if (surface.getAttribute('aria-label') === ours.current) {
-				surface.removeAttribute('aria-label');
-				ours.current = null;
-			}
-		};
-	}, [heading]);
-};
-
 export const renderPanel = (host: PanelElement) => {
 	const { hasHeaderContent, hasFooterContent, onHeaderSlot, onFooterSlot } =
 		usePanel(host);
@@ -72,8 +48,6 @@ export const renderPanel = (host: PanelElement) => {
 		heading || subtitle || closeable || hasHeaderContent
 	);
 
-	useSurfaceLabel(host, heading);
-
 	return html`
 		<header part="header" class="header" ?hidden=${!showHeader}>
 			<slot name="header" @slotchange=${onHeaderSlot}>
@@ -81,7 +55,7 @@ export const renderPanel = (host: PanelElement) => {
 			</slot>
 			${closeable ? closeButton(host) : nothing}
 		</header>
-		<div part="body" class="body">
+		<div part="body" class="body" aria-busy=${loading}>
 			<slot></slot>
 			${when(
 				loading,

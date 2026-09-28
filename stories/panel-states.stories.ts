@@ -4,6 +4,7 @@ import { html, render } from 'lit-html';
 import { expect, waitFor } from 'storybook/test';
 import '../src/cosmoz-slideout';
 import '../src/cosmoz-slideout-panel';
+import { componentDoc, storyDoc } from './story-docs';
 
 type ShellEl = HTMLElement & {
 	close(): void;
@@ -27,6 +28,9 @@ const meta: Meta = {
 	title: 'CosmozSlideoutPanel/States',
 	component: 'cosmoz-slideout-panel',
 	tags: ['autodocs'],
+	parameters: componentDoc(
+		'Common panel states - loading, full-screen, and local token theming.'
+	),
 };
 
 export default meta;
@@ -34,6 +38,9 @@ export default meta;
 type Story = StoryObj;
 
 export const Loading: Story = {
+	parameters: storyDoc(
+		'`loading`: a body-scoped spinner overlay; the header and footer stay usable.'
+	),
 	render: () => {
 		const mount = document.createElement('div');
 		let opened = false;
@@ -103,6 +110,9 @@ export const Loading: Story = {
 };
 
 export const FullScreen: Story = {
+	parameters: storyDoc(
+		'`full-screen` (here via `toggleFullScreen()`): the surface covers the whole viewport.'
+	),
 	render: () => {
 		const mount = document.createElement('div');
 		let opened = false;
@@ -193,6 +203,9 @@ const themedSurface = [
 ].join('; ');
 
 export const ThemedSurface: Story = {
+	parameters: storyDoc(
+		'Theme one panel with local `--cosmoz-slideout-*` / `--cz-*` token overrides (dark-mode-safe).'
+	),
 	render: () => {
 		const mount = document.createElement('div');
 		let opened = false;
