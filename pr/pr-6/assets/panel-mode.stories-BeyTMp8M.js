@@ -1,7 +1,7 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-DWBJWh4P.js";import{a as i,o as a,s as o,t as s}from"./cosmoz-slideout-C7zBUPKs.js";import{t as c}from"./cosmoz-slideout-panel-CGzjyQPH.js";import{n as l,r as u,t as d}from"./arg-types-D3pNWIEf.js";var f,p,m,h,g,_,v,y,b,x,S;e((()=>{i(),n(),a(),s(),c(),l(),{expect:f,waitFor:p}=__STORYBOOK_MODULE_TEST__,m=e=>e.currentTarget.closest(`cosmoz-slideout`)?.close(),h=(e,n,r,i)=>t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-B2weqZig.js";import{c as i,l as a,t as o,u as s}from"./cosmoz-slideout-6fMMxWgr.js";import{n as c,r as l,t as u}from"./story-docs-CVcPOcP0.js";import{t as d}from"./cosmoz-slideout-panel-tP8_8518.js";import{n as f,r as p,t as m}from"./arg-types-D3pNWIEf.js";var h,g,_,v,y,b,x,S,C,w,T;e((()=>{i(),n(),a(),o(),d(),f(),c(),{expect:h,waitFor:g}=__STORYBOOK_MODULE_TEST__,_=e=>e.currentTarget.closest(`cosmoz-slideout`)?.close(),v=(e,n,r,i)=>t`
     <cosmoz-slideout
         .opened=${n}
-        aria-label=${o(e[`aria-label`])}
+        aria-label=${s(e[`aria-label`])}
         ?full-screen=${e[`full-screen`]}
         ?no-escape=${e[`no-escape`]}
         ?no-autofocus=${e[`no-autofocus`]}
@@ -9,18 +9,18 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
         @opened-changed=${e=>r(e.detail.value)}
     >
         <cosmoz-slideout-panel
-            heading=${o(e.heading)}
-            subtitle=${o(e.subtitle)}
+            heading=${s(e.heading)}
+            subtitle=${s(e.subtitle)}
             ?closeable=${e.closeable}
             ?loading=${e.loading}
         >
             ${i}
         </cosmoz-slideout-panel>
     </cosmoz-slideout>
-`,g=(e,n,r)=>t`
+`,y=(e,n,r)=>t`
     <cosmoz-button variant="primary" @click=${n}>${e}</cosmoz-button>
     ${r}
-`,_={title:`CosmozSlideoutPanel`,component:`cosmoz-slideout-panel`,tags:[`autodocs`],argTypes:u,args:d},v={args:{heading:`Acme Industries`,subtitle:`Supplier #4021 · Stockholm, SE`,closeable:!0},render:e=>{let n=document.createElement(`div`),i=!1,a=()=>r(h(e,i,e=>{i=e,a()},t`
+`,b={title:`CosmozSlideoutPanel`,component:`cosmoz-slideout-panel`,tags:[`autodocs`],argTypes:p,args:m,parameters:u("Presentational content nested inside a `<cosmoz-slideout>`: styled header/body/footer, heading/subtitle, a built-in close button, and token-backed spacing. The 99% pairing - drive it from the Controls tab.")},x={parameters:l(`The batteries-included panel: heading/subtitle, built-in close button, and footer actions.`),args:{heading:`Acme Industries`,subtitle:`Supplier #4021 · Stockholm, SE`,closeable:!0},render:e=>{let n=document.createElement(`div`),i=!1,a=()=>r(v(e,i,e=>{i=e,a()},t`
                         <p>
                             Preferred vendor for packaging materials since 2019. Net 30 terms,
                             VAT SE556677889901.
@@ -29,14 +29,14 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                             slot="footer"
                             style="display: flex; justify-content: flex-end; gap: 8px;"
                         >
-                            <cosmoz-button variant="secondary" @click=${m}>
+                            <cosmoz-button variant="secondary" @click=${_}>
                                 Cancel
                             </cosmoz-button>
-                            <cosmoz-button variant="primary" @click=${m}>
+                            <cosmoz-button variant="primary" @click=${_}>
                                 Save
                             </cosmoz-button>
                         </div>
-                    `),n);return a(),g(`Open panel`,()=>{i=!0,a()},n)},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open panel/iu}));let i=t.querySelector(`cosmoz-slideout`),a=t.querySelector(`cosmoz-slideout-panel`),o=i.shadowRoot.querySelector(`[popover]`);await n(`opens with built-in header UI and footer actions`,async()=>{await p(()=>f(o.matches(`:popover-open`)).toBe(!0)),f(a.shadowRoot.querySelector(`.heading`).textContent).toMatch(/Acme Industries/u),f(a.shadowRoot.querySelector(`cosmoz-button[aria-label="Close"]`)).not.toBeNull(),await p(()=>f(a.shadowRoot.querySelector(`.footer`).hidden).toBe(!1))}),await n(`the built-in close button dismisses the panel`,async()=>{a.shadowRoot.querySelector(`cosmoz-button[aria-label="Close"]`).click(),await p(()=>f(o.matches(`:popover-open`)).toBe(!1))})}},y={args:{heading:void 0,subtitle:void 0,"aria-label":`Customer health`,closeable:!0},render:e=>{let n=document.createElement(`div`),i=!1,a=()=>r(h(e,i,e=>{i=e,a()},t`
+                    `),n);return a(),y(`Open panel`,()=>{i=!0,a()},n)},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open panel/iu}));let i=t.querySelector(`cosmoz-slideout`),a=t.querySelector(`cosmoz-slideout-panel`),o=i.shadowRoot.querySelector(`[popover]`);await n(`opens with built-in header UI and footer actions`,async()=>{await g(()=>h(o.matches(`:popover-open`)).toBe(!0)),h(a.shadowRoot.querySelector(`.heading`).textContent).toMatch(/Acme Industries/u),h(a.shadowRoot.querySelector(`cosmoz-button[aria-label="Close"]`)).not.toBeNull(),await g(()=>h(a.shadowRoot.querySelector(`.footer`).hidden).toBe(!1))}),await n(`the built-in close button dismisses the panel`,async()=>{a.shadowRoot.querySelector(`cosmoz-button[aria-label="Close"]`).click(),await g(()=>h(o.matches(`:popover-open`)).toBe(!1))})}},S={parameters:l("Replace the generated title via the `header` slot; the panel keeps its padding, close button, and body layout."),args:{heading:void 0,subtitle:void 0,"aria-label":`Customer health`,closeable:!0},render:e=>{let n=document.createElement(`div`),i=!1,a=()=>r(v(e,i,e=>{i=e,a()},t`
                         <div
                             slot="header"
                             style="display: flex; flex-direction: column; gap: 4px;"
@@ -50,7 +50,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                             The title slot replaces the generated heading while the panel
                             keeps its padding, close button, and body layout.
                         </p>
-                    `),n);return a(),g(`Open custom header`,()=>{i=!0,a()},n)},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open custom header/iu}));let i=t.querySelector(`cosmoz-slideout-panel`),a=i.shadowRoot.querySelector(`.header`);await n(`projects slotted title content inside the panel header`,async()=>{await p(()=>f(a.hidden).toBe(!1)),f(i.shadowRoot.querySelector(`.heading`)).toBeNull(),await e.findByShadowText(/Customer health/u)})}},b={args:{heading:void 0,subtitle:void 0,"aria-label":`Notes`,closeable:!1},render:e=>{let n=document.createElement(`div`),i=!1,a=()=>r(h(e,i,e=>{i=e,a()},t`
+                    `),n);return a(),y(`Open custom header`,()=>{i=!0,a()},n)},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open custom header/iu}));let i=t.querySelector(`cosmoz-slideout-panel`),a=i.shadowRoot.querySelector(`.header`);await n(`projects slotted title content inside the panel header`,async()=>{await g(()=>h(a.hidden).toBe(!1)),h(i.shadowRoot.querySelector(`.heading`)).toBeNull(),await e.findByShadowText(/Customer health/u)})}},C={parameters:l(`Body-only: with no heading, close button, or footer the panel just gives its body padding and gap.`),args:{heading:void 0,subtitle:void 0,"aria-label":`Notes`,closeable:!1},render:e=>{let n=document.createElement(`div`),i=!1,a=()=>r(v(e,i,e=>{i=e,a()},t`
                         <p>
                             A panel can be just a right-hand reading surface. With no heading,
                             close button, custom header, or footer, the UI stays out of the
@@ -59,7 +59,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                             affordance.
                         </p>
                         <p>Press <kbd>Esc</kbd> to dismiss it.</p>
-                    `),n);return a(),g(`Open notes`,()=>{i=!0,a()},n)},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open notes/iu}));let i=t.querySelector(`cosmoz-slideout`),a=t.querySelector(`cosmoz-slideout-panel`),o=i.shadowRoot.querySelector(`[popover]`);await n(`hides empty header and footer regions`,async()=>{await p(()=>f(o.matches(`:popover-open`)).toBe(!0)),f(a.shadowRoot.querySelector(`.header`).hidden).toBe(!0),f(a.shadowRoot.querySelector(`.footer`).hidden).toBe(!0),f(a.shadowRoot.querySelector(`.body`)).not.toBeNull()})}},x={args:{heading:`Activity`,subtitle:`Latest supplier events`,closeable:!0,width:`min(520px, 100vw)`},render:e=>{let n=document.createElement(`div`),i=Array.from({length:50},(e,t)=>t+1),a=!1,o=()=>r(h(e,a,e=>{a=e,o()},t`
+                    `),n);return a(),y(`Open notes`,()=>{i=!0,a()},n)},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open notes/iu}));let i=t.querySelector(`cosmoz-slideout`),a=t.querySelector(`cosmoz-slideout-panel`),o=i.shadowRoot.querySelector(`[popover]`);await n(`hides empty header and footer regions`,async()=>{await g(()=>h(o.matches(`:popover-open`)).toBe(!0)),h(a.shadowRoot.querySelector(`.header`).hidden).toBe(!0),h(a.shadowRoot.querySelector(`.footer`).hidden).toBe(!0),h(a.shadowRoot.querySelector(`.body`)).not.toBeNull()})}},w={parameters:l(`Long content scrolls within the body while the header and footer stay fixed.`),args:{heading:`Activity`,subtitle:`Latest supplier events`,closeable:!0,width:`min(520px, 100vw)`},render:e=>{let n=document.createElement(`div`),i=Array.from({length:50},(e,t)=>t+1),a=!1,o=()=>r(v(e,a,e=>{a=e,o()},t`
                         ${i.map(e=>t`
                                 <p style="margin: 0; color: var(--cz-color-text-tertiary);">
                                     <strong style="color: var(--cz-color-text-primary);">
@@ -72,11 +72,12 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                             slot="footer"
                             style="display: flex; justify-content: flex-end; gap: 8px;"
                         >
-                            <cosmoz-button variant="secondary" @click=${m}>
+                            <cosmoz-button variant="secondary" @click=${_}>
                                 Close
                             </cosmoz-button>
                         </div>
-                    `),n);return o(),g(`Open activity`,()=>{a=!0,o()},n)},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open activity/iu}));let i=t.querySelector(`cosmoz-slideout-panel`),a=i.shadowRoot.querySelector(`.body`),o=i.shadowRoot.querySelector(`.header`),s=i.shadowRoot.querySelector(`.footer`);await n(`scrolls the body while header and footer stay outside it`,async()=>{await p(()=>f(a.scrollHeight).toBeGreaterThan(0)),f(o.closest(`.body`)).toBeNull(),f(s.closest(`.body`)).toBeNull()})}},v.parameters={...v.parameters,docs:{...v.parameters?.docs,source:{originalSource:`{
+                    `),n);return o(),y(`Open activity`,()=>{a=!0,o()},n)},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open activity/iu}));let i=t.querySelector(`cosmoz-slideout-panel`),a=i.shadowRoot.querySelector(`.body`),o=i.shadowRoot.querySelector(`.header`),s=i.shadowRoot.querySelector(`.footer`);await n(`scrolls the body while header and footer stay outside it`,async()=>{await g(()=>h(a.scrollHeight).toBeGreaterThan(0)),h(o.closest(`.body`)).toBeNull(),h(s.closest(`.body`)).toBeNull()})}},x.parameters={...x.parameters,docs:{...x.parameters?.docs,source:{originalSource:`{
+  parameters: storyDoc('The batteries-included panel: heading/subtitle, built-in close button, and footer actions.'),
   args: {
     heading: 'Acme Industries',
     subtitle: 'Supplier #4021 · Stockholm, SE',
@@ -134,7 +135,8 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       await waitFor(() => expect(surface.matches(':popover-open')).toBe(false));
     });
   }
-}`,...v.parameters?.docs?.source}}},y.parameters={...y.parameters,docs:{...y.parameters?.docs,source:{originalSource:`{
+}`,...x.parameters?.docs?.source}}},S.parameters={...S.parameters,docs:{...S.parameters?.docs,source:{originalSource:`{
+  parameters: storyDoc('Replace the generated title via the \`header\` slot; the panel keeps its padding, close button, and body layout.'),
   args: {
     heading: undefined,
     subtitle: undefined,
@@ -185,7 +187,8 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       await canvas.findByShadowText(/Customer health/u);
     });
   }
-}`,...y.parameters?.docs?.source}}},b.parameters={...b.parameters,docs:{...b.parameters?.docs,source:{originalSource:`{
+}`,...S.parameters?.docs?.source}}},C.parameters={...C.parameters,docs:{...C.parameters?.docs,source:{originalSource:`{
+  parameters: storyDoc('Body-only: with no heading, close button, or footer the panel just gives its body padding and gap.'),
   args: {
     heading: undefined,
     subtitle: undefined,
@@ -233,7 +236,8 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       expect(panel.shadowRoot!.querySelector('.body')).not.toBeNull();
     });
   }
-}`,...b.parameters?.docs?.source}}},x.parameters={...x.parameters,docs:{...x.parameters?.docs,source:{originalSource:`{
+}`,...C.parameters?.docs?.source}}},w.parameters={...w.parameters,docs:{...w.parameters?.docs,source:{originalSource:`{
+  parameters: storyDoc('Long content scrolls within the body while the header and footer stay fixed.'),
   args: {
     heading: 'Activity',
     subtitle: 'Latest supplier events',
@@ -292,4 +296,4 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       expect(footer.closest('.body')).toBeNull();
     });
   }
-}`,...x.parameters?.docs?.source}}},S=[`Default`,`CustomHeader`,`BodyOnly`,`ScrollableContent`]}))();export{b as BodyOnly,y as CustomHeader,v as Default,x as ScrollableContent,S as __namedExportsOrder,_ as default};
+}`,...w.parameters?.docs?.source}}},T=[`Default`,`CustomHeader`,`BodyOnly`,`ScrollableContent`]}))();export{C as BodyOnly,S as CustomHeader,x as Default,w as ScrollableContent,T as __namedExportsOrder,b as default};

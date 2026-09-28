@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-DWBJWh4P.js";import{a as i,t as a}from"./cosmoz-slideout-C7zBUPKs.js";import{t as o}from"./cosmoz-slideout-panel-CGzjyQPH.js";var s,c,l,u,d,f,p,m,h,g;e((()=>{i(),n(),a(),o(),{expect:s,waitFor:c}=__STORYBOOK_MODULE_TEST__,l=e=>e.currentTarget.closest(`cosmoz-slideout`)?.close(),u=(e,t)=>{let n=document.createElement(`span`);n.style.color=t,e.append(n);let r=getComputedStyle(n).color;return n.remove(),r},d={title:`CosmozSlideoutPanel/States`,component:`cosmoz-slideout-panel`,tags:[`autodocs`]},f={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-B2weqZig.js";import{c as i,t as a}from"./cosmoz-slideout-6fMMxWgr.js";import{n as o,r as s,t as c}from"./story-docs-CVcPOcP0.js";import{t as l}from"./cosmoz-slideout-panel-tP8_8518.js";var u,d,f,p,m,h,g,_,v,y;e((()=>{i(),n(),a(),l(),o(),{expect:u,waitFor:d}=__STORYBOOK_MODULE_TEST__,f=e=>e.currentTarget.closest(`cosmoz-slideout`)?.close(),p=(e,t)=>{let n=document.createElement(`span`);n.style.color=t,e.append(n);let r=getComputedStyle(n).color;return n.remove(),r},m={title:`CosmozSlideoutPanel/States`,component:`cosmoz-slideout-panel`,tags:[`autodocs`],parameters:c(`Common panel states - loading, full-screen, and local token theming.`)},h={parameters:s("`loading`: a body-scoped spinner overlay; the header and footer stay usable."),render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
                     <cosmoz-slideout
                         .opened=${n}
                         @opened-changed=${e=>{n=e.detail.value,i()}}
@@ -17,7 +17,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                                 slot="footer"
                                 style="display: flex; justify-content: flex-end;"
                             >
-                                <cosmoz-button variant="secondary" @click=${l}>
+                                <cosmoz-button variant="secondary" @click=${f}>
                                     Cancel
                                 </cosmoz-button>
                             </div>
@@ -28,7 +28,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                 Open loading panel
             </cosmoz-button>
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open loading panel/iu}));let i=t.querySelector(`cosmoz-slideout-panel`);await n(`shows a body-scoped spinner overlay`,async()=>{await c(()=>s(i.shadowRoot.querySelector(`cz-spinner`)).not.toBeNull()),s(i.shadowRoot.querySelector(`.loading`).closest(`.body`)).not.toBeNull()})}},p={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open loading panel/iu}));let i=t.querySelector(`cosmoz-slideout-panel`);await n(`shows a body-scoped spinner overlay`,async()=>{await d(()=>u(i.shadowRoot.querySelector(`cz-spinner`)).not.toBeNull()),u(i.shadowRoot.querySelector(`.loading`).closest(`.body`)).not.toBeNull()})}},g={parameters:s("`full-screen` (here via `toggleFullScreen()`): the surface covers the whole viewport."),render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
                     <cosmoz-slideout
                         .opened=${n}
                         @opened-changed=${e=>{n=e.detail.value,i()}}
@@ -53,7 +53,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                                 >
                                     Toggle full screen
                                 </cosmoz-button>
-                                <cosmoz-button variant="primary" @click=${l}>
+                                <cosmoz-button variant="primary" @click=${f}>
                                     Done
                                 </cosmoz-button>
                             </div>
@@ -64,10 +64,10 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                 Open workspace
             </cosmoz-button>
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open workspace/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`toggles to viewport width through the public method`,async()=>{await r.click(await e.findByShadowRole(`button`,{name:/toggle full screen/iu})),await c(()=>s(i).toHaveAttribute(`full-screen`)),await c(()=>s(Math.round(a.getBoundingClientRect().width)).toBe(window.innerWidth))})}},m=[`--cosmoz-slideout-bg: var(--cz-color-bg-secondary)`,`--cosmoz-slideout-panel-divider: var(--cz-color-border-secondary)`].join(`; `),h={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open workspace/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`toggles to viewport width through the public method`,async()=>{await r.click(await e.findByShadowRole(`button`,{name:/toggle full screen/iu})),await d(()=>u(i).toHaveAttribute(`full-screen`)),await d(()=>u(Math.round(a.getBoundingClientRect().width)).toBe(window.innerWidth))})}},_=[`--cosmoz-slideout-bg: var(--cz-color-bg-secondary)`,`--cosmoz-slideout-panel-divider: var(--cz-color-border-secondary)`].join(`; `),v={parameters:s("Theme one panel with local `--cosmoz-slideout-*` / `--cz-*` token overrides (dark-mode-safe)."),render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
                     <cosmoz-slideout
                         .opened=${n}
-                        style=${m}
+                        style=${_}
                         @opened-changed=${e=>{n=e.detail.value,i()}}
                     >
                         <cosmoz-slideout-panel
@@ -83,7 +83,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                                 slot="footer"
                                 style="display: flex; justify-content: flex-end;"
                             >
-                                <cosmoz-button variant="primary" @click=${l}>
+                                <cosmoz-button variant="primary" @click=${f}>
                                     Done
                                 </cosmoz-button>
                             </div>
@@ -94,7 +94,8 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                 Open themed surface
             </cosmoz-button>
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open themed surface/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`resolves the local surface override through tokens`,async()=>{await c(()=>s(a.matches(`:popover-open`)).toBe(!0)),s(getComputedStyle(a).backgroundColor).toBe(u(i,`var(--cz-color-bg-secondary)`))})}},f.parameters={...f.parameters,docs:{...f.parameters?.docs,source:{originalSource:`{
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open themed surface/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`resolves the local surface override through tokens`,async()=>{await d(()=>u(a.matches(`:popover-open`)).toBe(!0)),u(getComputedStyle(a).backgroundColor).toBe(p(i,`var(--cz-color-bg-secondary)`))})}},h.parameters={...h.parameters,docs:{...h.parameters?.docs,source:{originalSource:`{
+  parameters: storyDoc('\`loading\`: a body-scoped spinner overlay; the header and footer stay usable.'),
   render: () => {
     const mount = document.createElement('div');
     let opened = false;
@@ -154,7 +155,8 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       expect(panel.shadowRoot!.querySelector<HTMLElement>('.loading')!.closest('.body')).not.toBeNull();
     });
   }
-}`,...f.parameters?.docs?.source}}},p.parameters={...p.parameters,docs:{...p.parameters?.docs,source:{originalSource:`{
+}`,...h.parameters?.docs?.source}}},g.parameters={...g.parameters,docs:{...g.parameters?.docs,source:{originalSource:`{
+  parameters: storyDoc('\`full-screen\` (here via \`toggleFullScreen()\`): the surface covers the whole viewport.'),
   render: () => {
     const mount = document.createElement('div');
     let opened = false;
@@ -224,7 +226,8 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       await waitFor(() => expect(Math.round(surface.getBoundingClientRect().width)).toBe(window.innerWidth));
     });
   }
-}`,...p.parameters?.docs?.source}}},h.parameters={...h.parameters,docs:{...h.parameters?.docs,source:{originalSource:`{
+}`,...g.parameters?.docs?.source}}},v.parameters={...v.parameters,docs:{...v.parameters?.docs,source:{originalSource:`{
+  parameters: storyDoc('Theme one panel with local \`--cosmoz-slideout-*\` / \`--cz-*\` token overrides (dark-mode-safe).'),
   render: () => {
     const mount = document.createElement('div');
     let opened = false;
@@ -285,4 +288,4 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       expect(getComputedStyle(surface).backgroundColor).toBe(cssColor(shell, 'var(--cz-color-bg-secondary)'));
     });
   }
-}`,...h.parameters?.docs?.source}}},g=[`Loading`,`FullScreen`,`ThemedSurface`]}))();export{p as FullScreen,f as Loading,h as ThemedSurface,g as __namedExportsOrder,d as default};
+}`,...v.parameters?.docs?.source}}},y=[`Loading`,`FullScreen`,`ThemedSurface`]}))();export{g as FullScreen,h as Loading,v as ThemedSurface,y as __namedExportsOrder,m as default};

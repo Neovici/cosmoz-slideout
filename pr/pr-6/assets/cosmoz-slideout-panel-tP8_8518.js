@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r}from"./iframe-DWBJWh4P.js";import{O as i,S as a,a as o,b as s,c,d as l,i as u,l as d,n as f,u as p,w as m}from"./cosmoz-slideout-C7zBUPKs.js";import{a as h,i as g,r as _,t as v}from"./untitled-Bizlt9el.js";var y,b=e((()=>{f(),y=u`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r}from"./iframe-B2weqZig.js";import{D as i,T as a,a as o,c as s,d as c,f as l,m as u,p as d,s as f}from"./cosmoz-slideout-6fMMxWgr.js";import{a as p,i as m,r as h,t as g}from"./untitled-eL0iVtmC.js";var _,v=e((()=>{o(),_=f`
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -89,7 +89,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r}
 	.footer[hidden] {
 		display: none;
 	}
-`})),x,S=e((()=>{p(),x=()=>t`<style>
+`})),y,b=e((()=>{d(),y=()=>t`<style>
 	@keyframes rotating {
 		100% {
 			transform: rotate(360deg);
@@ -108,30 +108,30 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r}
 		box-sizing: border-box;
 		margin: 0 4px;
 	}
-</style>`,customElements.define(`cz-spinner`,l(x))})),C,w,T,E=e((()=>{p(),C=e=>e.target.assignedElements().length>0,w=(e,t)=>e.querySelector(`:scope > [slot="${t}"]`)!==null,T=e=>{let[t,n]=a(w(e,`header`)),[r,i]=a(w(e,`footer`));return{hasHeaderContent:t,hasFooterContent:r,onHeaderSlot:m(e=>n(C(e)),[]),onFooterSlot:m(e=>i(C(e)),[])}}})),D,O,k,A,j,M=e((()=>{o(),v(),S(),p(),r(),g(),E(),D=e=>e.dispatchEvent(new Event(`request-close`,{bubbles:!0,composed:!0})),O=e=>t`
+</style>`,customElements.define(`cz-spinner`,u(y))})),x,S,C,w=e((()=>{d(),x=e=>e.target.assignedElements().length>0,S=(e,t)=>e.querySelector(`:scope > [slot="${t}"]`)!==null,C=e=>{let[t,n]=a(S(e,`header`)),[r,o]=a(S(e,`footer`));return{hasHeaderContent:t,hasFooterContent:r,onHeaderSlot:i(e=>n(x(e)),[]),onFooterSlot:i(e=>o(x(e)),[])}}})),T,E,D,O,k=e((()=>{s(),g(),b(),d(),r(),m(),w(),T=e=>e.dispatchEvent(new Event(`request-close`,{bubbles:!0,composed:!0,cancelable:!0})),E=e=>t`
 	<cosmoz-button
 		class="close"
 		part="close"
 		variant="tertiary"
 		size="sm"
 		aria-label="Close"
-		@click=${()=>D(e)}
+		@click=${()=>T(e)}
 	>
-		${_({slot:`prefix`})}
+		${h({slot:`prefix`})}
 	</cosmoz-button>
-`,k=(e,r)=>t`
+`,D=(e,r)=>t`
 	${e?t`<h2 class="heading">${e}</h2>`:n}
 	${r?t`<p class="subtitle">${r}</p>`:n}
-`,A=(e,t)=>{let n=s(null);i(()=>{let r=e.closest(`cosmoz-slideout`);if(!r||r.hasAttribute(`aria-labelledby`))return;let i=r.getAttribute(`aria-label`);if(!(i!==null&&i!==n.current))return t?(r.setAttribute(`aria-label`,t),n.current=t):i!==null&&(r.removeAttribute(`aria-label`),n.current=null),()=>{r.getAttribute(`aria-label`)===n.current&&(r.removeAttribute(`aria-label`),n.current=null)}},[t])},j=e=>{let{hasHeaderContent:r,hasFooterContent:i,onHeaderSlot:a,onFooterSlot:o}=T(e),{heading:s,subtitle:c}=e,l=!!e.closeable,u=!!e.loading,d=!!(s||c||l||r);return A(e,s),t`
-		<header part="header" class="header" ?hidden=${!d}>
+`,O=e=>{let{hasHeaderContent:r,hasFooterContent:i,onHeaderSlot:a,onFooterSlot:o}=C(e),{heading:s,subtitle:c}=e,l=!!e.closeable,u=!!e.loading;return t`
+		<header part="header" class="header" ?hidden=${!(s||c||l||r)}>
 			<slot name="header" @slotchange=${a}>
-				${k(s,c)}
+				${D(s,c)}
 			</slot>
-			${l?O(e):n}
+			${l?E(e):n}
 		</header>
-		<div part="body" class="body">
+		<div part="body" class="body" aria-busy=${u}>
 			<slot></slot>
-			${h(u,()=>t`
+			${p(u,()=>t`
 					<div class="loading" part="loading">
 						<cz-spinner></cz-spinner>
 					</div>
@@ -140,4 +140,4 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r}
 		<footer part="footer" class="footer" ?hidden=${!i}>
 			<slot name="footer" @slotchange=${o}></slot>
 		</footer>
-	`}})),N=e((()=>{c(),p(),b(),M(),customElements.define(`cosmoz-slideout-panel`,l(e=>j(e),{observedAttributes:[`heading`,`subtitle`,`closeable`,`loading`],styleSheets:[d,y]}))}));export{N as t};
+	`}})),A=e((()=>{c(),d(),v(),k(),customElements.define(`cosmoz-slideout-panel`,u(e=>O(e),{observedAttributes:[`heading`,`subtitle`,`closeable`,`loading`],styleSheets:[l,_]}))}));export{A as t};

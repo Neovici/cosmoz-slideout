@@ -1,15 +1,15 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./iframe-DWBJWh4P.js";import{o as r,s as i,t as a}from"./cosmoz-slideout-C7zBUPKs.js";import{t as o}from"./cosmoz-slideout-panel-CGzjyQPH.js";import{n as s,r as c,t as l}from"./arg-types-D3pNWIEf.js";var u,d,f,p,m;e((()=>{n(),r(),a(),o(),s(),{expect:u,waitFor:d}=__STORYBOOK_MODULE_TEST__,f={title:`CosmozSlideoutPanel/Playground`,component:`cosmoz-slideout-panel`,argTypes:c,args:l},p={tags:[`!autodocs`],render:e=>t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./iframe-B2weqZig.js";import{l as r,t as i,u as a}from"./cosmoz-slideout-6fMMxWgr.js";import{t as o}from"./cosmoz-slideout-panel-tP8_8518.js";import{n as s,r as c,t as l}from"./arg-types-D3pNWIEf.js";var u,d,f,p,m;e((()=>{n(),r(),i(),o(),s(),{expect:u,waitFor:d}=__STORYBOOK_MODULE_TEST__,f={title:`CosmozSlideoutPanel/Playground`,component:`cosmoz-slideout-panel`,argTypes:c,args:l},p={tags:[`!autodocs`],render:e=>t`
         <cosmoz-slideout
             .opened=${e.opened}
-            aria-label=${i(e[`aria-label`])}
+            aria-label=${a(e[`aria-label`])}
             ?full-screen=${e[`full-screen`]}
             ?no-escape=${e[`no-escape`]}
             ?no-autofocus=${e[`no-autofocus`]}
             style=${`--cosmoz-slideout-width: ${e.width};`}
         >
             <cosmoz-slideout-panel
-                heading=${i(e.heading)}
-                subtitle=${i(e.subtitle)}
+                heading=${a(e.heading)}
+                subtitle=${a(e.subtitle)}
                 ?closeable=${e.closeable}
                 ?loading=${e.loading}
             >
