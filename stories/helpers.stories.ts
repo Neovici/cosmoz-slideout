@@ -42,12 +42,11 @@ export const Dogfood: Story = {
 						},
 					},
 					slideoutPanel(
-						{
-							heading: 'Acme Industries',
-							subtitle: 'Supplier #4021',
-							closeable: true,
-						},
+						{},
 						html`
+							<div slot="header">
+								<h2 class="demo-heading">Acme Industries</h2>
+							</div>
 							<p>
 								Rendered via the typed <code>slideout()</code> /
 								<code>slideoutPanel()</code> helpers - no hand-written bindings.
@@ -77,12 +76,22 @@ export const Dogfood: Story = {
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
 		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
-		await step('helper-rendered slideout opens with the panel UI', async () => {
-			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
-			const panel = el.querySelector('cosmoz-slideout-panel')!;
-			expect(panel.shadowRoot!.querySelector('.heading')!.textContent).toMatch(
-				/Acme Industries/u
-			);
-		});
+		await step(
+			'helper-rendered slideout opens with the panel chrome',
+			async () => {
+				await waitFor(() =>
+					expect(surface.matches(':popover-open')).toBe(true)
+				);
+				const panel = el.querySelector('cosmoz-slideout-panel')!;
+				await waitFor(() =>
+					expect(
+						panel
+							.shadowRoot!.querySelector('.header')!
+							.querySelector('slot')!
+							.assignedElements()[0]!.textContent
+					).toMatch(/Acme Industries/u)
+				);
+			}
+		);
 	},
 };

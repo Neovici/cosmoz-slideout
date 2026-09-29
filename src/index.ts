@@ -5,25 +5,16 @@ import styles from './cosmoz-slideout.css';
 import type { SlideoutElement } from './types';
 import { useClose } from './use-close';
 import { useFullScreen } from './use-full-screen';
-import { useSurfaceLabel } from './use-surface-label';
 
 export { slideout, slideoutPanel } from './helpers';
-export type {
-	PanelElement,
-	PanelProps,
-	Props,
-	SlideoutElement,
-	SlideoutProps,
-} from './types';
+export type { Props, SlideoutElement, SlideoutProps } from './types';
 export { useAttribute } from './use-attribute';
 export { useClose } from './use-close';
 export { useFullScreen } from './use-full-screen';
-export { useSurfaceLabel } from './use-surface-label';
 
 export const useSlideout = (host: SlideoutElement) => {
 	const { close, open } = useClose(host);
 	const { fullScreen, toggle } = useFullScreen(host);
-	useSurfaceLabel(host);
 
 	return { close, open, fullScreen, toggleFullScreen: toggle };
 };

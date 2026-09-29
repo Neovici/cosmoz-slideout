@@ -1,16 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/web-components';
-import { html } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { expect, waitFor } from 'storybook/test';
-import '../src/cosmoz-slideout';
-import '../src/cosmoz-slideout-panel';
-import { defaultPanelArgs, panelArgTypes } from './arg-types';
+import type { Meta, StoryObj } from "@storybook/web-components";
+import { html } from "lit-html";
+import { ifDefined } from "lit-html/directives/if-defined.js";
+import { expect, waitFor } from "storybook/test";
+import "../src/cosmoz-slideout";
+import "../src/cosmoz-slideout-panel";
+import { defaultPanelArgs, panelArgTypes } from "./arg-types";
 
 type SlideoutEl = HTMLElement & { close(): void };
 
 const meta: Meta = {
-	title: 'CosmozSlideoutPanel/Playground',
-	component: 'cosmoz-slideout-panel',
+	title: "CosmozSlideoutPanel/Playground",
+	component: "cosmoz-slideout-panel",
 	argTypes: panelArgTypes,
 	args: defaultPanelArgs,
 };
@@ -20,26 +20,27 @@ export default meta;
 type Story = StoryObj;
 
 export const Playground: Story = {
-	tags: ['!autodocs'],
+	tags: ["!autodocs"],
 	render: (args) => html`
 		<cosmoz-slideout
 			.opened=${args.opened}
-			aria-label=${ifDefined(args['aria-label'])}
-			?full-screen=${args['full-screen']}
-			?no-escape=${args['no-escape']}
-			?no-autofocus=${args['no-autofocus']}
+			aria-label=${ifDefined(args["aria-label"])}
+			?full-screen=${args["full-screen"]}
+			?no-escape=${args["no-escape"]}
+			?no-autofocus=${args["no-autofocus"]}
 			style=${`--cosmoz-slideout-width: ${args.width};`}
 		>
-			<cosmoz-slideout-panel
-				heading=${ifDefined(args.heading)}
-				subtitle=${ifDefined(args.subtitle)}
-				?closeable=${args.closeable}
-				?loading=${args.loading}
-			>
+			<cosmoz-slideout-panel>
+				<div slot="header">
+					<h2
+						style="margin: 0; font-size: var(--cz-text-lg, 1.125rem); font-weight: var(--cz-font-weight-medium, 500); color: var(--cz-color-text-primary);"
+					>
+						${args.heading ?? "Panel"}
+					</h2>
+				</div>
 				<p style="margin: 0; color: var(--cz-color-text-tertiary);">
-					Adjust the Controls tab. Heading, subtitle, closeability, loading,
-					full-screen, dismissal options, and width update this open slideout
-					live.
+					Adjust the Controls tab. The slotted header title, full-screen,
+					dismissal options, and width update this open slideout live.
 				</p>
 				<div
 					slot="footer"
@@ -53,12 +54,10 @@ export const Playground: Story = {
 		</cosmoz-slideout>
 	`,
 	play: async ({ canvasElement, step }) => {
-		const shell = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
-		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
-		await step('opens configured from the args', async () => {
-			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
-			expect(panel.shadowRoot!.querySelector('cz-spinner')).toBeNull();
+		const shell = canvasElement.querySelector("cosmoz-slideout") as SlideoutEl;
+		const surface = shell.shadowRoot!.querySelector<HTMLElement>("[popover]")!;
+		await step("opens configured from the args", async () => {
+			await waitFor(() => expect(surface.matches(":popover-open")).toBe(true));
 		});
 	},
 };

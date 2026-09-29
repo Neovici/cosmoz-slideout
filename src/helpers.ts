@@ -1,6 +1,6 @@
 import { html } from '@pionjs/pion';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import type { PanelProps, SlideoutProps } from './types';
+import type { SlideoutProps } from './types';
 
 export const slideout = (props: SlideoutProps, content: unknown) => html`
 	<cosmoz-slideout
@@ -21,12 +21,13 @@ export const slideout = (props: SlideoutProps, content: unknown) => html`
 	</cosmoz-slideout>
 `;
 
-export const slideoutPanel = (props: PanelProps, content: unknown) => html`
+export const slideoutPanel = (
+	props: { class?: string; style?: string },
+	content: unknown
+) => html`
 	<cosmoz-slideout-panel
-		heading=${ifDefined(props.heading)}
-		subtitle=${ifDefined(props.subtitle)}
-		?closeable=${props.closeable}
-		?loading=${props.loading}
+		class=${ifDefined(props.class)}
+		style=${ifDefined(props.style)}
 	>
 		${content}
 	</cosmoz-slideout-panel>

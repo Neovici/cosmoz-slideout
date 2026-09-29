@@ -2,31 +2,29 @@ import { normalize } from '@neovici/cosmoz-tokens/normalize';
 import { component } from '@pionjs/pion';
 import panelStyles from './cosmoz-slideout-panel.css';
 import { renderPanel } from './panel';
-import type { PanelElement, PanelProps } from './types';
 
 /**
- * `<cosmoz-slideout-panel>` - the batteries-included content preset.
+ * `<cosmoz-slideout-panel>` - the layout chrome for slideout content.
  *
- * Presentational only: it renders the design-system UI (styled header/body/
- * footer, `heading`/`subtitle`, a built-in close button via `closeable`, and a
- * `loading` overlay) and is meant to be slotted into a `<cosmoz-slideout>`, which
- * owns the surface and the open/close lifecycle. The close button asks the
- * surrounding surface to close by dispatching a bubbling `request-close` event -
- * it holds no reference to the slideout. Built on `@neovici/cosmoz-button`,
- * `@neovici/cosmoz-icons`, and `@neovici/cosmoz-tokens`.
+ * Purely structural, in the spirit of `cz-card`: a `header` region, a scrollable
+ * padded `body`, and a `footer` with a divider. No properties; all three regions
+ * are always rendered and it's up to the author (typically a slotted `cz-header`)
+ * to fill the `header` slot and to provide a close control (dispatching a bubbling
+ * `request-close` to ask the surrounding surface to close).
  *
  * ```html
  * <cosmoz-slideout opened>
- *   <cosmoz-slideout-panel heading="Details" subtitle="Read-only" closeable>
+ *   <cosmoz-slideout-panel>
+ *     <div slot="header"><h2>Supplier #4021</h2></div>
  *     …content…
+ *     <div slot="footer">…actions…</div>
  *   </cosmoz-slideout-panel>
  * </cosmoz-slideout>
  * ```
  */
 customElements.define(
 	'cosmoz-slideout-panel',
-	component<PanelProps>((host: PanelElement) => renderPanel(host), {
-		observedAttributes: ['heading', 'subtitle', 'closeable', 'loading'],
+	component(renderPanel, {
 		styleSheets: [normalize, panelStyles],
 	})
 );

@@ -55,23 +55,13 @@ export const defaultSlideoutArgs: Meta['args'] = {
 export const panelArgTypes: Meta['argTypes'] = {
 	heading: {
 		control: 'text',
-		description: 'Default header title rendered inside the panel UI.',
-		table: { category: 'Panel' },
+		description: 'Title text passed to the slotted header (cz-header pattern).',
+		table: { category: 'Slotted header' },
 	},
 	subtitle: {
 		control: 'text',
-		description: 'Optional supporting text rendered below the heading.',
-		table: { category: 'Panel' },
-	},
-	closeable: {
-		control: 'boolean',
-		description: 'Render the built-in close button in the header UI.',
-		table: { category: 'Panel', defaultValue: { summary: 'false' } },
-	},
-	loading: {
-		control: 'boolean',
-		description: 'Overlay a spinner over the panel body.',
-		table: { category: 'Panel', defaultValue: { summary: 'false' } },
+		description: 'Supporting text passed to the slotted header.',
+		table: { category: 'Slotted header' },
 	},
 	...slideoutArgTypes,
 };
@@ -80,9 +70,7 @@ export const defaultPanelArgs: Meta['args'] = {
 	opened: true,
 	heading: 'Supplier preview',
 	subtitle: 'Supplier #4021 · Stockholm, SE',
-	closeable: true,
 	'aria-label': undefined,
-	loading: false,
 	'full-screen': false,
 	'no-escape': false,
 	'no-autofocus': false,

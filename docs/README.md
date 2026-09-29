@@ -9,17 +9,19 @@ This package ships **two custom elements that compose**:
   and slides in **from the right** when its reactive **`opened`** property becomes true. It owns
   everything _around_ the content - the surface, the `opened` / `full-screen` lifecycle, the Escape
   stack, and focus management - and exposes a **single blank slot**. It adds no chrome of its own.
-- **`<cosmoz-slideout-panel>`** - the **content preset**. Presentational only: a design-system-styled
-  header/body/footer, a `heading`/`subtitle`, a built-in close button (`closeable`), and a `loading`
-  overlay, from `@neovici/cosmoz-button`, `@neovici/cosmoz-icons`, and `@neovici/cosmoz-tokens`. It
-  owns no open/close lifecycle - it is meant to be **slotted into a `<cosmoz-slideout>`**.
+- **`<cosmoz-slideout-panel>`** - layout **chrome** (`cz-card`-style): a `header` region, a scrollable
+  padded `body`, and a `footer` with a divider - all three always rendered, **no properties**. The
+  header, its title, and any close control are slotted in (a `cz-header` element in the real app).
+  It owns no open/close lifecycle - it is meant to be **slotted into a `<cosmoz-slideout>`**.
 
 99% of the time you use them together:
 
 ```html
-<cosmoz-slideout opened full-screen>
-	<cosmoz-slideout-panel heading="Supplier" closeable loading>
+<cosmoz-slideout opened full-screen aria-label="Supplier">
+	<cosmoz-slideout-panel>
+		<cz-header slot="header">Supplier</cz-header>
 		<p>…body…</p>
+		<div slot="footer">…actions…</div>
 	</cosmoz-slideout-panel>
 </cosmoz-slideout>
 ```
@@ -55,7 +57,8 @@ persists in the DOM across open/close cycles - there is no add-to-open / remove-
 	.opened=${this.open}
 	@opened-changed=${(e) => (this.open = e.detail.value)}
 >
-	<cosmoz-slideout-panel heading="Acme" closeable>
+	<cosmoz-slideout-panel>
+		<cz-header slot="header">Acme</cz-header>
 		<p>…body…</p>
 	</cosmoz-slideout-panel>
 </cosmoz-slideout>
@@ -83,11 +86,10 @@ Your own buttons can do the same, or call `closest('cosmoz-slideout')?.close()`.
   `toggleFullScreen()`.
 - `no-escape` - disable the built-in Escape-to-close.
 - `no-autofocus` - do not move focus into the surface on open.
-- `aria-label` / `aria-labelledby` - mirrored onto the surface (`role="dialog"`) to label the drawer.
-  A nested `<cosmoz-slideout-panel>` with a `heading` mirrors it onto the surface's `aria-label`
-  automatically **when you have not set one** (and never clobbers an author-provided label). Note:
-  `aria-labelledby` is an IDREF and only resolves to an element in the **same tree** as the surface
-  (the shell), not a slotted one - use `aria-label` (a plain string) to reference slotted content.
+- `aria-label` - mirrored onto the surface (`role="dialog"`) to label the drawer. Set it
+  **explicitly** - the panel carries no text of its own to name it with (and never reaches into the
+  surface). Note: `aria-labelledby` is an IDREF and only resolves to an element in the **same tree**
+  as the surface (the shell), not a slotted one - use `aria-label` (a plain string) to name the drawer..
 
 #### Methods
 
@@ -119,43 +121,47 @@ Your own buttons can do the same, or call `closest('cosmoz-slideout')?.close()`.
   your own chrome. The single slotted child is stretched to fill the surface, so wrap hand-composed
   header/body/footer in **one** top-level element.
 
-### `<cosmoz-slideout-panel>` - the content preset
+### `<cosmoz-slideout-panel>` - the layout chrome
 
-Presentational; it holds no `opened`/`close()` and must live inside a `<cosmoz-slideout>`.
+`cz-card`-style structural layout; it holds no `opened`/`close()` and must live inside a
+`<cosmoz-slideout>`.
 
-#### Attributes & properties
+#### Properties
 
-- `heading`, `subtitle` - text for the default panel header.
-- `closeable` - render the built-in close button in the panel header. This only controls the
-  **button** (which fires `request-close`) - it is independent of Escape-to-close, which is a
-  surface behavior. For no built-in dismissal at all, omit `closeable` **and** set `no-escape` on the
-  surface.
-- `loading` - overlay a spinner over the panel body (header/footer stay readable).
+_None._ The panel is pure layout: all three regions are always rendered, and all content -
+including the header title and any close control - is slotted in. There is nothing to configure.
 
 #### Slots
 
+- `header` - the non-scrolling header region (e.g. a `cz-header` element with title, subtitle,
+  and a close control dispatching `request-close`).
 - _default_ - the body / main content (scrollable).
-- `header` - a slotted header replaces the generated heading/subtitle but keeps the styled UI
-  (padding, close button). Empty unless filled.
-- `footer` - non-scrolling footer region (e.g. actions), inside the styled footer (padding, divider).
-  Empty unless filled.
+- `footer` - the non-scrolling footer region (e.g. actions), with a divider above it.
 
-The panel's regions are content-conditional: the header renders (with its UI) when `heading`,
-`subtitle`, `closeable`, or a slotted `header` is present; the footer renders when `footer` is filled.
+All three regions are always rendered; fill them only when you need them.
 
 ```html
-<!-- styled header (heading/subtitle + close) and footer -->
-<cosmoz-slideout .opened="${open}">
-	<cosmoz-slideout-panel heading="Acme" subtitle="Supplier #4021" closeable>
+<!-- header (cz-header pattern) + body + footer actions -->
+<cosmoz-slideout .opened="${open}" aria-label="Acme">
+	<cosmoz-slideout-panel>
+		<cz-header slot="header" aria-label="Close supplier">
+			Acme Industries
+			<cosmoz-button
+				slot="suffix"
+				aria-label="Close"
+				@click="${fireRequestClose}"
+				>✕</cosmoz-button
+			>
+		</cz-header>
 		<p>…body…</p>
 		<div slot="footer">…actions…</div>
 	</cosmoz-slideout-panel>
 </cosmoz-slideout>
 
-<!-- custom title: swap the slot, keep the styled UI + close -->
-<cosmoz-slideout .opened="${open}">
-	<cosmoz-slideout-panel closeable>
-		<my-title slot="header">…</my-title>
+<!-- custom header: any slotted element with a request-close control -->
+<cosmoz-slideout .opened="${open}" aria-label="Notes">
+	<cosmoz-slideout-panel>
+		<my-header slot="header">…</my-header>
 		<p>…body…</p>
 	</cosmoz-slideout-panel>
 </cosmoz-slideout>
@@ -183,22 +189,28 @@ import { slideout, slideoutPanel } from "@neovici/cosmoz-slideout/helpers";
 
 slideout(
 	{ opened, onOpenedChanged: (e) => (opened = e.detail.value) },
-	slideoutPanel({ heading: "Details", closeable: true }, html`…body…`)
+	slideoutPanel(
+		{},
+		html`
+			<cz-header slot="header">Details</cz-header>
+			<p>…body…</p>
+		`
+	)
 );
 ```
 
 `slideout(props, content)` accepts `opened`, `fullScreen`, `noEscape`, `noAutofocus`, `ariaLabel`,
 `ariaLabelledby`, `class`, `style`, and the event handlers `onOpenedChanged` / `onOpen` / `onClose` /
 `onFullScreenChanged` (so plain listeners and pion's `lift` both compose). `slideoutPanel(props,
-content)` accepts `heading`, `subtitle`, `closeable`, `loading`. Types `SlideoutProps`, `PanelProps`,
-`SlideoutElement`, and `PanelElement` are exported from the package root.
+content)` accepts only `class` and `style` (the panel is property-free). Types `SlideoutProps` are
+exported from the package root.
 
 ### Composables
 
 For authoring a custom surface element (your own tag) with pion's `component()`, the building blocks
 are exported from the package root: `useClose` (the `opened` lifecycle + `open()`/`close()` + the
 `request-close` listener), `useFullScreen` (`{ fullScreen, toggle }` + `full-screen-changed`),
-`useSurfaceLabel` (mirror a slotted panel's `heading` onto the host's `aria-label`), the generic
+the generic
 `useAttribute` (a reactive boolean attribute with a cancelable `*-changed` event), and `renderSlideout`
 (the popover-surface template). `useSlideout` bundles the first three.
 
@@ -206,14 +218,13 @@ are exported from the package root: `useClose` (the `opened` lifecycle + `open()
 
 **`<cosmoz-slideout>`:** `surface` - the popover panel.
 
-**`<cosmoz-slideout-panel>`:** `header`, `body`, `footer`, `close` - the panel UI; `loading` - the
-loading overlay.
+**`<cosmoz-slideout-panel>`:** `header`, `body`, `footer` - the layout regions.
 
 ### Accessibility
 
 The surface is a `role="dialog"` with `aria-modal="false"` (it is non-modal by design). Label it via
-`aria-label` / `aria-labelledby` on `<cosmoz-slideout>` (a nested panel's `heading` fills this in when
-you don't). On open, focus moves into the surface (opt out with `no-autofocus`); on close, focus
+`aria-label` / `aria-labelledby` on `<cosmoz-slideout>` - set it explicitly; nothing fills it in for
+you. The close control (in your slotted header) carries its own accessible name, e.g. "Close". On open, focus moves into the surface (opt out with `no-autofocus`); on close, focus
 returns to the opener **when focus was still inside the drawer at the moment it closed** (that check
 is captured then, before the popover hides). Escape closes the **top-most** open slideout only.
 Because the drawer is non-modal, the page behind stays reachable - this is intentional (quick-glance
@@ -251,9 +262,7 @@ embellishment is **opt-out**: override its property (e.g. `--cosmoz-slideout-bor
 
 - `--cosmoz-slideout-panel-padding-x` - header/body/footer horizontal padding (default `--cz-spacing * 4`).
 - `--cosmoz-slideout-panel-gap` - vertical gap between body children (default `--cz-spacing * 6`).
-- `--cosmoz-slideout-panel-heading-color` - heading text color (default `--cz-color-text-primary`).
 - `--cosmoz-slideout-panel-divider` - footer top divider color (default `--cz-color-border-secondary`).
-- `--cosmoz-slideout-loading-color` - loading overlay background (default a 70% `--cz-color-bg-primary`).
 
 ## Notes & caveats
 
@@ -264,14 +273,11 @@ embellishment is **opt-out**: override its property (e.g. `--cosmoz-slideout-bor
   definition) for markup-time state.
 - **Multiple open slideouts** all render pinned to the right edge and therefore stack on top of one
   another (they share the same position). Escape targets the most-recently-opened one.
-- The `loading` overlay covers the panel body only, not the header/footer, and sets `aria-busy` on
-  the body region while active.
-- **`closeable="false"` does not disable Escape.** It only hides the panel's built-in close button;
-  Escape-to-close is a separate surface behavior controlled by `no-escape` (on `<cosmoz-slideout>`)
-  and stays active either way.
-- **`<cosmoz-slideout-panel>` always pulls in its UI dependencies.** `@neovici/cosmoz-button`,
-  `@neovici/cosmoz-icons`, and `@neovici/cosmoz-tokens` are regular `dependencies` of this package.
-  Import only the surface entrypoint (`/cosmoz-slideout`) when you don't need the panel chrome.
+- **Close controls live in your slotted header** (`cz-header`'s suffix etc.) and close by dispatching
+  `request-close`. They are independent of Escape-to-close, which is a surface behavior controlled by
+  `no-escape` (on `<cosmoz-slideout>`) and stays active either way.
+- **`<cosmoz-slideout-panel>` pulls in only its layout.** `@neovici/cosmoz-tokens` is a regular
+  `dependency` of this package; buttons/spinners/icons come from whatever you slot in.
 
 ## Development
 
