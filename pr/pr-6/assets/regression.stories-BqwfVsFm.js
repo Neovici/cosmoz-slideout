@@ -1,9 +1,13 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-C-Wxb5QC.js";import{c as i,t as a}from"./cosmoz-slideout-BQP69ErK.js";import{t as o}from"./cosmoz-slideout-panel-DI07MGvV.js";var s,c,l,u,d,f,p,m;e((()=>{i(),n(),a(),o(),{expect:s,waitFor:c}=__STORYBOOK_MODULE_TEST__,l={title:`CosmozSlideout/Test`,component:`cosmoz-slideout`,tags:[`!autodocs`]},u={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-BX-cqWC7.js";import{t as i}from"./cosmoz-slideout-B0EnknSB.js";import{t as a}from"./cosmoz-button-BuW3gsQI.js";import{t as o}from"./cosmoz-slideout-panel-BDjxdXIR.js";import{n as s,r as c}from"./chrome-BKHPZJD6.js";var l,u,d,f,p,m,h,g;e((()=>{a(),n(),i(),o(),c(),{expect:l,waitFor:u}=__STORYBOOK_MODULE_TEST__,d={title:`CosmozSlideout/Test`,component:`cosmoz-slideout`,tags:[`!autodocs`]},f={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
                     <cosmoz-slideout
+                        aria-label="Supplier #4021"
                         .opened=${n}
                         @opened-changed=${e=>{n=e.detail.value,i()}}
                     >
-                        <cosmoz-slideout-panel heading="Supplier #4021" closeable>
+                        <cosmoz-slideout-panel>
+                            <div slot="header">
+                                <h2>Supplier #4021</h2>
+                            </div>
                             <p>Body</p>
                         </cosmoz-slideout-panel>
                     </cosmoz-slideout>
@@ -12,7 +16,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                 >Open labelled</cosmoz-button
             >
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open labelled/iu}));let i=t.querySelector(`cosmoz-slideout`);await n(`shell mirrors the panel heading onto its own aria-label and the dialog`,async()=>{await c(()=>s(i.getAttribute(`aria-label`)).toBe(`Supplier #4021`));let e=i.shadowRoot.querySelector(`[popover]`);s(e.getAttribute(`aria-label`)).toBe(`Supplier #4021`)})}},d={render:()=>{let e=document.createElement(`div`),n=document.createElement(`span`);n.dataset.testid=`open-count`,n.textContent=`0`;let i=0,a=!1,o=()=>r(t`
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open labelled/iu}));let i=t.querySelector(`cosmoz-slideout`);await n(`the authored aria-label names the host and the dialog surface`,async()=>{let e=i.shadowRoot.querySelector(`[popover]`);l(i.getAttribute(`aria-label`)).toBe(`Supplier #4021`),await u(()=>l(e.getAttribute(`aria-label`)).toBe(`Supplier #4021`))})}},p={render:()=>{let e=document.createElement(`div`),n=document.createElement(`span`);n.dataset.testid=`open-count`,n.textContent=`0`;let i=0,a=!1,o=()=>r(t`
                     <cosmoz-slideout
                         .opened=${a}
                         @open=${()=>{i+=1,n.textContent=String(i)}}
@@ -25,27 +29,27 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                 Open with event
             </cosmoz-button>
             ${n}${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open with event/iu})),await n("dispatches `open` after the enter transition settles",async()=>{await c(()=>s(t.querySelector(`[data-testid="open-count"]`).textContent).toBe(`1`))})}},f={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open with event/iu})),await n("dispatches `open` after the enter transition settles",async()=>{await u(()=>l(t.querySelector(`[data-testid="open-count"]`).textContent).toBe(`1`))})}},m={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
                     <cosmoz-slideout
                         .opened=${n}
                         @opened-changed=${e=>{if(e.detail.value===!1){e.preventDefault();return}n=e.detail.value,i()}}
                     >
-                        <cosmoz-slideout-panel closeable><p>Body</p></cosmoz-slideout-panel>
+                        <cosmoz-slideout-panel><p>Body</p></cosmoz-slideout-panel>
                     </cosmoz-slideout>
                 `,e);return i(),t`
             <cosmoz-button variant="primary" @click=${()=>{n=!0,i()}}
                 >Open guarded</cosmoz-button
             >
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open guarded/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await c(()=>s(a.matches(`:popover-open`)).toBe(!0)),await n(`close is vetoed via opened-changed preventDefault`,async()=>{i.close(),s(i).toHaveAttribute(`opened`),s(a.matches(`:popover-open`)).toBe(!0)})}},p={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open guarded/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await u(()=>l(a.matches(`:popover-open`)).toBe(!0)),await n(`close is vetoed via opened-changed preventDefault`,async()=>{i.close(),l(i).toHaveAttribute(`opened`),l(a.matches(`:popover-open`)).toBe(!0)})}},h={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
                     <cosmoz-slideout
                         .opened=${n}
                         @opened-changed=${e=>{n=e.detail.value,i()}}
                     >
                         <cosmoz-slideout-panel
-                            closeable
                             @request-close=${e=>e.preventDefault()}
                         >
+                            ${s(`Vetoed`,{})}
                             <p>Body</p>
                         </cosmoz-slideout-panel>
                     </cosmoz-slideout>
@@ -54,19 +58,23 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                 >Open vetoed X</cosmoz-button
             >
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open vetoed x/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.querySelector(`cosmoz-slideout-panel`),o=i.shadowRoot.querySelector(`[popover]`);await c(()=>s(o.matches(`:popover-open`)).toBe(!0)),await n(`the built-in close button is vetoed via request-close`,async()=>{a.shadowRoot.querySelector(`cosmoz-button[aria-label="Close"]`).click(),s(i).toHaveAttribute(`opened`),s(o.matches(`:popover-open`)).toBe(!0)})}},u.parameters={...u.parameters,docs:{...u.parameters?.docs,source:{originalSource:`{
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open vetoed x/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await u(()=>l(a.matches(`:popover-open`)).toBe(!0)),await n(`the slotted close control is vetoed via request-close`,async()=>{i.querySelector(`cosmoz-button[aria-label="Close"]`).click(),l(i).toHaveAttribute(`opened`),l(a.matches(`:popover-open`)).toBe(!0)})}},f.parameters={...f.parameters,docs:{...f.parameters?.docs,source:{originalSource:`{
   render: () => {
     const mount = document.createElement('div');
     let opened = false;
     const rerender = () => render(html\`
                     <cosmoz-slideout
+                        aria-label="Supplier #4021"
                         .opened=\${opened}
                         @opened-changed=\${(e: CustomEvent) => {
       opened = e.detail.value;
       rerender();
     }}
                     >
-                        <cosmoz-slideout-panel heading="Supplier #4021" closeable>
+                        <cosmoz-slideout-panel>
+                            <div slot="header">
+                                <h2>Supplier #4021</h2>
+                            </div>
                             <p>Body</p>
                         </cosmoz-slideout-panel>
                     </cosmoz-slideout>
@@ -93,14 +101,14 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       name: /open labelled/iu
     }));
     const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-    await step('shell mirrors the panel heading onto its own aria-label and the dialog', async () => {
-      await waitFor(() => expect(el.getAttribute('aria-label')).toBe('Supplier #4021'));
-      // the actual role="dialog" node must carry the name too
+    await step('the authored aria-label names the host and the dialog surface', async () => {
+      // the actual role="dialog" node must carry the name
       const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
-      expect(surface.getAttribute('aria-label')).toBe('Supplier #4021');
+      expect(el.getAttribute('aria-label')).toBe('Supplier #4021');
+      await waitFor(() => expect(surface.getAttribute('aria-label')).toBe('Supplier #4021'));
     });
   }
-}`,...u.parameters?.docs?.source}}},d.parameters={...d.parameters,docs:{...d.parameters?.docs,source:{originalSource:`{
+}`,...f.parameters?.docs?.source}}},p.parameters={...p.parameters,docs:{...p.parameters?.docs,source:{originalSource:`{
   render: () => {
     const mount = document.createElement('div');
     const status = document.createElement('span');
@@ -148,7 +156,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       await waitFor(() => expect(canvasElement.querySelector('[data-testid="open-count"]')!.textContent).toBe('1'));
     });
   }
-}`,...d.parameters?.docs?.source}}},f.parameters={...f.parameters,docs:{...f.parameters?.docs,source:{originalSource:`{
+}`,...p.parameters?.docs?.source}}},m.parameters={...m.parameters,docs:{...m.parameters?.docs,source:{originalSource:`{
   render: () => {
     const mount = document.createElement('div');
     let opened = false;
@@ -164,7 +172,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       rerender();
     }}
                     >
-                        <cosmoz-slideout-panel closeable><p>Body</p></cosmoz-slideout-panel>
+                        <cosmoz-slideout-panel><p>Body</p></cosmoz-slideout-panel>
                     </cosmoz-slideout>
                 \`, mount);
     rerender();
@@ -198,7 +206,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       expect(surface.matches(':popover-open')).toBe(true);
     });
   }
-}`,...f.parameters?.docs?.source}}},p.parameters={...p.parameters,docs:{...p.parameters?.docs,source:{originalSource:`{
+}`,...m.parameters?.docs?.source}}},h.parameters={...h.parameters,docs:{...h.parameters?.docs,source:{originalSource:`{
   render: () => {
     const mount = document.createElement('div');
     let opened = false;
@@ -211,9 +219,9 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     }}
                     >
                         <cosmoz-slideout-panel
-                            closeable
                             @request-close=\${(e: Event) => e.preventDefault()}
                         >
+                            \${header('Vetoed', {})}
                             <p>Body</p>
                         </cosmoz-slideout-panel>
                     </cosmoz-slideout>
@@ -240,13 +248,12 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       name: /open vetoed x/iu
     }));
     const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-    const panel = el.querySelector('cosmoz-slideout-panel')!;
     const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
     await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
-    await step('the built-in close button is vetoed via request-close', async () => {
-      panel.shadowRoot!.querySelector<HTMLElement>('cosmoz-button[aria-label="Close"]')!.click();
+    await step('the slotted close control is vetoed via request-close', async () => {
+      el.querySelector<HTMLElement>('cosmoz-button[aria-label="Close"]')!.click();
       expect(el).toHaveAttribute('opened');
       expect(surface.matches(':popover-open')).toBe(true);
     });
   }
-}`,...p.parameters?.docs?.source}}},m=[`AriaLabelFromHeading`,`OpenEvent`,`VetoOpenedChanged`,`VetoRequestClose`]}))();export{u as AriaLabelFromHeading,d as OpenEvent,f as VetoOpenedChanged,p as VetoRequestClose,m as __namedExportsOrder,l as default};
+}`,...h.parameters?.docs?.source}}},g=[`ExplicitAriaLabel`,`OpenEvent`,`VetoOpenedChanged`,`VetoRequestClose`]}))();export{f as ExplicitAriaLabel,p as OpenEvent,m as VetoOpenedChanged,h as VetoRequestClose,g as __namedExportsOrder,d as default};
