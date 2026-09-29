@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r}from"./iframe-B2weqZig.js";import{D as i,T as a,a as o,c as s,d as c,f as l,m as u,p as d,s as f}from"./cosmoz-slideout-6fMMxWgr.js";import{a as p,i as m,r as h,t as g}from"./untitled-eL0iVtmC.js";var _,v=e((()=>{o(),_=f`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r}from"./iframe-C-Wxb5QC.js";import{D as i,T as a,a as o,c as s,d as c,f as l,l as u,m as d,p as f,s as p,u as m}from"./cosmoz-slideout-BQP69ErK.js";import{a as h,i as g,r as _,t as v}from"./untitled-DgUPJjek.js";var y,b=e((()=>{o(),y=p`
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -89,7 +89,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r}
 	.footer[hidden] {
 		display: none;
 	}
-`})),y,b=e((()=>{d(),y=()=>t`<style>
+`})),x,S=e((()=>{f(),x=()=>t`<style>
 	@keyframes rotating {
 		100% {
 			transform: rotate(360deg);
@@ -108,30 +108,34 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r}
 		box-sizing: border-box;
 		margin: 0 4px;
 	}
-</style>`,customElements.define(`cz-spinner`,u(y))})),x,S,C,w=e((()=>{d(),x=e=>e.target.assignedElements().length>0,S=(e,t)=>e.querySelector(`:scope > [slot="${t}"]`)!==null,C=e=>{let[t,n]=a(S(e,`header`)),[r,o]=a(S(e,`footer`));return{hasHeaderContent:t,hasFooterContent:r,onHeaderSlot:i(e=>n(x(e)),[]),onFooterSlot:i(e=>o(x(e)),[])}}})),T,E,D,O,k=e((()=>{s(),g(),b(),d(),r(),m(),w(),T=e=>e.dispatchEvent(new Event(`request-close`,{bubbles:!0,composed:!0,cancelable:!0})),E=e=>t`
+</style>`,customElements.define(`cz-spinner`,d(x))})),C,w,T,E=e((()=>{f(),C=e=>e.target.assignedElements().length>0,w=(e,t)=>e.querySelector(`:scope > [slot="${t}"]`)!==null,T=e=>{let[t,n]=a(w(e,`header`)),[r,o]=a(w(e,`footer`));return{hasHeaderContent:t,hasFooterContent:r,onHeaderSlot:i(e=>n(C(e)),[]),onFooterSlot:i(e=>o(C(e)),[])}}})),D,O,k,A,j=e((()=>{s(),v(),S(),f(),r(),u(),g(),E(),D=e=>e.dispatchEvent(new Event(`request-close`,{bubbles:!0,composed:!0,cancelable:!0})),O=e=>t`
 	<cosmoz-button
 		class="close"
 		part="close"
 		variant="tertiary"
 		size="sm"
 		aria-label="Close"
-		@click=${()=>T(e)}
+		@click=${()=>D(e)}
 	>
-		${h({slot:`prefix`})}
+		${_({slot:`prefix`})}
 	</cosmoz-button>
-`,D=(e,r)=>t`
+`,k=(e,r)=>t`
 	${e?t`<h2 class="heading">${e}</h2>`:n}
 	${r?t`<p class="subtitle">${r}</p>`:n}
-`,O=e=>{let{hasHeaderContent:r,hasFooterContent:i,onHeaderSlot:a,onFooterSlot:o}=C(e),{heading:s,subtitle:c}=e,l=!!e.closeable,u=!!e.loading;return t`
+`,A=e=>{let{hasHeaderContent:r,hasFooterContent:i,onHeaderSlot:a,onFooterSlot:o}=T(e),{heading:s,subtitle:c}=e,l=!!e.closeable,u=!!e.loading;return t`
 		<header part="header" class="header" ?hidden=${!(s||c||l||r)}>
 			<slot name="header" @slotchange=${a}>
-				${D(s,c)}
+				${k(s,c)}
 			</slot>
-			${l?E(e):n}
+			${l?O(e):n}
 		</header>
-		<div part="body" class="body" aria-busy=${u}>
+		<div
+			part="body"
+			class="body"
+			aria-busy=${m(u?`true`:void 0)}
+		>
 			<slot></slot>
-			${p(u,()=>t`
+			${h(u,()=>t`
 					<div class="loading" part="loading">
 						<cz-spinner></cz-spinner>
 					</div>
@@ -140,4 +144,4 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r}
 		<footer part="footer" class="footer" ?hidden=${!i}>
 			<slot name="footer" @slotchange=${o}></slot>
 		</footer>
-	`}})),A=e((()=>{c(),d(),v(),k(),customElements.define(`cosmoz-slideout-panel`,u(e=>O(e),{observedAttributes:[`heading`,`subtitle`,`closeable`,`loading`],styleSheets:[l,_]}))}));export{A as t};
+	`}})),M=e((()=>{c(),f(),b(),j(),customElements.define(`cosmoz-slideout-panel`,d(e=>A(e),{observedAttributes:[`heading`,`subtitle`,`closeable`,`loading`],styleSheets:[l,y]}))}));export{M as t};

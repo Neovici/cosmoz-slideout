@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-B2weqZig.js";import{c as i,t as a}from"./cosmoz-slideout-6fMMxWgr.js";import{t as o}from"./cosmoz-slideout-panel-tP8_8518.js";var s,c,l,u,d,f,p,m;e((()=>{i(),n(),a(),o(),{expect:s,waitFor:c}=__STORYBOOK_MODULE_TEST__,l={title:`CosmozSlideout/Test`,component:`cosmoz-slideout`,tags:[`!autodocs`]},u={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-C-Wxb5QC.js";import{c as i,t as a}from"./cosmoz-slideout-BQP69ErK.js";import{t as o}from"./cosmoz-slideout-panel-DI07MGvV.js";var s,c,l,u,d,f,p,m;e((()=>{i(),n(),a(),o(),{expect:s,waitFor:c}=__STORYBOOK_MODULE_TEST__,l={title:`CosmozSlideout/Test`,component:`cosmoz-slideout`,tags:[`!autodocs`]},u={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
                     <cosmoz-slideout
                         .opened=${n}
                         @opened-changed=${e=>{n=e.detail.value,i()}}
