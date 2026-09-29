@@ -11,15 +11,6 @@ export interface Props {
 
 export type SlideoutElement = HTMLElement & Props;
 
-export interface PanelProps {
-	heading?: string;
-	subtitle?: string;
-	closeable?: boolean;
-	loading?: boolean;
-}
-
-export type PanelElement = HTMLElement & PanelProps;
-
 export interface SlideoutProps {
 	opened?: boolean;
 	fullScreen?: boolean;

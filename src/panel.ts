@@ -1,78 +1,35 @@
-import '@neovici/cosmoz-button/cosmoz-button';
-import { xCloseIcon } from '@neovici/cosmoz-icons/untitled';
-import '@neovici/cosmoz-utils/elements/cz-spinner';
 import { html } from '@pionjs/pion';
-import { nothing } from 'lit-html';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { when } from 'lit-html/directives/when.js';
-import type { PanelElement } from './types';
-import { usePanel } from './use-panel';
 
-const requestClose = (host: PanelElement) =>
-	host.dispatchEvent(
-		new Event('request-close', {
-			bubbles: true,
-			composed: true,
-			cancelable: true,
-		})
-	);
-
-const closeButton = (host: PanelElement) => html`
-	<cosmoz-button
-		class="close"
-		part="close"
-		variant="tertiary"
-		size="sm"
-		aria-label="Close"
-		@click=${() => requestClose(host)}
-	>
-		${xCloseIcon({ slot: 'prefix' })}
-	</cosmoz-button>
+/**
+ * `<cosmoz-slideout-panel>` - the layout chrome for slideout content.
+ *
+ * Purely structural, in the spirit of `cz-card`: content-conditional regions are
+ * the author's business - all three slots are always rendered, and the panel adds
+ * only the design-system layout: a `header` region, a scrollable padded `body`,
+ * and a `footer` with a divider. It holds **no properties** and closes only via
+ * a bubbling `request-close` event dispatched by whatever the author slots in
+ * (e.g. a `cz-header` with a close control in its suffix slot).
+ *
+ * ```html
+ * <cosmoz-slideout opened>
+ *   <cosmoz-slideout-panel>
+ *     <div slot="header">
+ *       <h2>Supplier #4021</h2>
+ *     </div>
+ *     <p>…body…</p>
+ *     <div slot="footer">…actions…</div>
+ *   </cosmoz-slideout-panel>
+ * </cosmoz-slideout>
+ * ```
+ */
+export const renderPanel = () => html`
+	<header part="header" class="header">
+		<slot name="header"></slot>
+	</header>
+	<div part="body" class="body">
+		<slot></slot>
+	</div>
+	<footer part="footer" class="footer">
+		<slot name="footer"></slot>
+	</footer>
 `;
-
-const defaultTitle = (
-	heading: string | null | undefined,
-	subtitle: string | null | undefined
-) => html`
-	${heading ? html`<h2 class="heading">${heading}</h2>` : nothing}
-	${subtitle ? html`<p class="subtitle">${subtitle}</p>` : nothing}
-`;
-
-export const renderPanel = (host: PanelElement) => {
-	const { hasHeaderContent, hasFooterContent, onHeaderSlot, onFooterSlot } =
-		usePanel(host);
-
-	const { heading, subtitle } = host;
-	const closeable = Boolean(host.closeable);
-	const loading = Boolean(host.loading);
-	const showHeader = Boolean(
-		heading || subtitle || closeable || hasHeaderContent
-	);
-
-	return html`
-		<header part="header" class="header" ?hidden=${!showHeader}>
-			<slot name="header" @slotchange=${onHeaderSlot}>
-				${defaultTitle(heading, subtitle)}
-			</slot>
-			${closeable ? closeButton(host) : nothing}
-		</header>
-		<div
-			part="body"
-			class="body"
-			aria-busy=${ifDefined(loading ? 'true' : undefined)}
-		>
-			<slot></slot>
-			${when(
-				loading,
-				() => html`
-					<div class="loading" part="loading">
-						<cz-spinner></cz-spinner>
-					</div>
-				`
-			)}
-		</div>
-		<footer part="footer" class="footer" ?hidden=${!hasFooterContent}>
-			<slot name="footer" @slotchange=${onFooterSlot}></slot>
-		</footer>
-	`;
-};

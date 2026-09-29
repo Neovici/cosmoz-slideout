@@ -22,15 +22,18 @@ import type { Props, SlideoutElement } from './types';
  * element stays connected and can be re-opened.
  *
  * It handles everything *around* the content - the surface, the `opened` /
- * `full-screen` lifecycle, the Escape stack, focus management, and its own
- * `aria-label` (read from a slotted panel's `heading`) - and exposes a single blank
- * slot. It adds no UI of its own. For the design-system UI (styled header/body/
- * footer, heading/subtitle, built-in close button, loading overlay) nest a
- * `<cosmoz-slideout-panel>` inside it:
+ * `full-screen` lifecycle, the Escape stack, and focus management - and exposes a
+ * single blank slot. It adds no UI of its own; set `aria-label` on it to name the
+ * dialog. For the design-system layout (header / body / footer regions) nest a
+ * `<cosmoz-slideout-panel>` inside it and slot in your header (e.g. `cz-header`
+ * with a close control dispatching `request-close`):
  *
  * ```html
- * <cosmoz-slideout opened full-screen>
- *   <cosmoz-slideout-panel heading="Details" closeable>…</cosmoz-slideout-panel>
+ * <cosmoz-slideout opened full-screen aria-label="Details">
+ *   <cosmoz-slideout-panel>
+ *     <div slot="header"><h2>Details</h2></div>
+ *     …content…
+ *   </cosmoz-slideout-panel>
  * </cosmoz-slideout>
  * ```
  */

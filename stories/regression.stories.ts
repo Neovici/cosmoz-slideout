@@ -4,6 +4,7 @@ import { html, render } from 'lit-html';
 import { expect, waitFor } from 'storybook/test';
 import '../src/cosmoz-slideout';
 import '../src/cosmoz-slideout-panel';
+import { header } from './chrome';
 
 type SlideoutEl = HTMLElement & { close(): void };
 
@@ -17,7 +18,7 @@ export default meta;
 
 type Story = StoryObj;
 
-export const AriaLabelFromHeading: Story = {
+export const ExplicitAriaLabel: Story = {
 	render: () => {
 		const mount = document.createElement('div');
 		let opened = false;
@@ -25,18 +26,22 @@ export const AriaLabelFromHeading: Story = {
 			render(
 				html`
 					<cosmoz-slideout
+						aria-label="Supplier #4021"
 						.opened=${opened}
 						@opened-changed=${(e: CustomEvent) => {
 							opened = e.detail.value;
 							rerender();
 						}}
 					>
-						<cosmoz-slideout-panel heading="Supplier #4021" closeable>
+						<cosmoz-slideout-panel>
+							<div slot="header">
+								<h2>Supplier #4021</h2>
+							</div>
 							<p>Body</p>
 						</cosmoz-slideout-panel>
 					</cosmoz-slideout>
 				`,
-				mount
+				mount,
 			);
 		rerender();
 		const open = () => {
@@ -52,19 +57,19 @@ export const AriaLabelFromHeading: Story = {
 	},
 	play: async ({ canvas, canvasElement, step, userEvent }) => {
 		await userEvent.click(
-			await canvas.findByShadowRole('button', { name: /open labelled/iu })
+			await canvas.findByShadowRole('button', { name: /open labelled/iu }),
 		);
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
 		await step(
-			'shell mirrors the panel heading onto its own aria-label and the dialog',
+			'the authored aria-label names the host and the dialog surface',
 			async () => {
-				await waitFor(() =>
-					expect(el.getAttribute('aria-label')).toBe('Supplier #4021')
-				);
-				// the actual role="dialog" node must carry the name too
+				// the actual role="dialog" node must carry the name
 				const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
-				expect(surface.getAttribute('aria-label')).toBe('Supplier #4021');
-			}
+				expect(el.getAttribute('aria-label')).toBe('Supplier #4021');
+				await waitFor(() =>
+					expect(surface.getAttribute('aria-label')).toBe('Supplier #4021'),
+				);
+			},
 		);
 	},
 };
@@ -94,7 +99,7 @@ export const OpenEvent: Story = {
 						<p style="padding: 24px">Body</p>
 					</cosmoz-slideout>
 				`,
-				mount
+				mount,
 			);
 		rerender();
 		const open = () => {
@@ -110,7 +115,7 @@ export const OpenEvent: Story = {
 	},
 	play: async ({ canvas, canvasElement, step, userEvent }) => {
 		await userEvent.click(
-			await canvas.findByShadowRole('button', { name: /open with event/iu })
+			await canvas.findByShadowRole('button', { name: /open with event/iu }),
 		);
 		await step(
 			'dispatches `open` after the enter transition settles',
@@ -118,10 +123,10 @@ export const OpenEvent: Story = {
 				await waitFor(() =>
 					expect(
 						canvasElement.querySelector('[data-testid="open-count"]')!
-							.textContent
-					).toBe('1')
+							.textContent,
+					).toBe('1'),
 				);
-			}
+			},
 		);
 	},
 };
@@ -144,10 +149,10 @@ export const VetoOpenedChanged: Story = {
 							rerender();
 						}}
 					>
-						<cosmoz-slideout-panel closeable><p>Body</p></cosmoz-slideout-panel>
+						<cosmoz-slideout-panel><p>Body</p></cosmoz-slideout-panel>
 					</cosmoz-slideout>
 				`,
-				mount
+				mount,
 			);
 		rerender();
 		const open = () => {
@@ -163,7 +168,7 @@ export const VetoOpenedChanged: Story = {
 	},
 	play: async ({ canvas, canvasElement, step, userEvent }) => {
 		await userEvent.click(
-			await canvas.findByShadowRole('button', { name: /open guarded/iu })
+			await canvas.findByShadowRole('button', { name: /open guarded/iu }),
 		);
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
 		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
@@ -176,7 +181,7 @@ export const VetoOpenedChanged: Story = {
 				// the veto bails inside set() before the attribute is touched, synchronously
 				expect(el).toHaveAttribute('opened');
 				expect(surface.matches(':popover-open')).toBe(true);
-			}
+			},
 		);
 	},
 };
@@ -196,14 +201,14 @@ export const VetoRequestClose: Story = {
 						}}
 					>
 						<cosmoz-slideout-panel
-							closeable
 							@request-close=${(e: Event) => e.preventDefault()}
 						>
+							${header('Vetoed', {})}
 							<p>Body</p>
 						</cosmoz-slideout-panel>
 					</cosmoz-slideout>
 				`,
-				mount
+				mount,
 			);
 		rerender();
 		const open = () => {
@@ -219,24 +224,21 @@ export const VetoRequestClose: Story = {
 	},
 	play: async ({ canvas, canvasElement, step, userEvent }) => {
 		await userEvent.click(
-			await canvas.findByShadowRole('button', { name: /open vetoed x/iu })
+			await canvas.findByShadowRole('button', { name: /open vetoed x/iu }),
 		);
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-		const panel = el.querySelector('cosmoz-slideout-panel')!;
 		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 		await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
 
 		await step(
-			'the built-in close button is vetoed via request-close',
+			'the slotted close control is vetoed via request-close',
 			async () => {
-				panel
-					.shadowRoot!.querySelector<HTMLElement>(
-						'cosmoz-button[aria-label="Close"]'
-					)!
-					.click();
+				el.querySelector<HTMLElement>(
+					'cosmoz-button[aria-label="Close"]',
+				)!.click();
 				expect(el).toHaveAttribute('opened');
 				expect(surface.matches(':popover-open')).toBe(true);
-			}
+			},
 		);
 	},
 };

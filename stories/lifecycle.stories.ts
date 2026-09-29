@@ -4,6 +4,7 @@ import { html as litHtml, render } from 'lit-html';
 import { expect, waitFor } from 'storybook/test';
 import '../src/cosmoz-slideout';
 import '../src/cosmoz-slideout-panel';
+import { header } from './chrome';
 import { storyDoc } from './story-docs';
 
 type SlideoutEl = HTMLElement & {
@@ -27,7 +28,7 @@ export const Events: Story = {
 	parameters: storyDoc(
 		'The surface event & callback lifecycle: `open` / `opened-changed` / ' +
 			'`full-screen-changed` / `close` (+ the `onClose` callback). The element ' +
-			'persists in the DOM across open/close cycles.'
+			'persists in the DOM across open/close cycles.',
 	),
 	render: () => {
 		const mount = document.createElement('div');
@@ -42,7 +43,7 @@ export const Events: Story = {
 		};
 		const shellOf = (e: Event) =>
 			(e.currentTarget as HTMLElement).closest(
-				'cosmoz-slideout'
+				'cosmoz-slideout',
 			) as SlideoutEl | null;
 		let opened = false;
 		const rerender = () =>
@@ -60,11 +61,10 @@ export const Events: Story = {
 							addLog(`full-screen: ${e.detail.fullScreen}`)}
 						@close=${() => addLog('close event')}
 					>
-						<cosmoz-slideout-panel
-							heading="Lifecycle"
-							subtitle="Events and imperative callbacks"
-							closeable
-						>
+						<cosmoz-slideout-panel>
+							${header('Lifecycle', {
+								subtitle: 'Events and imperative callbacks',
+							})}
 							<p>
 								The element persists in the DOM. It emits <code>opened-changed</code>
 								and, on close, <code>close</code> once the slide-out animation
@@ -90,7 +90,7 @@ export const Events: Story = {
 						</cosmoz-slideout-panel>
 					</cosmoz-slideout>
 				`,
-				mount
+				mount,
 			);
 		rerender();
 		const el = mount.querySelector('cosmoz-slideout') as SlideoutEl;
@@ -110,13 +110,13 @@ export const Events: Story = {
 	play: async ({ canvas, canvasElement, step, userEvent }) => {
 		const logItems = () =>
 			[...canvasElement.querySelectorAll('[data-testid="event-log"] li')].map(
-				(item) => item.textContent
+				(item) => item.textContent,
 			);
 
 		await userEvent.click(
 			await canvas.findByShadowRole('button', {
 				name: /open lifecycle panel/iu,
-			})
+			}),
 		);
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
 
@@ -127,7 +127,7 @@ export const Events: Story = {
 			await userEvent.click(
 				await canvas.findByShadowRole('button', {
 					name: /toggle full screen/iu,
-				})
+				}),
 			);
 			await waitFor(() => expect(logItems()).toContain('full-screen: true'));
 		});
@@ -137,7 +137,7 @@ export const Events: Story = {
 				el.querySelector<HTMLElement>('cosmoz-button:last-of-type')!.click();
 				await waitFor(() => expect(logItems()).toContain('close event'));
 				await waitFor(() => expect(logItems()).toContain('onClose callback'));
-			}
+			},
 		);
 	},
 };
