@@ -3,6 +3,7 @@ import { xCloseIcon } from '@neovici/cosmoz-icons/untitled';
 import '@neovici/cosmoz-utils/elements/cz-spinner';
 import { html } from '@pionjs/pion';
 import { nothing } from 'lit-html';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { when } from 'lit-html/directives/when.js';
 import type { PanelElement } from './types';
 import { usePanel } from './use-panel';
@@ -55,7 +56,11 @@ export const renderPanel = (host: PanelElement) => {
 			</slot>
 			${closeable ? closeButton(host) : nothing}
 		</header>
-		<div part="body" class="body" aria-busy=${loading}>
+		<div
+			part="body"
+			class="body"
+			aria-busy=${ifDefined(loading ? 'true' : undefined)}
+		>
 			<slot></slot>
 			${when(
 				loading,
