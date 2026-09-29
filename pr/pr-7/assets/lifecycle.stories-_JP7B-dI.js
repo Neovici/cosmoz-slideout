@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-B1goUN66.js";import{t as i}from"./cosmoz-slideout-DvVOMsGx.js";import{t as a}from"./cosmoz-button-fTB3riRW.js";import{n as o,r as s}from"./story-docs-CVcPOcP0.js";import{t as c}from"./cosmoz-slideout-panel-BuvRLNXM.js";import{n as l,r as u}from"./chrome-BbHtXWbN.js";var d,f,p,m,h;e((()=>{a(),n(),i(),c(),u(),o(),{expect:d,waitFor:f}=__STORYBOOK_MODULE_TEST__,p={title:`CosmozSlideout/Events`,component:`cosmoz-slideout`,tags:[`autodocs`]},m={parameters:s("The surface event & callback lifecycle: `open` / `opened-changed` / `full-screen-changed` / `close` (+ the `onClose` callback). The element persists in the DOM across open/close cycles."),render:()=>{let e=document.createElement(`div`),n=document.createElement(`ol`);n.dataset.testid=`event-log`,n.style.cssText=`margin: calc(var(--cz-spacing) * 3) 0 0; color: var(--cz-color-text-tertiary); font-family: var(--cz-font-body); font-size: var(--cz-text-sm);`;let i=e=>{let t=document.createElement(`li`);t.textContent=e,n.append(t)},a=e=>e.currentTarget.closest(`cosmoz-slideout`),o=!1,s=()=>r(t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-BX-cqWC7.js";import{t as i}from"./cosmoz-slideout-B0EnknSB.js";import{t as a}from"./cosmoz-button-BuW3gsQI.js";import{n as o,r as s}from"./story-docs-CVcPOcP0.js";import{t as c}from"./cosmoz-slideout-panel-BDjxdXIR.js";import{n as l,r as u}from"./chrome-BKHPZJD6.js";var d,f,p,m,h;e((()=>{a(),n(),i(),c(),u(),o(),{expect:d,waitFor:f}=__STORYBOOK_MODULE_TEST__,p={title:`CosmozSlideout/Events`,component:`cosmoz-slideout`,tags:[`autodocs`]},m={parameters:s("The surface event & callback lifecycle: `open` / `opened-changed` / `full-screen-changed` / `close` (+ the `onClose` callback). The element persists in the DOM across open/close cycles."),render:()=>{let e=document.createElement(`div`),n=document.createElement(`ol`);n.dataset.testid=`event-log`,n.style.cssText=`margin: calc(var(--cz-spacing) * 3) 0 0; color: var(--cz-color-text-tertiary); font-family: var(--cz-font-body); font-size: var(--cz-text-sm);`;let i=e=>{let t=document.createElement(`li`);t.textContent=e,n.append(t)},a=e=>e.currentTarget.closest(`cosmoz-slideout`),o=!1,s=()=>r(t`
                     <cosmoz-slideout
                         aria-label="Lifecycle"
                         .opened=${o}
@@ -38,18 +38,18 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
             </cosmoz-button>
             ${n}${e}
         `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{let i=()=>[...t.querySelectorAll(`[data-testid="event-log"] li`)].map(e=>e.textContent);await r.click(await e.findByShadowRole(`button`,{name:/open lifecycle panel/iu}));let a=t.querySelector(`cosmoz-slideout`);await n(`logs opened when the surface opens`,async()=>{await f(()=>d(i()).toContain(`opened`))}),await n(`emits full-screen-changed with state detail`,async()=>{await r.click(await e.findByShadowRole(`button`,{name:/toggle full screen/iu})),await f(()=>d(i()).toContain(`full-screen: true`))}),await n(`fires close and onClose when the animation finishes`,async()=>{a.querySelector(`cosmoz-button:last-of-type`).click(),await f(()=>d(i()).toContain(`close event`)),await f(()=>d(i()).toContain(`onClose callback`))})}},m.parameters={...m.parameters,docs:{...m.parameters?.docs,source:{originalSource:`{
-  parameters: storyDoc("The surface event & callback lifecycle: \`open\` / \`opened-changed\` / " + "\`full-screen-changed\` / \`close\` (+ the \`onClose\` callback). The element " + "persists in the DOM across open/close cycles."),
+  parameters: storyDoc('The surface event & callback lifecycle: \`open\` / \`opened-changed\` / ' + '\`full-screen-changed\` / \`close\` (+ the \`onClose\` callback). The element ' + 'persists in the DOM across open/close cycles.'),
   render: () => {
-    const mount = document.createElement("div");
-    const log = document.createElement("ol");
-    log.dataset.testid = "event-log";
-    log.style.cssText = "margin: calc(var(--cz-spacing) * 3) 0 0; color: var(--cz-color-text-tertiary); font-family: var(--cz-font-body); font-size: var(--cz-text-sm);";
+    const mount = document.createElement('div');
+    const log = document.createElement('ol');
+    log.dataset.testid = 'event-log';
+    log.style.cssText = 'margin: calc(var(--cz-spacing) * 3) 0 0; color: var(--cz-color-text-tertiary); font-family: var(--cz-font-body); font-size: var(--cz-text-sm);';
     const addLog = (message: string) => {
-      const item = document.createElement("li");
+      const item = document.createElement('li');
       item.textContent = message;
       log.append(item);
     };
-    const shellOf = (e: Event) => (e.currentTarget as HTMLElement).closest("cosmoz-slideout") as SlideoutEl | null;
+    const shellOf = (e: Event) => (e.currentTarget as HTMLElement).closest('cosmoz-slideout') as SlideoutEl | null;
     let opened = false;
     const rerender = () => render(litHtml\`
                     <cosmoz-slideout
@@ -57,15 +57,15 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                         .opened=\${opened}
                         @opened-changed=\${(e: CustomEvent) => {
       opened = e.detail.value;
-      if (opened) addLog("opened");
+      if (opened) addLog('opened');
       rerender();
     }}
                         @full-screen-changed=\${(e: CustomEvent) => addLog(\`full-screen: \${e.detail.fullScreen}\`)}
-                        @close=\${() => addLog("close event")}
+                        @close=\${() => addLog('close event')}
                     >
                         <cosmoz-slideout-panel>
-                            \${header("Lifecycle", {
-      subtitle: "Events and imperative callbacks"
+                            \${header('Lifecycle', {
+      subtitle: 'Events and imperative callbacks'
     })}
                             <p>
                                 The element persists in the DOM. It emits <code>opened-changed</code>
@@ -93,8 +93,8 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                     </cosmoz-slideout>
                 \`, mount);
     rerender();
-    const el = mount.querySelector("cosmoz-slideout") as SlideoutEl;
-    el.onClose = () => addLog("onClose callback");
+    const el = mount.querySelector('cosmoz-slideout') as SlideoutEl;
+    el.onClose = () => addLog('onClose callback');
     const open = () => {
       log.replaceChildren();
       el.open();
@@ -113,23 +113,23 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     userEvent
   }) => {
     const logItems = () => [...canvasElement.querySelectorAll('[data-testid="event-log"] li')].map(item => item.textContent);
-    await userEvent.click(await canvas.findByShadowRole("button", {
+    await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open lifecycle panel/iu
     }));
-    const el = canvasElement.querySelector("cosmoz-slideout") as SlideoutEl;
-    await step("logs opened when the surface opens", async () => {
-      await waitFor(() => expect(logItems()).toContain("opened"));
+    const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
+    await step('logs opened when the surface opens', async () => {
+      await waitFor(() => expect(logItems()).toContain('opened'));
     });
-    await step("emits full-screen-changed with state detail", async () => {
-      await userEvent.click(await canvas.findByShadowRole("button", {
+    await step('emits full-screen-changed with state detail', async () => {
+      await userEvent.click(await canvas.findByShadowRole('button', {
         name: /toggle full screen/iu
       }));
-      await waitFor(() => expect(logItems()).toContain("full-screen: true"));
+      await waitFor(() => expect(logItems()).toContain('full-screen: true'));
     });
-    await step("fires close and onClose when the animation finishes", async () => {
-      el.querySelector<HTMLElement>("cosmoz-button:last-of-type")!.click();
-      await waitFor(() => expect(logItems()).toContain("close event"));
-      await waitFor(() => expect(logItems()).toContain("onClose callback"));
+    await step('fires close and onClose when the animation finishes', async () => {
+      el.querySelector<HTMLElement>('cosmoz-button:last-of-type')!.click();
+      await waitFor(() => expect(logItems()).toContain('close event'));
+      await waitFor(() => expect(logItems()).toContain('onClose callback'));
     });
   }
 }`,...m.parameters?.docs?.source}}},h=[`Events`]}))();export{m as Events,h as __namedExportsOrder,p as default};

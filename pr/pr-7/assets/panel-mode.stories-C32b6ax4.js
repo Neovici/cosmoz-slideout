@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-B1goUN66.js";import{c as i,l as a,t as o}from"./cosmoz-slideout-DvVOMsGx.js";import{t as s}from"./cosmoz-button-fTB3riRW.js";import{n as c,r as l,t as u}from"./story-docs-CVcPOcP0.js";import{t as d}from"./cosmoz-slideout-panel-BuvRLNXM.js";import{i as f,n as p,r as m,t as h}from"./chrome-BbHtXWbN.js";import{n as g,r as _,t as v}from"./arg-types-Cqgi3yBR.js";var y,b,x,S,C,w,T,E,D,O;e((()=>{s(),n(),i(),o(),d(),g(),m(),c(),{expect:y,waitFor:b}=__STORYBOOK_MODULE_TEST__,x=(e,n,r,i)=>t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-BX-cqWC7.js";import{c as i,l as a,t as o}from"./cosmoz-slideout-B0EnknSB.js";import{t as s}from"./cosmoz-button-BuW3gsQI.js";import{n as c,r as l,t as u}from"./story-docs-CVcPOcP0.js";import{t as d}from"./cosmoz-slideout-panel-BDjxdXIR.js";import{i as f,n as p,r as m,t as h}from"./chrome-BKHPZJD6.js";import{n as g,r as _,t as v}from"./arg-types-Cqgi3yBR.js";var y,b,x,S,C,w,T,E,D,O;e((()=>{s(),n(),i(),o(),d(),g(),m(),c(),{expect:y,waitFor:b}=__STORYBOOK_MODULE_TEST__,x=(e,n,r,i)=>t`
     <cosmoz-slideout
         .opened=${n}
         aria-label=${a(e[`aria-label`])}
@@ -34,9 +34,8 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                             </div>
                         `}),n);return a(),S(`Open panel`,()=>{i=!0,a()},n)},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open panel/iu}));let i=t.querySelector(`cosmoz-slideout`),a=t.querySelector(`cosmoz-slideout-panel`),o=i.shadowRoot.querySelector(`[popover]`);await n(`opens with the slotted header and footer actions`,async()=>{await b(()=>y(o.matches(`:popover-open`)).toBe(!0)),await e.findByShadowText(/Acme Industries/u),y(a.shadowRoot.querySelector(`.header`).querySelector(`slot[name="header"]`)).not.toBeNull(),await b(()=>y(a.shadowRoot.querySelector(`.footer`).querySelector(`slot[name="footer"]`).assignedElements().length).toBeGreaterThan(0))}),await n(`the slotted close control dismisses the panel`,async()=>{a.shadowRoot.querySelector(`.header`).querySelector(`slot[name="header"]`).assignedElements()[0].querySelector(`cosmoz-button[aria-label="Close"]`).click(),await b(()=>y(o.matches(`:popover-open`)).toBe(!1))})}},T={parameters:l(`The header is whatever you slot in (a cz-header element in the real app).`),args:{heading:`Customer health`,subtitle:`Renewal risk · Q3`,"aria-label":`Customer health`},render:e=>{let n=document.createElement(`div`),i=!1,a=()=>r(x(e,i,e=>{i=e,a()},{header:{title:e.heading,subtitle:e.subtitle},body:t`
                             <p>
-                                The header region projects whatever you slot in - here a
-                                <code>cz-header</code>-shaped stand-in with its own close
-                                control.
+                                The header region projects whatever you slot in - a
+                                <code>cz-header</code> stand-in with its own close control.
                             </p>
                         `}),n);return a(),S(`Open custom header`,()=>{i=!0,a()},n)},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open custom header/iu}));let i=t.querySelector(`cosmoz-slideout-panel`).shadowRoot.querySelector(`.header > slot`);await n(`projects slotted header content`,async()=>{await b(()=>y(i.assignedElements().length).toBeGreaterThan(0)),await e.findByShadowText(/Customer health/u)})}},E={parameters:l(`Body-only: empty header slot; the panel just gives its body padding and gap.`),args:{heading:void 0,subtitle:void 0,"aria-label":`Notes`},render:e=>{let n=document.createElement(`div`),i=!1,a=()=>r(x(e,i,e=>{i=e,a()},{header:void 0,body:t`
                             <p>
@@ -60,13 +59,13 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                                     Close
                                 </cosmoz-button>`)}
                         `}),n);return o(),S(`Open activity`,()=>{a=!0,o()},n)},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open activity/iu}));let i=t.querySelector(`cosmoz-slideout-panel`),a=i.shadowRoot.querySelector(`.body`),o=i.shadowRoot.querySelector(`.header`),s=i.shadowRoot.querySelector(`.footer`);await n(`scrolls the body; header/footer stay outside it`,async()=>{await b(()=>y(a.scrollHeight).toBeGreaterThan(0)),y(o.closest(`.body`)).toBeNull(),y(s.closest(`.body`)).toBeNull()})}},w.parameters={...w.parameters,docs:{...w.parameters?.docs,source:{originalSource:`{
-  parameters: storyDoc("The canonical pairing: slotted header, body, footer actions."),
+  parameters: storyDoc('The canonical pairing: slotted header, body, footer actions.'),
   args: {
-    heading: "Acme Industries",
-    subtitle: "Supplier #4021 · Stockholm, SE"
+    heading: 'Acme Industries',
+    subtitle: 'Supplier #4021 · Stockholm, SE'
   },
   render: args => {
-    const mount = document.createElement("div");
+    const mount = document.createElement('div');
     let opened = false;
     const rerender = () => render(panelInShell(args, opened, value => {
       opened = value;
@@ -95,7 +94,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                         \`
     }), mount);
     rerender();
-    return trigger("Open panel", () => {
+    return trigger('Open panel', () => {
       opened = true;
       rerender();
     }, mount);
@@ -106,32 +105,32 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     step,
     userEvent
   }) => {
-    await userEvent.click(await canvas.findByShadowRole("button", {
+    await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open panel/iu
     }));
-    const shell = canvasElement.querySelector("cosmoz-slideout") as ShellEl;
-    const panel = canvasElement.querySelector("cosmoz-slideout-panel")!;
-    const surface = shell.shadowRoot!.querySelector<HTMLElement>("[popover]")!;
-    await step("opens with the slotted header and footer actions", async () => {
-      await waitFor(() => expect(surface.matches(":popover-open")).toBe(true));
+    const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
+    const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
+    const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+    await step('opens with the slotted header and footer actions', async () => {
+      await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
       await canvas.findByShadowText(/Acme Industries/u);
-      expect(panel.shadowRoot!.querySelector(".header")!.querySelector('slot[name="header"]')).not.toBeNull();
-      await waitFor(() => expect(panel.shadowRoot!.querySelector(".footer")!.querySelector<HTMLSlotElement>('slot[name="footer"]')!.assignedElements().length).toBeGreaterThan(0));
+      expect(panel.shadowRoot!.querySelector('.header')!.querySelector('slot[name="header"]')).not.toBeNull();
+      await waitFor(() => expect(panel.shadowRoot!.querySelector('.footer')!.querySelector<HTMLSlotElement>('slot[name="footer"]')!.assignedElements().length).toBeGreaterThan(0));
     });
-    await step("the slotted close control dismisses the panel", async () => {
-      panel.shadowRoot!.querySelector<HTMLElement>(".header")!.querySelector<HTMLSlotElement>('slot[name="header"]')!.assignedElements()[0].querySelector<HTMLElement>('cosmoz-button[aria-label="Close"]')!.click();
-      await waitFor(() => expect(surface.matches(":popover-open")).toBe(false));
+    await step('the slotted close control dismisses the panel', async () => {
+      panel.shadowRoot!.querySelector<HTMLElement>('.header')!.querySelector<HTMLSlotElement>('slot[name="header"]')!.assignedElements()[0].querySelector<HTMLElement>('cosmoz-button[aria-label="Close"]')!.click();
+      await waitFor(() => expect(surface.matches(':popover-open')).toBe(false));
     });
   }
 }`,...w.parameters?.docs?.source}}},T.parameters={...T.parameters,docs:{...T.parameters?.docs,source:{originalSource:`{
-  parameters: storyDoc("The header is whatever you slot in (a cz-header element in the real app)."),
+  parameters: storyDoc('The header is whatever you slot in (a cz-header element in the real app).'),
   args: {
-    heading: "Customer health",
-    subtitle: "Renewal risk · Q3",
-    "aria-label": "Customer health"
+    heading: 'Customer health',
+    subtitle: 'Renewal risk · Q3',
+    'aria-label': 'Customer health'
   },
   render: args => {
-    const mount = document.createElement("div");
+    const mount = document.createElement('div');
     let opened = false;
     const rerender = () => render(panelInShell(args, opened, value => {
       opened = value;
@@ -143,14 +142,13 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       },
       body: html\`
                             <p>
-                                The header region projects whatever you slot in - here a
-                                <code>cz-header</code>-shaped stand-in with its own close
-                                control.
+                                The header region projects whatever you slot in - a
+                                <code>cz-header</code> stand-in with its own close control.
                             </p>
                         \`
     }), mount);
     rerender();
-    return trigger("Open custom header", () => {
+    return trigger('Open custom header', () => {
       opened = true;
       rerender();
     }, mount);
@@ -161,25 +159,25 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     step,
     userEvent
   }) => {
-    await userEvent.click(await canvas.findByShadowRole("button", {
+    await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open custom header/iu
     }));
-    const panel = canvasElement.querySelector("cosmoz-slideout-panel")!;
-    const headerSlot = panel.shadowRoot!.querySelector<HTMLSlotElement>(".header > slot")!;
-    await step("projects slotted header content", async () => {
+    const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
+    const headerSlot = panel.shadowRoot!.querySelector<HTMLSlotElement>('.header > slot')!;
+    await step('projects slotted header content', async () => {
       await waitFor(() => expect(headerSlot.assignedElements().length).toBeGreaterThan(0));
       await canvas.findByShadowText(/Customer health/u);
     });
   }
 }`,...T.parameters?.docs?.source}}},E.parameters={...E.parameters,docs:{...E.parameters?.docs,source:{originalSource:`{
-  parameters: storyDoc("Body-only: empty header slot; the panel just gives its body padding and gap."),
+  parameters: storyDoc('Body-only: empty header slot; the panel just gives its body padding and gap.'),
   args: {
     heading: undefined,
     subtitle: undefined,
-    "aria-label": "Notes"
+    'aria-label': 'Notes'
   },
   render: args => {
-    const mount = document.createElement("div");
+    const mount = document.createElement('div');
     let opened = false;
     const rerender = () => render(panelInShell(args, opened, value => {
       opened = value;
@@ -198,7 +196,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                         \`
     }), mount);
     rerender();
-    return trigger("Open notes", () => {
+    return trigger('Open notes', () => {
       opened = true;
       rerender();
     }, mount);
@@ -209,27 +207,27 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     step,
     userEvent
   }) => {
-    await userEvent.click(await canvas.findByShadowRole("button", {
+    await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open notes/iu
     }));
-    const shell = canvasElement.querySelector("cosmoz-slideout") as ShellEl;
-    const panel = canvasElement.querySelector("cosmoz-slideout-panel")!;
-    const surface = shell.shadowRoot!.querySelector<HTMLElement>("[popover]")!;
-    await step("header region stays present but empty", async () => {
-      await waitFor(() => expect(surface.matches(":popover-open")).toBe(true));
-      expect(panel.shadowRoot!.querySelector(".header")!.querySelector<HTMLSlotElement>('slot[name="header"]')!.assignedElements().length).toBe(0);
-      expect(panel.shadowRoot!.querySelector(".body")).not.toBeNull();
+    const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
+    const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
+    const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+    await step('header region stays present but empty', async () => {
+      await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
+      expect(panel.shadowRoot!.querySelector('.header')!.querySelector<HTMLSlotElement>('slot[name="header"]')!.assignedElements().length).toBe(0);
+      expect(panel.shadowRoot!.querySelector('.body')).not.toBeNull();
     });
   }
 }`,...E.parameters?.docs?.source}}},D.parameters={...D.parameters,docs:{...D.parameters?.docs,source:{originalSource:`{
-  parameters: storyDoc("Long content scrolls within the body. Header and footer stay fixed."),
+  parameters: storyDoc('Long content scrolls within the body. Header and footer stay fixed.'),
   args: {
-    heading: "Activity",
-    subtitle: "Latest supplier events",
-    width: "min(520px, 100vw)"
+    heading: 'Activity',
+    subtitle: 'Latest supplier events',
+    width: 'min(520px, 100vw)'
   },
   render: args => {
-    const mount = document.createElement("div");
+    const mount = document.createElement('div');
     const rows = Array.from({
       length: 50
     }, (_, i) => i + 1); // 50 event rows
@@ -257,7 +255,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                         \`
     }), mount);
     rerender();
-    return trigger("Open activity", () => {
+    return trigger('Open activity', () => {
       opened = true;
       rerender();
     }, mount);
@@ -268,17 +266,17 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     step,
     userEvent
   }) => {
-    await userEvent.click(await canvas.findByShadowRole("button", {
+    await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open activity/iu
     }));
-    const panel = canvasElement.querySelector("cosmoz-slideout-panel")!;
-    const body = panel.shadowRoot!.querySelector<HTMLElement>(".body")!;
-    const header = panel.shadowRoot!.querySelector<HTMLElement>(".header")!;
-    const footer = panel.shadowRoot!.querySelector<HTMLElement>(".footer")!;
-    await step("scrolls the body; header/footer stay outside it", async () => {
+    const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
+    const body = panel.shadowRoot!.querySelector<HTMLElement>('.body')!;
+    const header = panel.shadowRoot!.querySelector<HTMLElement>('.header')!;
+    const footer = panel.shadowRoot!.querySelector<HTMLElement>('.footer')!;
+    await step('scrolls the body; header/footer stay outside it', async () => {
       await waitFor(() => expect(body.scrollHeight).toBeGreaterThan(0));
-      expect(header.closest(".body")).toBeNull();
-      expect(footer.closest(".body")).toBeNull();
+      expect(header.closest('.body')).toBeNull();
+      expect(footer.closest('.body')).toBeNull();
     });
   }
 }`,...D.parameters?.docs?.source}}},O=[`Default`,`CustomHeader`,`BodyOnly`,`ScrollableContent`]}))();export{E as BodyOnly,T as CustomHeader,w as Default,D as ScrollableContent,O as __namedExportsOrder,C as default};

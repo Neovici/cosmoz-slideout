@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./iframe-B1goUN66.js";import{c as r,l as i,t as a}from"./cosmoz-slideout-DvVOMsGx.js";import{t as o}from"./cosmoz-slideout-panel-BuvRLNXM.js";import{n as s,r as c,t as l}from"./arg-types-Cqgi3yBR.js";var u,d,f,p,m;e((()=>{n(),r(),a(),o(),s(),{expect:u,waitFor:d}=__STORYBOOK_MODULE_TEST__,f={title:`CosmozSlideoutPanel/Playground`,component:`cosmoz-slideout-panel`,argTypes:c,args:l},p={tags:[`!autodocs`],render:e=>t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./iframe-BX-cqWC7.js";import{c as r,l as i,t as a}from"./cosmoz-slideout-B0EnknSB.js";import{t as o}from"./cosmoz-slideout-panel-BDjxdXIR.js";import{n as s,r as c,t as l}from"./arg-types-Cqgi3yBR.js";var u,d,f,p,m;e((()=>{n(),r(),a(),o(),s(),{expect:u,waitFor:d}=__STORYBOOK_MODULE_TEST__,f={title:`CosmozSlideoutPanel/Playground`,component:`cosmoz-slideout-panel`,argTypes:c,args:l},p={tags:[`!autodocs`],render:e=>t`
         <cosmoz-slideout
             .opened=${e.opened}
             aria-label=${i(e[`aria-label`])}
@@ -30,14 +30,14 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./i
             </cosmoz-slideout-panel>
         </cosmoz-slideout>
     `,play:async({canvasElement:e,step:t})=>{let n=e.querySelector(`cosmoz-slideout`).shadowRoot.querySelector(`[popover]`);await t(`opens configured from the args`,async()=>{await d(()=>u(n.matches(`:popover-open`)).toBe(!0))})}},p.parameters={...p.parameters,docs:{...p.parameters?.docs,source:{originalSource:`{
-  tags: ["!autodocs"],
+  tags: ['!autodocs'],
   render: args => html\`
         <cosmoz-slideout
             .opened=\${args.opened}
-            aria-label=\${ifDefined(args["aria-label"])}
-            ?full-screen=\${args["full-screen"]}
-            ?no-escape=\${args["no-escape"]}
-            ?no-autofocus=\${args["no-autofocus"]}
+            aria-label=\${ifDefined(args['aria-label'])}
+            ?full-screen=\${args['full-screen']}
+            ?no-escape=\${args['no-escape']}
+            ?no-autofocus=\${args['no-autofocus']}
             style=\${\`--cosmoz-slideout-width: \${args.width};\`}
         >
             <cosmoz-slideout-panel>
@@ -45,7 +45,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./i
                     <h2
                         style="margin: 0; font-size: var(--cz-text-lg, 1.125rem); font-weight: var(--cz-font-weight-medium, 500); color: var(--cz-color-text-primary);"
                     >
-                        \${args.heading ?? "Panel"}
+                        \${args.heading ?? 'Panel'}
                     </h2>
                 </div>
                 <p style="margin: 0; color: var(--cz-color-text-tertiary);">
@@ -67,10 +67,10 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./i
     canvasElement,
     step
   }) => {
-    const shell = canvasElement.querySelector("cosmoz-slideout") as SlideoutEl;
-    const surface = shell.shadowRoot!.querySelector<HTMLElement>("[popover]")!;
-    await step("opens configured from the args", async () => {
-      await waitFor(() => expect(surface.matches(":popover-open")).toBe(true));
+    const shell = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
+    const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+    await step('opens configured from the args', async () => {
+      await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
     });
   }
 }`,...p.parameters?.docs?.source}}},m=[`Playground`]}))();export{p as Playground,m as __namedExportsOrder,f as default};

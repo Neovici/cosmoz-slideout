@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-B1goUN66.js";import{t as i}from"./cosmoz-slideout-DvVOMsGx.js";import{t as a}from"./cosmoz-button-fTB3riRW.js";import{t as o}from"./cosmoz-slideout-panel-BuvRLNXM.js";import{n as s,r as c}from"./chrome-BbHtXWbN.js";var l,u,d,f,p,m,h,g;e((()=>{a(),n(),i(),o(),c(),{expect:l,waitFor:u}=__STORYBOOK_MODULE_TEST__,d={title:`CosmozSlideout/Test`,component:`cosmoz-slideout`,tags:[`!autodocs`]},f={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-BX-cqWC7.js";import{t as i}from"./cosmoz-slideout-B0EnknSB.js";import{t as a}from"./cosmoz-button-BuW3gsQI.js";import{t as o}from"./cosmoz-slideout-panel-BDjxdXIR.js";import{n as s,r as c}from"./chrome-BKHPZJD6.js";var l,u,d,f,p,m,h,g;e((()=>{a(),n(),i(),o(),c(),{expect:l,waitFor:u}=__STORYBOOK_MODULE_TEST__,d={title:`CosmozSlideout/Test`,component:`cosmoz-slideout`,tags:[`!autodocs`]},f={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
                     <cosmoz-slideout
                         aria-label="Supplier #4021"
                         .opened=${n}
@@ -60,7 +60,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
             ${e}
         `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open vetoed x/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await u(()=>l(a.matches(`:popover-open`)).toBe(!0)),await n(`the slotted close control is vetoed via request-close`,async()=>{i.querySelector(`cosmoz-button[aria-label="Close"]`).click(),l(i).toHaveAttribute(`opened`),l(a.matches(`:popover-open`)).toBe(!0)})}},f.parameters={...f.parameters,docs:{...f.parameters?.docs,source:{originalSource:`{
   render: () => {
-    const mount = document.createElement("div");
+    const mount = document.createElement('div');
     let opened = false;
     const rerender = () => render(html\`
                     <cosmoz-slideout
@@ -97,23 +97,23 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     step,
     userEvent
   }) => {
-    await userEvent.click(await canvas.findByShadowRole("button", {
+    await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open labelled/iu
     }));
-    const el = canvasElement.querySelector("cosmoz-slideout") as SlideoutEl;
-    await step("the authored aria-label names the host and the dialog surface", async () => {
+    const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
+    await step('the authored aria-label names the host and the dialog surface', async () => {
       // the actual role="dialog" node must carry the name
-      const surface = el.shadowRoot!.querySelector<HTMLElement>("[popover]")!;
-      expect(el.getAttribute("aria-label")).toBe("Supplier #4021");
-      await waitFor(() => expect(surface.getAttribute("aria-label")).toBe("Supplier #4021"));
+      const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+      expect(el.getAttribute('aria-label')).toBe('Supplier #4021');
+      await waitFor(() => expect(surface.getAttribute('aria-label')).toBe('Supplier #4021'));
     });
   }
 }`,...f.parameters?.docs?.source}}},p.parameters={...p.parameters,docs:{...p.parameters?.docs,source:{originalSource:`{
   render: () => {
-    const mount = document.createElement("div");
-    const status = document.createElement("span");
-    status.dataset.testid = "open-count";
-    status.textContent = "0";
+    const mount = document.createElement('div');
+    const status = document.createElement('span');
+    status.dataset.testid = 'open-count';
+    status.textContent = '0';
     let count = 0;
     let opened = false;
     const rerender = () => render(html\`
@@ -149,16 +149,16 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     step,
     userEvent
   }) => {
-    await userEvent.click(await canvas.findByShadowRole("button", {
+    await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open with event/iu
     }));
-    await step("dispatches \`open\` after the enter transition settles", async () => {
-      await waitFor(() => expect(canvasElement.querySelector('[data-testid="open-count"]')!.textContent).toBe("1"));
+    await step('dispatches \`open\` after the enter transition settles', async () => {
+      await waitFor(() => expect(canvasElement.querySelector('[data-testid="open-count"]')!.textContent).toBe('1'));
     });
   }
 }`,...p.parameters?.docs?.source}}},m.parameters={...m.parameters,docs:{...m.parameters?.docs,source:{originalSource:`{
   render: () => {
-    const mount = document.createElement("div");
+    const mount = document.createElement('div');
     let opened = false;
     const rerender = () => render(html\`
                     <cosmoz-slideout
@@ -193,22 +193,22 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     step,
     userEvent
   }) => {
-    await userEvent.click(await canvas.findByShadowRole("button", {
+    await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open guarded/iu
     }));
-    const el = canvasElement.querySelector("cosmoz-slideout") as SlideoutEl;
-    const surface = el.shadowRoot!.querySelector<HTMLElement>("[popover]")!;
-    await waitFor(() => expect(surface.matches(":popover-open")).toBe(true));
-    await step("close is vetoed via opened-changed preventDefault", async () => {
+    const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
+    const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+    await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
+    await step('close is vetoed via opened-changed preventDefault', async () => {
       el.close();
       // the veto bails inside set() before the attribute is touched, synchronously
-      expect(el).toHaveAttribute("opened");
-      expect(surface.matches(":popover-open")).toBe(true);
+      expect(el).toHaveAttribute('opened');
+      expect(surface.matches(':popover-open')).toBe(true);
     });
   }
 }`,...m.parameters?.docs?.source}}},h.parameters={...h.parameters,docs:{...h.parameters?.docs,source:{originalSource:`{
   render: () => {
-    const mount = document.createElement("div");
+    const mount = document.createElement('div');
     let opened = false;
     const rerender = () => render(html\`
                     <cosmoz-slideout
@@ -221,7 +221,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                         <cosmoz-slideout-panel
                             @request-close=\${(e: Event) => e.preventDefault()}
                         >
-                            \${header("Vetoed", {})}
+                            \${header('Vetoed', {})}
                             <p>Body</p>
                         </cosmoz-slideout-panel>
                     </cosmoz-slideout>
@@ -244,16 +244,16 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     step,
     userEvent
   }) => {
-    await userEvent.click(await canvas.findByShadowRole("button", {
+    await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open vetoed x/iu
     }));
-    const el = canvasElement.querySelector("cosmoz-slideout") as SlideoutEl;
-    const surface = el.shadowRoot!.querySelector<HTMLElement>("[popover]")!;
-    await waitFor(() => expect(surface.matches(":popover-open")).toBe(true));
-    await step("the slotted close control is vetoed via request-close", async () => {
+    const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
+    const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+    await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
+    await step('the slotted close control is vetoed via request-close', async () => {
       el.querySelector<HTMLElement>('cosmoz-button[aria-label="Close"]')!.click();
-      expect(el).toHaveAttribute("opened");
-      expect(surface.matches(":popover-open")).toBe(true);
+      expect(el).toHaveAttribute('opened');
+      expect(surface.matches(':popover-open')).toBe(true);
     });
   }
 }`,...h.parameters?.docs?.source}}},g=[`ExplicitAriaLabel`,`OpenEvent`,`VetoOpenedChanged`,`VetoRequestClose`]}))();export{f as ExplicitAriaLabel,p as OpenEvent,m as VetoOpenedChanged,h as VetoRequestClose,g as __namedExportsOrder,d as default};

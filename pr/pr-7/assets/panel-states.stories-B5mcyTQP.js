@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-B1goUN66.js";import{t as i}from"./cosmoz-slideout-DvVOMsGx.js";import{t as a}from"./cosmoz-button-fTB3riRW.js";import{n as o,r as s,t as c}from"./story-docs-CVcPOcP0.js";import{t as l}from"./cosmoz-slideout-panel-BuvRLNXM.js";import{i as u,n as d,r as f}from"./chrome-BbHtXWbN.js";var p,m,h,g,_,v,y,b;e((()=>{a(),n(),i(),l(),f(),o(),{expect:p,waitFor:m}=__STORYBOOK_MODULE_TEST__,h=(e,t)=>{let n=document.createElement(`span`);n.style.color=t,e.append(n);let r=getComputedStyle(n).color;return n.remove(),r},g={title:`CosmozSlideoutPanel/States`,component:`cosmoz-slideout-panel`,tags:[`autodocs`],parameters:c(`Common panel states - full-screen and local token theming. Busy/loading states are the author's own slotted UI; the panel is property-free.`)},_={parameters:s("`full-screen` (here via `toggleFullScreen()`): the surface covers the whole viewport."),render:()=>{let e=document.createElement(`div`),n=!1,i=e=>e.currentTarget.closest(`cosmoz-slideout`)?.close(),a=()=>r(t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-BX-cqWC7.js";import{t as i}from"./cosmoz-slideout-B0EnknSB.js";import{t as a}from"./cosmoz-button-BuW3gsQI.js";import{n as o,r as s,t as c}from"./story-docs-CVcPOcP0.js";import{t as l}from"./cosmoz-slideout-panel-BDjxdXIR.js";import{i as u,n as d,r as f}from"./chrome-BKHPZJD6.js";var p,m,h,g,_,v,y,b;e((()=>{a(),n(),i(),l(),f(),o(),{expect:p,waitFor:m}=__STORYBOOK_MODULE_TEST__,h=(e,t)=>{let n=document.createElement(`span`);n.style.color=t,e.append(n);let r=getComputedStyle(n).color;return n.remove(),r},g={title:`CosmozSlideoutPanel/States`,component:`cosmoz-slideout-panel`,tags:[`autodocs`],parameters:c(`Common panel states - full-screen and local token theming. Busy/loading states are the author's own slotted UI; the panel is property-free.`)},_={parameters:s("`full-screen` (here via `toggleFullScreen()`): the surface covers the whole viewport."),render:()=>{let e=document.createElement(`div`),n=!1,i=e=>e.currentTarget.closest(`cosmoz-slideout`)?.close(),a=()=>r(t`
                     <cosmoz-slideout
                         aria-label="Account workspace"
                         .opened=${n}
@@ -61,11 +61,11 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
             </cosmoz-button>
             ${e}
         `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open themed surface/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`resolves the local surface override through tokens`,async()=>{await m(()=>p(a.matches(`:popover-open`)).toBe(!0)),p(getComputedStyle(a).backgroundColor).toBe(h(i,`var(--cz-color-bg-secondary)`))})}},_.parameters={..._.parameters,docs:{..._.parameters?.docs,source:{originalSource:`{
-  parameters: storyDoc("\`full-screen\` (here via \`toggleFullScreen()\`): the surface covers the whole viewport."),
+  parameters: storyDoc('\`full-screen\` (here via \`toggleFullScreen()\`): the surface covers the whole viewport.'),
   render: () => {
-    const mount = document.createElement("div");
+    const mount = document.createElement('div');
     let opened = false;
-    const closePanel = (e: Event) => (e.currentTarget as HTMLElement).closest<ShellEl>("cosmoz-slideout")?.close();
+    const closePanel = (e: Event) => (e.currentTarget as HTMLElement).closest<ShellEl>('cosmoz-slideout')?.close();
     const rerender = () => render(html\`
                     <cosmoz-slideout
                         aria-label="Account workspace"
@@ -76,8 +76,8 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     }}
                     >
                         <cosmoz-slideout-panel>
-                            \${header("Account workspace", {
-      subtitle: "Temporary full-screen review"
+                            \${header('Account workspace', {
+      subtitle: 'Temporary full-screen review'
     })}
                             <p>
                                 Use full screen for dense review tasks. The state is owned by
@@ -90,7 +90,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                             >
                                 <cosmoz-button
                                     variant="secondary"
-                                    @click=\${(e: Event) => (e.currentTarget as HTMLElement).closest<ShellEl>("cosmoz-slideout")?.toggleFullScreen()}
+                                    @click=\${(e: Event) => (e.currentTarget as HTMLElement).closest<ShellEl>('cosmoz-slideout')?.toggleFullScreen()}
                                 >
                                     Toggle full screen
                                 </cosmoz-button>
@@ -118,23 +118,23 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     step,
     userEvent
   }) => {
-    await userEvent.click(await canvas.findByShadowRole("button", {
+    await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open workspace/iu
     }));
-    const shell = canvasElement.querySelector("cosmoz-slideout") as ShellEl;
-    const surface = shell.shadowRoot!.querySelector<HTMLElement>("[popover]")!;
-    await step("toggles to viewport width through the public method", async () => {
-      await userEvent.click(await canvas.findByShadowRole("button", {
+    const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
+    const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+    await step('toggles to viewport width through the public method', async () => {
+      await userEvent.click(await canvas.findByShadowRole('button', {
         name: /toggle full screen/iu
       }));
-      await waitFor(() => expect(shell).toHaveAttribute("full-screen"));
+      await waitFor(() => expect(shell).toHaveAttribute('full-screen'));
       await waitFor(() => expect(Math.round(surface.getBoundingClientRect().width)).toBe(window.innerWidth));
     });
   }
 }`,..._.parameters?.docs?.source}}},y.parameters={...y.parameters,docs:{...y.parameters?.docs,source:{originalSource:`{
-  parameters: storyDoc("Theme one panel with local \`--cosmoz-slideout-*\` / \`--cz-*\` token overrides (dark-mode-safe)."),
+  parameters: storyDoc('Theme one panel with local \`--cosmoz-slideout-*\` / \`--cz-*\` token overrides (dark-mode-safe).'),
   render: () => {
-    const mount = document.createElement("div");
+    const mount = document.createElement('div');
     let opened = false;
     const rerender = () => render(html\`
                     <cosmoz-slideout
@@ -147,8 +147,8 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     }}
                     >
                         <cosmoz-slideout-panel>
-                            \${header("Account", {
-      subtitle: "Premium · since 2019"
+                            \${header('Account', {
+      subtitle: 'Premium · since 2019'
     })}
                             <p style="color: var(--cz-color-text-tertiary);">
                                 Local custom properties can tune one panel without breaking
@@ -183,14 +183,14 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
     step,
     userEvent
   }) => {
-    await userEvent.click(await canvas.findByShadowRole("button", {
+    await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open themed surface/iu
     }));
-    const shell = canvasElement.querySelector("cosmoz-slideout") as ShellEl;
-    const surface = shell.shadowRoot!.querySelector<HTMLElement>("[popover]")!;
-    await step("resolves the local surface override through tokens", async () => {
-      await waitFor(() => expect(surface.matches(":popover-open")).toBe(true));
-      expect(getComputedStyle(surface).backgroundColor).toBe(cssColor(shell, "var(--cz-color-bg-secondary)"));
+    const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
+    const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+    await step('resolves the local surface override through tokens', async () => {
+      await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
+      expect(getComputedStyle(surface).backgroundColor).toBe(cssColor(shell, 'var(--cz-color-bg-secondary)'));
     });
   }
 }`,...y.parameters?.docs?.source}}},b=[`FullScreen`,`ThemedSurface`]}))();export{_ as FullScreen,y as ThemedSurface,b as __namedExportsOrder,g as default};
