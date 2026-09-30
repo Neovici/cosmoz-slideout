@@ -60,18 +60,6 @@
       "types": "./dist/cosmoz-slideout-panel.d.ts",
       "default": "./dist/cosmoz-slideout-panel.js"
     },
-    "./use-close": {
-      "types": "./dist/use-close.d.ts",
-      "default": "./dist/use-close.js"
-    },
-    "./use-full-screen": {
-      "types": "./dist/use-full-screen.d.ts",
-      "default": "./dist/use-full-screen.js"
-    },
-    "./use-attribute": {
-      "types": "./dist/use-attribute.d.ts",
-      "default": "./dist/use-attribute.js"
-    },
     "./helpers": {
       "types": "./dist/helpers.d.ts",
       "default": "./dist/helpers.js"
@@ -79,7 +67,7 @@
   },
   "dependencies": {
     "@neovici/cosmoz-utils": "^6.17.0",
-    "@pionjs/pion": "^2.5.2",
+    "@pionjs/pion": "2.16.2",
     "lit-html": "^3.3.1"
   },
   "devDependencies": {

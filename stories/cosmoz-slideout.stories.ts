@@ -78,10 +78,9 @@ export const Minimal: Story = {
 			await canvas.findByShadowRole('button', { name: /open bare slideout/iu })
 		);
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		await step('opens with no built-in controls', async () => {
-			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
+			await waitFor(() => expect(el.matches(':popover-open')).toBe(true));
 			expect(el.querySelector('cosmoz-button')).toBeNull();
 		});
 		await step('the bare shell renders no panel UI', async () => {
@@ -100,7 +99,7 @@ export const Minimal: Story = {
 			const trusted = await skipUnlessTrusted(step);
 			if (!trusted) return;
 			await trusted.keyboard('{Escape}');
-			await waitFor(() => expect(surface.matches(':popover-open')).toBe(false));
+			await waitFor(() => expect(el.matches(':popover-open')).toBe(false));
 		});
 	},
 };
@@ -178,11 +177,10 @@ export const ComposedChrome: Story = {
 			await canvas.findByShadowRole('button', { name: /edit supplier/iu })
 		);
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		await step('projects hand-composed chrome into the shell', async () => {
-			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
-			expect(surface).toHaveAttribute('role', 'dialog');
+			await waitFor(() => expect(el.matches(':popover-open')).toBe(true));
+			expect(el).toHaveAttribute('role', 'dialog');
 			await canvas.findByText(/Net 30 terms/u);
 		});
 		await step(
@@ -191,12 +189,10 @@ export const ComposedChrome: Story = {
 				[...el.querySelectorAll<HTMLElement>('cosmoz-button')]
 					.find((b) => /^save$/iu.test((b.textContent ?? '').trim()))!
 					.click();
-				await waitFor(() =>
-					expect(surface.matches(':popover-open')).toBe(false)
-				);
-				// while sliding out (`:not(:popover-open)`) the column layout must hold
-				expect(getComputedStyle(surface).display).toBe('flex');
-				expect(getComputedStyle(surface).flexDirection).toBe('column');
+				await waitFor(() => expect(el.matches(':popover-open')).toBe(false));
+				// while sliding out (:not(:popover-open)) the column layout must hold
+				expect(getComputedStyle(el).display).toBe('flex');
+				expect(getComputedStyle(el).flexDirection).toBe('column');
 			}
 		);
 	},

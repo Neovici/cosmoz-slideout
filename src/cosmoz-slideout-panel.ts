@@ -1,30 +1,22 @@
 import { normalize } from '@neovici/cosmoz-tokens/normalize';
-import { component } from '@pionjs/pion';
+import { component, html } from '@pionjs/pion';
 import panelStyles from './cosmoz-slideout-panel.css';
-import { renderPanel } from './panel';
 
-/**
- * `<cosmoz-slideout-panel>` - the layout chrome for slideout content.
- *
- * Purely structural, in the spirit of `cz-card`: a `header` region, a scrollable
- * padded `body`, and a `footer` with a divider. No properties; all three regions
- * are always rendered and it's up to the author (typically a slotted `cz-header`)
- * to fill the `header` slot and to provide a close control (dispatching a bubbling
- * `request-close` to ask the surrounding surface to close).
- *
- * ```html
- * <cosmoz-slideout opened>
- *   <cosmoz-slideout-panel>
- *     <div slot="header"><h2>Supplier #4021</h2></div>
- *     …content…
- *     <div slot="footer">…actions…</div>
- *   </cosmoz-slideout-panel>
- * </cosmoz-slideout>
- * ```
- */
+export const CosmozSlideoutPanel = () => html`
+	<div class="region" part="header">
+		<slot name="header"></slot>
+	</div>
+	<div class="body" part="body">
+		<slot></slot>
+	</div>
+	<div class="region" part="footer">
+		<slot name="footer"></slot>
+	</div>
+`;
+
 customElements.define(
 	'cosmoz-slideout-panel',
-	component(renderPanel, {
+	component(CosmozSlideoutPanel, {
 		styleSheets: [normalize, panelStyles],
 	})
 );

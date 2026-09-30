@@ -1,11 +1,7 @@
 import { tagged as css } from '@neovici/cosmoz-utils';
 
 export default css`
-	:host {
-		display: contents;
-	}
-
-	[popover] {
+	:host([popover]) {
 		box-sizing: border-box;
 		position: fixed;
 		inset: 0 0 0 auto;
@@ -40,32 +36,32 @@ export default css`
 			display var(--_dur) var(--_ease) allow-discrete, width 0.2s var(--_ease);
 	}
 
-	[popover]:popover-open {
+	:host(:popover-open) {
 		display: flex;
-		--_dur: var(--cosmoz-slideout-duration, 0.3s); /* enter duration */
+		--_dur: var(--cosmoz-slideout-duration, 0.3s);
 	}
 
-	[popover]:not(:popover-open) {
+	:host(:not(:popover-open)) {
 		translate: 100% 0;
 	}
 
 	@starting-style {
-		[popover]:popover-open {
+		:host(:popover-open) {
 			translate: 100% 0;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		[popover] {
+		:host([popover]) {
 			transition: none;
 		}
 	}
 
-	:host([full-screen]) [popover] {
+	:host([full-screen]) {
 		width: var(--cosmoz-slideout-full-screen-width, 100vw);
 	}
 
-	[popover] > ::slotted(*) {
+	slot {
 		flex: 1;
 		min-height: 0;
 	}

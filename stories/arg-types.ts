@@ -55,7 +55,7 @@ export const defaultSlideoutArgs: Meta['args'] = {
 export const panelArgTypes: Meta['argTypes'] = {
 	heading: {
 		control: 'text',
-		description: 'Title text passed to the slotted header (cz-header pattern).',
+		description: 'Title text passed to the slotted header.',
 		table: { category: 'Slotted header' },
 	},
 	subtitle: {

@@ -9,10 +9,6 @@ export default css`
 		overflow: hidden;
 	}
 
-	/* cz-card pattern: the region wrappers are zero-cost shells (no padding,
-	   no border of their own); all chrome is painted on the slotted elements
-	   via ::slotted(*), so empty slots are completely invisible. */
-
 	.region {
 		display: contents;
 	}

@@ -107,7 +107,6 @@ export const FullScreen: Story = {
 			await canvas.findByShadowRole('button', { name: /open workspace/iu }),
 		);
 		const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
-		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		await step(
 			'toggles to viewport width through the public method',
@@ -119,7 +118,7 @@ export const FullScreen: Story = {
 				);
 				await waitFor(() => expect(shell).toHaveAttribute('full-screen'));
 				await waitFor(() =>
-					expect(Math.round(surface.getBoundingClientRect().width)).toBe(
+					expect(Math.round(shell.getBoundingClientRect().width)).toBe(
 						window.innerWidth,
 					),
 				);
@@ -191,15 +190,12 @@ export const ThemedSurface: Story = {
 			}),
 		);
 		const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
-		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
 		await step(
-			'resolves the local surface override through tokens',
+			'resolves the local override through tokens',
 			async () => {
-				await waitFor(() =>
-					expect(surface.matches(':popover-open')).toBe(true),
-				);
-				expect(getComputedStyle(surface).backgroundColor).toBe(
+				await waitFor(() => expect(shell.matches(':popover-open')).toBe(true));
+				expect(getComputedStyle(shell).backgroundColor).toBe(
 					cssColor(shell, 'var(--cz-color-bg-secondary)'),
 				);
 			},

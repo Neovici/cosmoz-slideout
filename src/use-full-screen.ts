@@ -7,7 +7,6 @@ export const useFullScreen = (host: SlideoutElement) => {
 	const toggle = useCallback(() => {
 		host.toggleAttribute('full-screen');
 	}, []);
-	host.toggleFullScreen = toggle;
 
 	useLayoutEffect(() => {
 		host.toggleAttribute('full-screen', fullScreen);

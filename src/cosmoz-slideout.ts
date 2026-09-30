@@ -1,66 +1,71 @@
-import { component, ComponentOptions, html } from '@pionjs/pion';
-import {
-	renderSlideout,
-	surfaceObservedAttributes,
-	surfaceStyleSheets,
-	useSlideout,
-} from './index';
-import type { PanelProps, Props, SlideoutElement } from './types';
+import { normalize } from '@neovici/cosmoz-tokens/normalize';
+import { component, html } from '@pionjs/pion';
+import styles from './cosmoz-slideout.css';
+import type {
+	PanelProps,
+	Props,
+	SlideoutControls,
+	SlideoutElement,
+} from './types';
+import { useClose } from './use-close';
+import { useFullScreen } from './use-full-screen';
+import { useImperativeApi } from './use-imperative-api';
 
-/**
- * `<cosmoz-slideout>` - the slideout surface.
- *
- * It renders in the browser top-layer via the native Popover API, is non-modal
- * (the page behind stays interactive), and slides in from the right when its
- * reactive `opened` state becomes true - it does NOT open merely by being in the
- * DOM. `opened` is a real attribute: bind it as a property (`.opened=${x}`) or an
- * attribute (`?opened`), listen for the cancelable `opened-changed` (two-way), and
- * removing the `opened` attribute (e.g. from devtools) closes it. It dispatches
- * `open` once the slide-in settles and `close` once the slide-out settles; it
- * self-closes on Escape and `close()`, and a slotted child's bubbling
- * `request-close` closes it too (cancelable - `preventDefault()` to veto). The
- * element stays connected and can be re-opened.
- *
- * It handles everything *around* the content - the surface, the `opened` /
- * `full-screen` lifecycle, the Escape stack, and focus management - and exposes a
- * single blank slot. It adds no UI of its own; set `aria-label` on it to name the
- * dialog. For the design-system layout (header / body / footer regions) nest a
- * `<cosmoz-slideout-panel>` inside it and slot in your header (e.g. `cz-header`
- * with a close control dispatching `request-close`):
- *
- * ```html
- * <cosmoz-slideout opened full-screen aria-label="Details">
- *   <cosmoz-slideout-panel>
- *     <div slot="header"><h2>Details</h2></div>
- *     …content…
- *   </cosmoz-slideout-panel>
- * </cosmoz-slideout>
- * ```
- */
-/**
- * Typed DOM lookups: `querySelector('cosmoz-slideout')` returns a fully
- * typed element (props like `opened`, `fullScreen`, methods `open` /
- * `close`, ... readable in JS), same for the panel.
- */
+export const useSlideout = (host: SlideoutElement) => {
+	const { close, open } = useClose(host);
+	const { fullScreen, toggle } = useFullScreen(host);
+	useImperativeApi(host, { open, close, toggleFullScreen: toggle });
+
+	return { close, open, fullScreen, toggleFullScreen: toggle };
+};
+
+export const CosmozSlideout = (host: SlideoutElement) => {
+	useSlideout(host);
+
+	return html`<slot></slot>`;
+};
+
+export class SlideoutBase extends HTMLElement {
+	controls?: SlideoutControls;
+
+	connectedCallback() {
+		if (!this.hasAttribute('popover')) {
+			this.setAttribute('popover', 'manual');
+		}
+		if (!this.hasAttribute('role')) {
+			this.setAttribute('role', 'dialog');
+		}
+		if (!this.hasAttribute('aria-modal')) {
+			this.setAttribute('aria-modal', 'false');
+		}
+		if (!this.hasAttribute('tabindex')) {
+			this.setAttribute('tabindex', '-1');
+		}
+	}
+
+	open() {
+		this.controls?.open();
+	}
+	close() {
+		this.controls?.close();
+	}
+	toggleFullScreen() {
+		this.controls?.toggleFullScreen();
+	}
+}
+
 declare global {
 	interface HTMLElementTagNameMap {
-		'cosmoz-slideout': HTMLElement & Props;
+		'cosmoz-slideout': SlideoutBase & Props;
 		'cosmoz-slideout-panel': HTMLElement & PanelProps;
 	}
 }
 
 customElements.define(
 	'cosmoz-slideout',
-	component<Props>(
-		(host: SlideoutElement) => {
-			useSlideout(host);
-			return renderSlideout(host, html`<slot></slot>`);
-		},
-		{
-			observedAttributes: [
-				...surfaceObservedAttributes,
-			] as ComponentOptions<Props>['observedAttributes'],
-			styleSheets: surfaceStyleSheets,
-		}
-	)
+	component<Props>(CosmozSlideout, {
+		baseElement: SlideoutBase,
+		observedAttributes: ['opened', 'full-screen', 'no-escape', 'no-autofocus'],
+		styleSheets: [normalize, styles],
+	})
 );

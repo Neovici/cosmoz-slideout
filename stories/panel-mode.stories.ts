@@ -10,7 +10,7 @@ import { footer, header, requestClose } from './chrome';
 import { componentDoc, storyDoc } from './story-docs';
 
 // Layout chrome inside a `<cosmoz-slideout>`; header and close control
-// are slotted in (see stories/chrome.ts, the cz-header pattern).
+// are slotted in (see stories/chrome.ts).
 
 type ShellEl = HTMLElement & { close(): void; opened?: boolean };
 
@@ -55,9 +55,9 @@ const meta: Meta = {
 	args: defaultPanelArgs,
 	parameters: componentDoc(
 		'Layout chrome nested inside a `<cosmoz-slideout>`: header/body/footer ' +
-			'regions with token-backed spacing - no properties. Slot a `cz-header` ' +
-			'(or your own markup) into `header`, content into the default slot, and ' +
-			'actions into `footer`. Drive it from the Controls tab.',
+			'regions with token-backed spacing - no properties. Slot your header ' +
+			'(with a close control dispatching `request-close`) into `header`, ' +
+			'content into the default slot, and actions into `footer`.',
 	),
 };
 
@@ -127,11 +127,9 @@ export const Default: Story = {
 		);
 		const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
 		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
-		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
-
 
 		await step('opens with the slotted header and footer actions', async () => {
-			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
+			await waitFor(() => expect(shell.matches(':popover-open')).toBe(true));
 			await canvas.findByShadowText(/Acme Industries/u);
 			expect(
 				panel
@@ -154,15 +152,13 @@ export const Default: Story = {
 				.assignedElements()[0]
 				.querySelector<HTMLElement>('cosmoz-button[aria-label="Close"]')!
 				.click();
-			await waitFor(() => expect(surface.matches(':popover-open')).toBe(false));
+			await waitFor(() => expect(shell.matches(':popover-open')).toBe(false));
 		});
 	},
 };
 
 export const CustomHeader: Story = {
-	parameters: storyDoc(
-		'The header is whatever you slot in (a cz-header element in the real app).',
-	),
+	parameters: storyDoc('The header is whatever you slot in.'),
 	args: {
 		heading: 'Customer health',
 		subtitle: 'Renewal risk · Q3',
@@ -187,8 +183,8 @@ export const CustomHeader: Story = {
 						},
 						body: html`
 							<p>
-								The header region projects whatever you slot in - a
-								<code>cz-header</code> stand-in with its own close control.
+								The header region projects whatever you slot in - a header
+								with its own close control.
 							</p>
 						`,
 					},
@@ -276,11 +272,9 @@ export const BodyOnly: Story = {
 		);
 		const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
 		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
-		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
-
 
 		await step('header region stays present but empty', async () => {
-			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
+			await waitFor(() => expect(shell.matches(':popover-open')).toBe(true));
 			expect(
 				panel
 					.shadowRoot!.querySelector('[part="header"]')!
