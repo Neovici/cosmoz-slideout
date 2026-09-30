@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-Bcd-qXPO.js";import{a as n,c as r,f as i,l as a,p as o,s}from"./cosmoz-slideout-B9klV7rt.js";var c,l=e((()=>{n(),c=s`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-DE7MTPUt.js";import{a as n,c as r,f as i,l as a,p as o,s}from"./cosmoz-slideout-BA2Ekj5J.js";var c,l=e((()=>{n(),c=s`
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -34,15 +34,10 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-Bc
 		gap: calc(var(--cz-spacing, 4px) * 3);
 		flex: none;
 		min-width: 0;
-	}
-
-	slot[name='header']::slotted(*),
-	slot[name='footer']::slotted(*) {
-		--_px: var(
+		padding-inline: var(
 			--cosmoz-slideout-panel-padding-x,
 			calc(var(--cz-spacing, 4px) * 4)
 		);
-		padding-inline: var(--_px);
 		padding-block: calc(var(--cz-spacing, 4px) * 4);
 	}
 
