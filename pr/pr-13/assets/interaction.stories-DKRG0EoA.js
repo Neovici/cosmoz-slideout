@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,lt as i,ot as a,pt as o,st as s,ut as c}from"./iframe-BHcG80NJ.js";import{C as l,D as u,E as d,T as f,_ as p,c as m,f as h,g,h as _,i as v,j as ee,l as y,m as b,n as te,p as ne,s as re,t as ie,u as ae,x,y as oe}from"./cosmoz-slideout-iIRbT3tI.js";import{t as se}from"./cosmoz-button-BiAEfMwf.js";import{a as S,i as ce}from"./untitled-D0lSkgTX.js";import{n as C,t as le}from"./trusted-6AwRJoKi.js";import{n as ue,r as w,t as de}from"./story-docs-CVcPOcP0.js";import{t as fe}from"./cosmoz-slideout-panel-B414r9wa.js";import{i as T,n as E,r as pe}from"./chrome-Dj_r8rBM.js";var D,me=e((()=>{o(),g(),a(),D=b(class extends _{constructor(e){if(super(e),e.type!==p.PROPERTY&&e.type!==p.ATTRIBUTE&&e.type!==p.BOOLEAN_ATTRIBUTE)throw Error("The `live` directive is not allowed on child or event bindings");if(!t(e))throw Error("`live` bindings can only contain a single expression")}render(e){return e}update(e,[t]){if(t===n||t===i)return t;let r=e.element,a=e.name;if(e.type===p.PROPERTY){if(t===r[a])return n}else if(e.type===p.BOOLEAN_ATTRIBUTE){if(!!t===r.hasAttribute(a))return n}else if(e.type===p.ATTRIBUTE&&r.getAttribute(a)===t+``)return n;return s(e),t}})})),O,k,he=e((()=>{o(),ne(),g(),O=new WeakMap,k=b(class extends h{render(e){return i}update(e,[t]){let n=t!==this.G;return n&&this.rt(void 0),(n||this.lt!==this.ct)&&(this.G=t,this.ht=e.options?.host,this.rt(this.ct=e.element)),i}rt(e){if(this.G!==void 0)if(this.isConnected||(e=void 0),typeof this.G==`function`){let t=this.ht??globalThis,n=O.get(t);n===void 0&&(n=new WeakMap,O.set(t,n)),n.get(this.G)!==void 0&&this.G.call(this.ht,void 0),n.set(this.G,e),e!==void 0&&this.G.call(this.ht,e)}else this.G.value=e}get lt(){return typeof this.G==`function`?O.get(this.ht??globalThis)?.get(this.G):this.G?.value}disconnected(){this.lt===this.ct&&this.rt(void 0)}reconnected(){this.rt(this.ct)}})})),A,j,ge=e((()=>{o(),ce(),A=(e,{label:t,invalid:n,errorMessage:i})=>r`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,lt as i,ot as a,pt as o,st as s,ut as c}from"./iframe-CbfyVojM.js";import{C as l,D as u,E as d,T as f,_ as p,c as m,f as h,g,h as _,i as v,j as ee,l as y,m as b,n as te,p as ne,s as re,t as ie,u as ae,x,y as oe}from"./cosmoz-slideout-tTjwcMjG.js";import{t as se}from"./cosmoz-button-BZ2qMW18.js";import{a as S,i as ce}from"./untitled-Bek80azg.js";import{n as C,t as le}from"./trusted-6AwRJoKi.js";import{n as ue,r as w,t as de}from"./story-docs-CVcPOcP0.js";import{t as fe}from"./cosmoz-slideout-panel-KloBQEpQ.js";import{i as T,n as E,r as pe}from"./chrome-CJDSQC3g.js";var D,me=e((()=>{o(),g(),a(),D=b(class extends _{constructor(e){if(super(e),e.type!==p.PROPERTY&&e.type!==p.ATTRIBUTE&&e.type!==p.BOOLEAN_ATTRIBUTE)throw Error("The `live` directive is not allowed on child or event bindings");if(!t(e))throw Error("`live` bindings can only contain a single expression")}render(e){return e}update(e,[t]){if(t===n||t===i)return t;let r=e.element,a=e.name;if(e.type===p.PROPERTY){if(t===r[a])return n}else if(e.type===p.BOOLEAN_ATTRIBUTE){if(!!t===r.hasAttribute(a))return n}else if(e.type===p.ATTRIBUTE&&r.getAttribute(a)===t+``)return n;return s(e),t}})})),O,k,he=e((()=>{o(),ne(),g(),O=new WeakMap,k=b(class extends h{render(e){return i}update(e,[t]){let n=t!==this.G;return n&&this.rt(void 0),(n||this.lt!==this.ct)&&(this.G=t,this.ht=e.options?.host,this.rt(this.ct=e.element)),i}rt(e){if(this.G!==void 0)if(this.isConnected||(e=void 0),typeof this.G==`function`){let t=this.ht??globalThis,n=O.get(t);n===void 0&&(n=new WeakMap,O.set(t,n)),n.get(this.G)!==void 0&&this.G.call(this.ht,void 0),n.set(this.G,e),e!==void 0&&this.G.call(this.ht,e)}else this.G.value=e}get lt(){return typeof this.G==`function`?O.get(this.ht??globalThis)?.get(this.G):this.G?.value}disconnected(){this.lt===this.ct&&this.rt(void 0)}reconnected(){this.rt(this.ct)}})})),A,j,ge=e((()=>{o(),ce(),A=(e,{label:t,invalid:n,errorMessage:i})=>r`
 		<div class="float" part="float">&nbsp;</div>
 		<div class="wrap" part="wrap">
 			<slot name="prefix"></slot>
@@ -366,7 +366,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
                     ></cosmoz-input>
                 </div>
             </cosmoz-slideout-panel>
-        `),play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/edit profile/iu}));let i=t.querySelector(`cosmoz-slideout`);await n(`moves focus into the dialog surface`,async()=>{await G(()=>W(i.matches(`:popover-open`)).toBe(!0)),await G(()=>W(document.activeElement).toBe(i))}),await n(`returns focus to the opener after close`,async()=>{t.querySelector(`cosmoz-slideout-panel`).querySelector(`cosmoz-button[aria-label="Close"]`).click(),await G(()=>W(i.matches(`:popover-open`)).toBe(!1)),await G(()=>W(document.activeElement).toBe(t.querySelector(`cosmoz-button`)))})}},X={parameters:w("`no-escape` / `no-autofocus`: opt out of Escape and autofocus."),render:K(`Open guarded draft`,!0,r`
+        `),play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/edit profile/iu}));let i=t.querySelector(`cosmoz-slideout`);await n(`moves focus into the dialog element`,async()=>{await G(()=>W(i.matches(`:popover-open`)).toBe(!0)),await G(()=>W(document.activeElement).toBe(i))}),await n(`returns focus to the opener after close`,async()=>{t.querySelector(`cosmoz-slideout-panel`).querySelector(`cosmoz-button[aria-label="Close"]`).click(),await G(()=>W(i.matches(`:popover-open`)).toBe(!1)),await G(()=>W(document.activeElement).toBe(t.querySelector(`cosmoz-button`)))})}},X={parameters:w("`no-escape` / `no-autofocus`: opt out of Escape and autofocus."),render:K(`Open guarded draft`,!0,r`
             <cosmoz-slideout-panel>
                 ${E(`Guarded draft`,{subtitle:`Escape disabled, autofocus disabled`})}
                 <p>
@@ -380,7 +380,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
                     </cosmoz-button>
                 </div>
             </cosmoz-slideout-panel>
-        `),play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open guarded draft/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i;await n(`opens without stealing focus from the trigger`,async()=>{await G(()=>W(a.matches(`:popover-open`)).toBe(!0)),W(document.activeElement).not.toBe(a),W(document.activeElement).not.toBe(i)}),await n(`Escape does not close the guarded panel`,async()=>{let e=await C(n);e&&(await e.keyboard(`{Escape}`),await new Promise(e=>window.setTimeout(e,100)),W(a.matches(`:popover-open`)).toBe(!0))})}},Z=(e,t)=>r`
+        `),play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open guarded draft/iu}));let i=t.querySelector(`cosmoz-slideout`);await n(`opens without stealing focus from the trigger`,async()=>{await G(()=>W(i.matches(`:popover-open`)).toBe(!0)),W(document.activeElement).not.toBe(i)}),await n(`Escape does not close the guarded panel`,async()=>{let e=await C(n);e&&(await e.keyboard(`{Escape}`),await new Promise(e=>window.setTimeout(e,100)),W(i.matches(`:popover-open`)).toBe(!0))})}},Z=(e,t)=>r`
     <div style="display: flex; flex-direction: column; height: 100%;">
         <cosmoz-button
             variant="tertiary"
@@ -493,9 +493,9 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
     await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open panel/iu
     }));
-    const surface = canvasElement.querySelector<SlideoutEl>('cosmoz-slideout')!;
+    const el = canvasElement.querySelector<SlideoutEl>('cosmoz-slideout')!;
     await step('background controls remain clickable while open', async () => {
-      await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
+      await waitFor(() => expect(el.matches(':popover-open')).toBe(true));
       await userEvent.click(await canvas.findByShadowRole('button', {
         name: /background action/iu
       }));
@@ -530,14 +530,14 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
     await userEvent.click(await canvas.findByShadowRole('button', {
       name: /edit profile/iu
     }));
-    const surface = canvasElement.querySelector<SlideoutEl>('cosmoz-slideout')!;
-    await step('moves focus into the dialog surface', async () => {
-      await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
-      await waitFor(() => expect(document.activeElement).toBe(surface));
+    const el = canvasElement.querySelector<SlideoutEl>('cosmoz-slideout')!;
+    await step('moves focus into the dialog element', async () => {
+      await waitFor(() => expect(el.matches(':popover-open')).toBe(true));
+      await waitFor(() => expect(document.activeElement).toBe(el));
     });
     await step('returns focus to the opener after close', async () => {
       canvasElement.querySelector('cosmoz-slideout-panel')!.querySelector<HTMLElement>('cosmoz-button[aria-label="Close"]')!.click();
-      await waitFor(() => expect(surface.matches(':popover-open')).toBe(false));
+      await waitFor(() => expect(el.matches(':popover-open')).toBe(false));
       await waitFor(() => expect(document.activeElement).toBe(canvasElement.querySelector('cosmoz-button')));
     });
   }
@@ -570,10 +570,8 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
       name: /open guarded draft/iu
     }));
     const el = canvasElement.querySelector<SlideoutEl>('cosmoz-slideout')!;
-    const surface = el;
     await step('opens without stealing focus from the trigger', async () => {
-      await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
-      expect(document.activeElement).not.toBe(surface);
+      await waitFor(() => expect(el.matches(':popover-open')).toBe(true));
       expect(document.activeElement).not.toBe(el);
     });
     await step('Escape does not close the guarded panel', async () => {
@@ -582,7 +580,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
       if (!trusted) return;
       await trusted.keyboard('{Escape}');
       await new Promise(r => window.setTimeout(r, 100));
-      expect(surface.matches(':popover-open')).toBe(true);
+      expect(el.matches(':popover-open')).toBe(true);
     });
   }
 }`,...X.parameters?.docs?.source}}},Q.parameters={...Q.parameters,docs:{...Q.parameters?.docs,source:{originalSource:`{

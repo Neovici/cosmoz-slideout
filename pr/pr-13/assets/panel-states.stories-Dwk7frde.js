@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-BHcG80NJ.js";import{t as i}from"./cosmoz-slideout-iIRbT3tI.js";import{t as a}from"./cosmoz-button-BiAEfMwf.js";import{n as o,r as s,t as c}from"./story-docs-CVcPOcP0.js";import{t as l}from"./cosmoz-slideout-panel-B414r9wa.js";import{i as u,n as d,r as f}from"./chrome-Dj_r8rBM.js";var p,m,h,g,_,v,y,b;e((()=>{a(),n(),i(),l(),f(),o(),{expect:p,waitFor:m}=__STORYBOOK_MODULE_TEST__,h=(e,t)=>{let n=document.createElement(`span`);n.style.color=t,e.append(n);let r=getComputedStyle(n).color;return n.remove(),r},g={title:`CosmozSlideoutPanel/States`,component:`cosmoz-slideout-panel`,tags:[`autodocs`],parameters:c(`Common panel states - full-screen and local token theming. Busy/loading states are the author's own slotted UI; the panel is property-free.`)},_={parameters:s("`full-screen` (here via `toggleFullScreen()`): the surface covers the whole viewport."),render:()=>{let e=document.createElement(`div`),n=!1,i=e=>e.currentTarget.closest(`cosmoz-slideout`)?.close(),a=()=>r(t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-CbfyVojM.js";import{t as i}from"./cosmoz-slideout-tTjwcMjG.js";import{t as a}from"./cosmoz-button-BZ2qMW18.js";import{n as o,r as s,t as c}from"./story-docs-CVcPOcP0.js";import{t as l}from"./cosmoz-slideout-panel-KloBQEpQ.js";import{i as u,n as d,r as f}from"./chrome-CJDSQC3g.js";var p,m,h,g,_,v,y,b;e((()=>{a(),n(),i(),l(),f(),o(),{expect:p,waitFor:m}=__STORYBOOK_MODULE_TEST__,h=(e,t)=>{let n=document.createElement(`span`);n.style.color=t,e.append(n);let r=getComputedStyle(n).color;return n.remove(),r},g={title:`CosmozSlideoutPanel/States`,component:`cosmoz-slideout-panel`,tags:[`autodocs`],parameters:c(`Common panel states - full-screen and local token theming. Busy/loading states are the author's own slotted UI; the panel is property-free.`)},_={parameters:s("`full-screen` (here via `toggleFullScreen()`): the surface covers the whole viewport."),render:()=>{let e=document.createElement(`div`),n=!1,i=e=>e.currentTarget.closest(`cosmoz-slideout`)?.close(),a=()=>r(t`
                     <cosmoz-slideout
                         aria-label="Account workspace"
                         .opened=${n}
@@ -32,7 +32,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                 Open workspace
             </cosmoz-button>
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open workspace/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i;await n(`toggles to viewport width through the public method`,async()=>{await r.click(await e.findByShadowRole(`button`,{name:/toggle full screen/iu})),await m(()=>p(i).toHaveAttribute(`full-screen`)),await m(()=>p(Math.round(a.getBoundingClientRect().width)).toBe(window.innerWidth))})}},v=[`--cosmoz-slideout-bg: var(--cz-color-bg-secondary)`,`--cosmoz-slideout-panel-divider: var(--cz-color-border-secondary)`].join(`; `),y={parameters:s("Theme one panel with local `--cosmoz-slideout-*` / `--cz-*` token overrides (dark-mode-safe)."),render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open workspace/iu}));let i=t.querySelector(`cosmoz-slideout`);await n(`toggles to viewport width through the public method`,async()=>{await r.click(await e.findByShadowRole(`button`,{name:/toggle full screen/iu})),await m(()=>p(i).toHaveAttribute(`full-screen`)),await m(()=>p(Math.round(i.getBoundingClientRect().width)).toBe(window.innerWidth))})}},v=[`--cosmoz-slideout-bg: var(--cz-color-bg-secondary)`,`--cosmoz-slideout-panel-divider: var(--cz-color-border-secondary)`].join(`; `),y={parameters:s("Theme one panel with local `--cosmoz-slideout-*` / `--cz-*` token overrides (dark-mode-safe)."),render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
                     <cosmoz-slideout
                         aria-label="Account"
                         .opened=${n}
@@ -60,7 +60,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                 Open themed surface
             </cosmoz-button>
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open themed surface/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i;await n(`resolves the local surface override through tokens`,async()=>{await m(()=>p(a.matches(`:popover-open`)).toBe(!0)),p(getComputedStyle(a).backgroundColor).toBe(h(i,`var(--cz-color-bg-secondary)`))})}},_.parameters={..._.parameters,docs:{..._.parameters?.docs,source:{originalSource:`{
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open themed surface/iu}));let i=t.querySelector(`cosmoz-slideout`);await n(`resolves the local override through tokens`,async()=>{await m(()=>p(i.matches(`:popover-open`)).toBe(!0)),p(getComputedStyle(i).backgroundColor).toBe(h(i,`var(--cz-color-bg-secondary)`))})}},_.parameters={..._.parameters,docs:{..._.parameters?.docs,source:{originalSource:`{
   parameters: storyDoc('\`full-screen\` (here via \`toggleFullScreen()\`): the surface covers the whole viewport.'),
   render: () => {
     const mount = document.createElement('div');
@@ -122,13 +122,12 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       name: /open workspace/iu
     }));
     const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
-    const surface = shell;
     await step('toggles to viewport width through the public method', async () => {
       await userEvent.click(await canvas.findByShadowRole('button', {
         name: /toggle full screen/iu
       }));
       await waitFor(() => expect(shell).toHaveAttribute('full-screen'));
-      await waitFor(() => expect(Math.round(surface.getBoundingClientRect().width)).toBe(window.innerWidth));
+      await waitFor(() => expect(Math.round(shell.getBoundingClientRect().width)).toBe(window.innerWidth));
     });
   }
 }`,..._.parameters?.docs?.source}}},y.parameters={...y.parameters,docs:{...y.parameters?.docs,source:{originalSource:`{
@@ -187,10 +186,9 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       name: /open themed surface/iu
     }));
     const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
-    const surface = shell;
-    await step('resolves the local surface override through tokens', async () => {
-      await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
-      expect(getComputedStyle(surface).backgroundColor).toBe(cssColor(shell, 'var(--cz-color-bg-secondary)'));
+    await step('resolves the local override through tokens', async () => {
+      await waitFor(() => expect(shell.matches(':popover-open')).toBe(true));
+      expect(getComputedStyle(shell).backgroundColor).toBe(cssColor(shell, 'var(--cz-color-bg-secondary)'));
     });
   }
 }`,...y.parameters?.docs?.source}}},b=[`FullScreen`,`ThemedSurface`]}))();export{_ as FullScreen,y as ThemedSurface,b as __namedExportsOrder,g as default};
