@@ -3,11 +3,11 @@ import '@neovici/cosmoz-input/input';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html, render, type TemplateResult } from 'lit-html';
 import { expect, waitFor } from 'storybook/test';
-import { skipUnlessTrusted } from './trusted';
 import '../src/cosmoz-slideout';
 import '../src/cosmoz-slideout-panel';
 import { requestClose as closeSlideout, header } from './chrome';
 import { componentDoc, storyDoc } from './story-docs';
+import { skipUnlessTrusted } from './trusted';
 
 type SlideoutEl = HTMLElement & { close(): void };
 
@@ -178,10 +178,15 @@ export const FocusRestore: Story = {
 		);
 		const el = canvasElement.querySelector<SlideoutEl>('cosmoz-slideout')!;
 
-		await step('moves focus into the dialog element', async () => {
-			await waitFor(() => expect(el.matches(':popover-open')).toBe(true));
-			await waitFor(() => expect(document.activeElement).toBe(el));
-		});
+		await step(
+			'focus is delegated to the first focusable content',
+			async () => {
+				await waitFor(() => expect(el.matches(':popover-open')).toBe(true));
+				// the popover focusing steps honor the surface's autofocus fallback; the
+				// flattened activeElement is the surface itself, composition retargets to it
+				await waitFor(() => expect(document.activeElement).toBe(el));
+			},
+		);
 		await step('returns focus to the opener after close', async () => {
 			canvasElement
 				.querySelector('cosmoz-slideout-panel')!
@@ -189,7 +194,9 @@ export const FocusRestore: Story = {
 				.click();
 			await waitFor(() => expect(el.matches(':popover-open')).toBe(false));
 			await waitFor(() =>
-				expect(document.activeElement).toBe(canvasElement.querySelector('cosmoz-button')),
+				expect(document.activeElement).toBe(
+					canvasElement.querySelector('cosmoz-button'),
+				),
 			);
 		});
 	},
@@ -252,7 +259,9 @@ const stackChrome = (title: string, body: unknown) => html`
 		>
 			✕
 		</cosmoz-button>
-		<h2 style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;">
+		<h2
+			style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
+		>
 			${title}
 		</h2>
 		<div style="padding: 12px 24px; color: var(--cz-color-text-tertiary);">
@@ -270,7 +279,6 @@ export const Stacking: Story = {
 		const mountB = document.createElement('div');
 		let openedA = false;
 		let openedB = false;
-
 
 		const rerenderB = () =>
 			render(
@@ -341,14 +349,17 @@ export const Stacking: Story = {
 			[...canvasElement.querySelectorAll('cosmoz-slideout')].filter((s) =>
 				s.matches(':popover-open'),
 			);
-		const labels = () => openSurfaces().map((s) => s.getAttribute('aria-label'));
+		const labels = () =>
+			openSurfaces().map((s) => s.getAttribute('aria-label'));
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open first/iu }),
 		);
 		await step('opens a second slideout above the first', async () => {
 			await waitFor(() => expect(openSurfaces().length).toBe(1));
 			await userEvent.click(
-				await canvas.findByShadowRole('button', { name: /open a second slideout/iu }),
+				await canvas.findByShadowRole('button', {
+					name: /open a second slideout/iu,
+				}),
 			);
 			await waitFor(() => expect(openSurfaces().length).toBe(2));
 		});
