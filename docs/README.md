@@ -252,6 +252,37 @@ The opener that focus is restored to is whatever was focused **at the moment `op
 Set `opened` synchronously inside the opening handler (e.g. the click); if you set it after an
 `await`, the original opener may no longer be focused and restoration is skipped.
 
+#### ARIA guidance
+
+- **Give the drawer an accessible name** - always set `aria-label` (a string):
+  `<cosmoz-slideout aria-label="Supplier details">`. Without a name the dialog is announced as
+  bare "dialog" and screen-reader users can't tell what it contains. Prefer `aria-label` over
+  `aria-labelledby`: the labelled id must live in the light DOM (the surface is the element
+  itself now, but the shadow slot content isn't addressable by IDREF reliably), while `aria-label`
+  always works. If the drawer has visible heading text and the heading element can carry an
+  `aria-labelledby`-addressable id in the light DOM, either is acceptable - just never leave it
+  unnamed.
+- **`role="dialog"` + `aria-modal="false"` is intentional**: non-modal dialogs keep the page
+  behind interactive, so the drawer does not trap focus. Do **not** flip `aria-modal` to `true`
+  unless you also implement focus trapping - with this component that combination is wrong.
+  If a modal drawer appears later, it should be built as a `modal`/`aria-modal` variant of this
+  element (with focus trapping owned by the component, not hand-rolled per consumer), not by
+  flipping the aria attribute from the outside.
+- **The drawer is a landmark-free dialog**: don't rely on `aria-expanded`/`aria-controls` wiring
+  from the trigger button - instead the trigger toggles `opened`, and the `open`/`close` events
+  let you announce state if you must (`aria-live`). Keep the announcements minimal: drawer
+  open/close is signaled by focus movement itself.
+- **Focus is the state announcer**: on open, focus enters the element (`tabindex="-1"`,
+  announced with the accessible name); on close, focus returns to the opener. If the drawer hosts
+  a form, move focus into its first field via slotted markup (`autofocus` attribute on the input
+  or a `tabindex="-1"` wrapper) after the `open` event.
+- **Loading states**: announce with `aria-live="polite"` on a slotted status node or
+  `aria-busy` from the author's own slotted markup - the panel itself adds no busy/announcement
+  attributes (property-free chrome).
+- **Escape/close buttons**: every close control should have an accessible name
+  (`aria-label="Close"`) and rely on the cancelable `request-close` contract so an
+  unsaved-changes veto stays available to any listener.
+
 ### CSS custom properties
 
 Set these like any custom property - e.g. `<cosmoz-slideout style="--cosmoz-slideout-width: 30vw">`.
