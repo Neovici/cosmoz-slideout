@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-CfM4LbFx.js";import{a as n,d as r,f as i,p as a,s as o,u as s}from"./cosmoz-slideout-C_bm0qlS.js";var c,l=e((()=>{n(),c=o`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-DqvsjeXe.js";import{a as n,c as r,f as i,l as a,p as o,s}from"./cosmoz-slideout-mnMo1OXc.js";var c,l=e((()=>{n(),c=s`
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -63,4 +63,4 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-Cf
 	<div class="region" part="footer">
 		<slot name="footer"></slot>
 	</div>
-`})),f=e((()=>{s(),i(),l(),d(),customElements.define(`cosmoz-slideout-panel`,a(u,{styleSheets:[r,c]}))}));export{f as t};
+`})),f=e((()=>{r(),i(),l(),d(),customElements.define(`cosmoz-slideout-panel`,o(u,{styleSheets:[a,c]}))}));export{f as t};
