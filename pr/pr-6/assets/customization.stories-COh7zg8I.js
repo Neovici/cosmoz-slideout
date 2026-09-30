@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-DE7MTPUt.js";import{t as i}from"./cosmoz-slideout-BA2Ekj5J.js";import{t as a}from"./cosmoz-button-99C9vlvz.js";import{n as o,r as s}from"./story-docs-CVcPOcP0.js";var c,l,u,d,f,p,m;e((()=>{a(),n(),i(),o(),{expect:c,waitFor:l}=__STORYBOOK_MODULE_TEST__,u=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),d=t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-B_gsE8eq.js";import{t as i}from"./cosmoz-slideout-BUIlhp1-.js";import{t as a}from"./cosmoz-button-BdPTHqN0.js";import{n as o,r as s}from"./story-docs-CVcPOcP0.js";var c,l,u,d,f,p,m;e((()=>{a(),n(),i(),o(),{expect:c,waitFor:l}=__STORYBOOK_MODULE_TEST__,u=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),d=t`
     <cosmoz-button
         style="position: absolute; top: 8px; right: 8px; z-index: 1;"
         variant="tertiary"
@@ -34,7 +34,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                 `,e);return i(),t`
             <cosmoz-button variant="primary" @click=${()=>{n=!0,i()}}>Open wide</cosmoz-button>
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open wide/iu}));let i=t.querySelector(`cosmoz-slideout`).shadowRoot.querySelector(`[popover]`);await n(`honors the width custom property`,async()=>{await l(()=>c(i.matches(`:popover-open`)).toBe(!0)),await l(()=>c(Math.round(i.getBoundingClientRect().width)).toBe(Math.min(640,window.innerWidth)))})}},p.parameters={...p.parameters,docs:{...p.parameters?.docs,source:{originalSource:`{
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open wide/iu}));let i=t.querySelector(`cosmoz-slideout`);await n(`honors the width custom property`,async()=>{await l(()=>c(i.matches(`:popover-open`)).toBe(!0)),await l(()=>c(Math.round(i.getBoundingClientRect().width)).toBe(Math.min(640,window.innerWidth)))})}},p.parameters={...p.parameters,docs:{...p.parameters?.docs,source:{originalSource:`{
   parameters: storyDoc('Size and tune the surface with the \`--cosmoz-slideout-*\` custom ' + 'properties (here \`--cosmoz-slideout-width\`). Point them at ' + '\`@neovici/cosmoz-tokens\` \`--cz-*\` tokens to track the design system ' + 'and dark mode.'),
   render: () => {
     const mount = document.createElement('div');
@@ -86,10 +86,9 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       name: /open wide/iu
     }));
     const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-    const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
     await step('honors the width custom property', async () => {
-      await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
-      await waitFor(() => expect(Math.round(surface.getBoundingClientRect().width)).toBe(Math.min(640, window.innerWidth)));
+      await waitFor(() => expect(el.matches(':popover-open')).toBe(true));
+      await waitFor(() => expect(Math.round(el.getBoundingClientRect().width)).toBe(Math.min(640, window.innerWidth)));
     });
   }
 }`,...p.parameters?.docs?.source}}},m=[`Width`]}))();export{p as Width,m as __namedExportsOrder,f as default};

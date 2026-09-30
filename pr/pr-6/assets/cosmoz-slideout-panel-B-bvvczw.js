@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-DE7MTPUt.js";import{a as n,c as r,f as i,l as a,p as o,s}from"./cosmoz-slideout-BA2Ekj5J.js";var c,l=e((()=>{n(),c=s`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-B_gsE8eq.js";import{a as n,i as r,l as i,n as a,o,u as s}from"./cosmoz-slideout-BUIlhp1-.js";var c,l=e((()=>{a(),c=r`
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -6,10 +6,6 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-DE
 		height: 100%;
 		overflow: hidden;
 	}
-
-	/* cz-card pattern: the region wrappers are zero-cost shells (no padding,
-	   no border of their own); all chrome is painted on the slotted elements
-	   via ::slotted(*), so empty slots are completely invisible. */
 
 	.region {
 		display: contents;
@@ -48,7 +44,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-DE
 				var(--cz-color-border-secondary, #e9eaeb)
 			);
 	}
-`})),u,d=e((()=>{i(),u=()=>t`
+`})),u,d=e((()=>{n(),i(),l(),u=()=>t`
 	<div class="region" part="header">
 		<slot name="header"></slot>
 	</div>
@@ -58,4 +54,4 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-DE
 	<div class="region" part="footer">
 		<slot name="footer"></slot>
 	</div>
-`})),f=e((()=>{r(),i(),l(),d(),customElements.define(`cosmoz-slideout-panel`,o(u,{styleSheets:[a,c]}))}));export{f as t};
+`,customElements.define(`cosmoz-slideout-panel`,s(u,{styleSheets:[o,c]}))}));export{d as t};
