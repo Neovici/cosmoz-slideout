@@ -10,30 +10,6 @@ const restoreFocus = (opener: HTMLElement | null | undefined) => {
 	if (opener?.isConnected) opener.focus({ preventScroll: true });
 };
 
-/**
- * Wire the open/close lifecycle onto the popover surface, driven by the reactive
- * `opened` **attribute** (two-way, via `useAttribute` - consumers bind `.opened` /
- * `?opened` and listen for the cancelable `opened-changed`). The element persists in
- * the DOM across open/close cycles.
- *
- * - `opened` false -> true shows the popover (slide-in), moves focus into it, and
- *   dispatches a bubbling `open` once the enter transition settles;
- * - `opened` true -> false plays the slide-out, then dispatches a bubbling `close`
- *   event, restores focus to the opener, and calls `onClose` - the element is NOT
- *   removed; it stays connected and can be re-opened;
- * - a browser-held `CloseWatcher` session is opened for every open slideout (unless
- *   `no-escape`): the UA routes Escape (and the Android back button) to the most
- *   recently opened watcher - newest-first across multiple slideouts, regardless of
- *   where focus is. `preventDefault()` on the cancelable `opened-changed` vetoes;
- *   engines without `CloseWatcher` fall back to a per-instance document keydown;
- * - a bubbling `request-close` from a slotted child closes it too, unless a listener
- *   calls `preventDefault()` (an "unsaved changes" veto). Removing the `opened`
- *   attribute (e.g. from devtools) closes it as well, since `opened` is observed.
- *
- * The surface is `popover="manual"` (no light-dismiss); enter/exit are detected via
- * `transitionend`, each with an `animationTimeoutMs` fallback (reduced-motion /
- * detached surfaces).
- */
 export const useClose = (host: SlideoutElement) => {
 	const [opened, setOpened] = useAttribute(host, 'opened');
 
@@ -75,13 +51,7 @@ export const useClose = (host: SlideoutElement) => {
 	const close = useCallback(() => {
 		if (host.opened) setOpened(false);
 	}, []);
-	Object.assign(host, { open, close });
 
-	// Browser-held close-request session (one per open slideout): the UA routes
-	// Escape / back-button to the most recently opened watcher - newest-first
-	// across multiple slideouts, regardless of where focus is. The veto contract
-	// is the same as every close source: the app preventDefault()s the cancelable
-	// `opened-changed`, and bailing here keeps the session alive for the next try.
 	const attachWatcher = useCallback(
 		(watcher: CloseWatcher | null) => {
 			const s = lc.current!;
@@ -91,10 +61,6 @@ export const useClose = (host: SlideoutElement) => {
 				return;
 			}
 			watcher.oncancel = (e) => {
-				// the ONLY dispatch for UA-initiated closes (Escape / back button):
-				// attempt the real mutation here - vetoed -> watcher stays alive for
-				// the next press; applied -> the attribute flips and the lifecycle
-				// effect drives hidePopover (which ends the session)
 				if (!setOpened(false)) e.preventDefault();
 			};
 			s.watcher = watcher;
@@ -140,7 +106,6 @@ export const useClose = (host: SlideoutElement) => {
 		surface.hidePopover(); // plays the slide-out -> transitionend -> finish
 	}, []);
 
-	// mount-only: persistent listeners
 	useEffect(() => {
 		const surface = surfaceOf(host);
 		if (!surface) {
@@ -158,8 +123,6 @@ export const useClose = (host: SlideoutElement) => {
 			}
 		};
 		const onKeydown = (e: KeyboardEvent) => {
-			// fallback for engines without CloseWatcher: single-instance friendly,
-			// no arbitration (the UA-held watcher stack covers the multi-open case)
 			if (e.key === 'Escape' && !host.noEscape && host.opened) {
 				e.preventDefault();
 				close();

@@ -2,11 +2,6 @@ import '@neovici/cosmoz-button/cosmoz-button';
 import { xCloseIcon } from '@neovici/cosmoz-icons/untitled';
 import { html, nothing } from 'lit-html';
 
-/**
- * A slotted close control dispatching `request-close`: the documented way for
- * any author-supplied chrome (here a `cz-header` stand-in) to ask the
- * surrounding `<cosmoz-slideout>` to close, vetoable via `preventDefault()`.
- */
 export const requestClose = (e: Event) =>
 	(e.currentTarget as HTMLElement).dispatchEvent(
 		new Event('request-close', {
@@ -38,11 +33,6 @@ export const footer = (content: unknown) =>
 		${content}
 	</div>`;
 
-/**
- * cz-header stand-in for the stories (cz-header itself lives in the private
- * cosmoz-frontend workspace): same API shape - title/subtitle as content, a
- * suffix close control dispatching `request-close` - as plain markup.
- */
 export const header = (
 	title: string,
 	{ subtitle }: { subtitle?: string } = {}
@@ -68,3 +58,4 @@ export const header = (
 			${xCloseIcon({ slot: 'prefix' })}
 		</cosmoz-button>
 	</div>`;
+
