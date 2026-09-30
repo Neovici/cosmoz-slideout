@@ -25,7 +25,13 @@ export const useSlideout = (host: SlideoutElement) => {
 	return { close, open, fullScreen, toggleFullScreen: toggle };
 };
 
-export const renderSlideout = (
+/**
+ * The `<cosmoz-slideout>` surface template: the top-layer popover
+ * (`part="surface"`), labelled from the host's `aria-*` attributes, wrapping
+ * the author's content. Consumed by the element (and available to custom-surface
+ * authors via the package root).
+ */
+export const CosmozSlideout = (
 	host: SlideoutElement,
 	body: unknown
 ): unknown => html`

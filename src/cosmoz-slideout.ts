@@ -1,6 +1,6 @@
 import { component, ComponentOptions, html } from '@pionjs/pion';
 import {
-	renderSlideout,
+	CosmozSlideout,
 	surfaceObservedAttributes,
 	surfaceStyleSheets,
 	useSlideout,
@@ -54,7 +54,7 @@ customElements.define(
 	component<Props>(
 		(host: SlideoutElement) => {
 			useSlideout(host);
-			return renderSlideout(host, html`<slot></slot>`);
+			return CosmozSlideout(host, html`<slot></slot>`);
 		},
 		{
 			observedAttributes: [

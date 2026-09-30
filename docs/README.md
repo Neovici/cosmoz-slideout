@@ -215,7 +215,7 @@ For authoring a custom surface element (your own tag) with pion's `component()`,
 are exported from the package root: `useClose` (the `opened` lifecycle + `open()`/`close()` + the
 `request-close` listener), `useFullScreen` (`{ fullScreen, toggle }` + `full-screen-changed`), the
 generic `useAttribute` (a reactive boolean attribute with a cancelable `*-changed` event), and
-`renderSlideout` (the popover-surface template). `useSlideout` bundles the first three.
+`CosmozSlideout` (the popover-surface template). `useSlideout` bundles the first three.
 
 ### Typed lookups
 
