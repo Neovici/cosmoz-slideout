@@ -1,6 +1,6 @@
 import '@neovici/cosmoz-button/cosmoz-button';
 import type { Args, Meta, StoryObj } from '@storybook/web-components';
-import { html, render } from 'lit-html';
+import { html, nothing, render } from 'lit-html';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { expect, waitFor } from 'storybook/test';
 import '../src/cosmoz-slideout';
@@ -34,8 +34,9 @@ const panelInShell = (
 		@opened-changed=${(e: CustomEvent) => onOpenedChanged(e.detail.value)}
 	>
 		<cosmoz-slideout-panel>
-			${content.header !== undefined &&
-			header(content.header.title, { subtitle: content.header.subtitle })}
+			${content.header
+				? header(content.header.title, { subtitle: content.header.subtitle })
+				: nothing}
 			${content.body}
 		</cosmoz-slideout-panel>
 	</cosmoz-slideout>
