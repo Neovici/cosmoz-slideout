@@ -1,10 +1,9 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,ut as i}from"./iframe-COFFYqQO.js";import{c as a,s as o,t as s}from"./cosmoz-slideout-38U9J6lt.js";import{t as c}from"./cosmoz-button-D7_BSU19.js";import{n as l,r as u,t as d}from"./story-docs-CVcPOcP0.js";import{t as f}from"./cosmoz-slideout-panel-BbmYOGSy.js";import{i as p,n as m,r as h,t as g}from"./chrome-CnB-SFxQ.js";import{n as _,r as v,t as y}from"./arg-types-CRo71_sp.js";var b,x,S,C,w,T,E,D,O,k;e((()=>{c(),r(),o(),s(),f(),_(),h(),l(),{expect:b,waitFor:x}=__STORYBOOK_MODULE_TEST__,S=(e,r,i,o)=>t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,ut as i}from"./iframe-Bh7qrb0B.js";import{c as a,s as o,t as s}from"./cosmoz-slideout-BtHhpVrS.js";import{t as c}from"./cosmoz-button-rXo6SMIu.js";import{n as l,r as u,t as d}from"./story-docs-CVcPOcP0.js";import{t as f}from"./cosmoz-slideout-panel-BSC_v64Z.js";import{i as p,n as m,r as h,t as g}from"./chrome-Dt4hTZ52.js";import{n as _,r as v,t as y}from"./arg-types-CXxcK3Un.js";var b,x,S,C,w,T,E,D,O,k;e((()=>{c(),r(),o(),s(),f(),_(),h(),l(),{expect:b,waitFor:x}=__STORYBOOK_MODULE_TEST__,S=(e,r,i,o)=>t`
     <cosmoz-slideout
         .opened=${r}
         aria-label=${a(e[`aria-label`])}
         ?full-screen=${e[`full-screen`]}
         ?no-escape=${e[`no-escape`]}
-        ?no-autofocus=${e[`no-autofocus`]}
         style=${`--cosmoz-slideout-width: ${e.width};`}
         @opened-changed=${e=>i(e.detail.value)}
     >
@@ -34,8 +33,8 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
                             </div>
                         `}),n);return a(),C(`Open panel`,()=>{r=!0,a()},n)},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open panel/iu}));let i=t.querySelector(`cosmoz-slideout`),a=t.querySelector(`cosmoz-slideout-panel`);await n(`opens with the slotted header and footer actions`,async()=>{await x(()=>b(i.matches(`:popover-open`)).toBe(!0)),await e.findByShadowText(/Acme Industries/u),b(a.shadowRoot.querySelector(`[part="header"]`).querySelector(`slot[name="header"]`)).not.toBeNull(),await x(()=>b(a.shadowRoot.querySelector(`[part="footer"]`).querySelector(`slot[name="footer"]`).assignedElements().length).toBeGreaterThan(0))}),await n(`the slotted close control dismisses the panel`,async()=>{a.shadowRoot.querySelector(`[part="header"]`).querySelector(`slot[name="header"]`).assignedElements()[0].querySelector(`cosmoz-button[aria-label="Close"]`).click(),await x(()=>b(i.matches(`:popover-open`)).toBe(!1))})}},E={parameters:u(`The header is whatever you slot in.`),args:{heading:`Customer health`,subtitle:`Renewal risk · Q3`,"aria-label":`Customer health`},render:e=>{let n=document.createElement(`div`),r=!1,a=()=>i(S(e,r,e=>{r=e,a()},{header:{title:e.heading,subtitle:e.subtitle},body:t`
                             <p>
-                                The header region projects whatever you slot in - a header
-                                with its own close control.
+                                The header region projects whatever you slot in - a header with
+                                its own close control.
                             </p>
                         `}),n);return a(),C(`Open custom header`,()=>{r=!0,a()},n)},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open custom header/iu}));let i=t.querySelector(`cosmoz-slideout-panel`).shadowRoot.querySelector(`[part="header"] > slot`);await n(`projects slotted header content`,async()=>{await x(()=>b(i.assignedElements().length).toBeGreaterThan(0)),await e.findByShadowText(/Customer health/u)})}},D={parameters:u(`Body-only: empty header slot; the panel just gives its body padding and gap.`),args:{heading:void 0,subtitle:void 0,"aria-label":`Notes`},render:e=>{let n=document.createElement(`div`),r=!1,a=()=>i(S(e,r,e=>{r=e,a()},{header:void 0,body:t`
                             <p>
@@ -141,8 +140,8 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r,
       },
       body: html\`
                             <p>
-                                The header region projects whatever you slot in - a header
-                                with its own close control.
+                                The header region projects whatever you slot in - a header with
+                                its own close control.
                             </p>
                         \`
     }), mount);
