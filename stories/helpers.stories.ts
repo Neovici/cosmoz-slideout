@@ -15,7 +15,7 @@ const meta: Meta = {
 	tags: ['autodocs'],
 	parameters: componentDoc(
 		'Typed render-site helpers - `slideout()` / `slideoutPanel()` - so consumers ' +
-			'get typing and event-handler wiring without hand-writing the bindings.'
+			'get typing and event-handler wiring without hand-writing the bindings.',
 	),
 };
 
@@ -25,7 +25,7 @@ type Story = StoryObj;
 
 export const Dogfood: Story = {
 	parameters: storyDoc(
-		'Build the same slideout + panel with the typed `slideout()` / `slideoutPanel()` helpers.'
+		'Build the same slideout + panel with the typed `slideout()` / `slideoutPanel()` helpers.',
 	),
 	render: () => {
 		const mount = document.createElement('div');
@@ -51,10 +51,10 @@ export const Dogfood: Story = {
 								Rendered via the typed <code>slideout()</code> /
 								<code>slideoutPanel()</code> helpers - no hand-written bindings.
 							</p>
-						`
-					)
+						`,
+					),
 				),
-				mount
+				mount,
 			);
 		rerender();
 		const open = () => {
@@ -71,7 +71,7 @@ export const Dogfood: Story = {
 	},
 	play: async ({ canvas, canvasElement, step, userEvent }) => {
 		await userEvent.click(
-			await canvas.findByShadowRole('button', { name: /open \(helpers\)/iu })
+			await canvas.findByShadowRole('button', { name: /open \(helpers\)/iu }),
 		);
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
 		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
@@ -80,18 +80,18 @@ export const Dogfood: Story = {
 			'helper-rendered slideout opens with the panel chrome',
 			async () => {
 				await waitFor(() =>
-					expect(surface.matches(':popover-open')).toBe(true)
+					expect(surface.matches(':popover-open')).toBe(true),
 				);
 				const panel = el.querySelector('cosmoz-slideout-panel')!;
 				await waitFor(() =>
 					expect(
 						panel
-							.shadowRoot!.querySelector('.header')!
+							.shadowRoot!.querySelector('[part="header"]')!
 							.querySelector('slot')!
-							.assignedElements()[0]!.textContent
-					).toMatch(/Acme Industries/u)
+							.assignedElements()[0]!.textContent,
+					).toMatch(/Acme Industries/u),
 				);
-			}
+			},
 		);
 	},
 };

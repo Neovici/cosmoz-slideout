@@ -1,11 +1,11 @@
 ---
-"@neovici/cosmoz-slideout": minor
+'@neovici/cosmoz-slideout': minor
 ---
 
 Initial release: a top-layer slideout (drawer / sidebar) component. It renders in the top-layer via the native Popover API (`<div popover="manual">`), is non-modal (the page stays interactive), and slides in from the right when its reactive `opened` property becomes true - it stays in the DOM and slides in/out as `opened` toggles.
 
 - Two elements that **compose**: `<cosmoz-slideout>` is the surface - it owns everything around the content (the surface, the slide-in/out animation, the `opened` / `full-screen` lifecycle, the Escape stack, and focus management) and exposes a single blank slot.
-- `<cosmoz-slideout-panel>` (separate `/cosmoz-slideout-panel` entrypoint) is property-free, `cz-card`-style layout chrome meant to be slotted **inside** a `<cosmoz-slideout>`: always-rendered `header` / body / `footer` regions with token-backed spacing. The header, its title, and any close control are slotted in (a `cz-header` element in the real app, dispatching `request-close`).
+- `<cosmoz-slideout-panel>` (separate `/cosmoz-slideout-panel` entrypoint) is property-free, `cz-card`-style layout chrome meant to be slotted **inside** a `<cosmoz-slideout>`: `header` / body / `footer` regions that are **completely invisible when empty** (spacing and the footer divider are painted on the slotted elements, as in `cz-card`). The header, its title, and any close control are slotted in (a `cz-header` element in the real app, dispatching `request-close`).
 - Reactive, two-way `opened` **attribute** on the surface: bind it as a property (`.opened=${x}`) or an attribute (`?opened`), listen for the cancelable `opened-changed`, and removing the `opened` attribute (e.g. from devtools) closes it. `open()` / `close()` methods; self-closes on Escape / `close()`. Emits a bubbling `open` after the slide-in settles and `close` after the slide-out settles (the element is not removed).
 - A descendant asks the surface to close by dispatching a **cancelable**, bubbling `request-close` event (the panel's built-in close button does this) - no reference to the slideout required. Guard an "unsaved changes" close by calling `preventDefault()` on either `request-close` or `opened-changed`.
 - Escape-to-close by default (opt-out with `no-escape`).

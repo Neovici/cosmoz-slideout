@@ -9,21 +9,12 @@ export default css`
 		overflow: hidden;
 	}
 
-	.header,
-	.body,
-	.footer {
-		--_px: var(
-			--cosmoz-slideout-panel-padding-x,
-			calc(var(--cz-spacing, 4px) * 4)
-		);
-	}
+	/* cz-card pattern: the region wrappers are zero-cost shells (no padding,
+	   no border of their own); all chrome is painted on the slotted elements
+	   via ::slotted(*), so empty slots are completely invisible. */
 
-	.header {
-		display: flex;
-		align-items: center;
-		gap: calc(var(--cz-spacing, 4px) * 3);
-		padding: calc(var(--cz-spacing, 4px) * 6) var(--_px)
-			calc(var(--cz-spacing, 4px) * 4);
+	.region {
+		display: contents;
 	}
 
 	.body {
@@ -34,15 +25,31 @@ export default css`
 		display: flex;
 		flex-direction: column;
 		gap: var(--cosmoz-slideout-panel-gap, calc(var(--cz-spacing, 4px) * 6));
-		padding: 0 var(--_px);
+		padding: 0
+			var(--cosmoz-slideout-panel-padding-x, calc(var(--cz-spacing, 4px) * 4));
 	}
 
-	.footer {
+	slot[name='header']::slotted(*),
+	slot[name='footer']::slotted(*) {
 		display: flex;
 		align-items: center;
 		gap: calc(var(--cz-spacing, 4px) * 3);
-		padding: calc(var(--cz-spacing, 4px) * 4) var(--_px);
-		box-shadow: inset 0 1px 0 0
+		flex: none;
+		min-width: 0;
+	}
+
+	slot[name='header']::slotted(*),
+	slot[name='footer']::slotted(*) {
+		--_px: var(
+			--cosmoz-slideout-panel-padding-x,
+			calc(var(--cz-spacing, 4px) * 4)
+		);
+		padding-inline: var(--_px);
+		padding-block: calc(var(--cz-spacing, 4px) * 4);
+	}
+
+	slot[name='footer']::slotted(*) {
+		border-block-start: 1px solid
 			var(
 				--cosmoz-slideout-panel-divider,
 				var(--cz-color-border-secondary, #e9eaeb)
