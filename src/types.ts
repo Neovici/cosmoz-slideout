@@ -35,8 +35,7 @@ export type PartialControls = {
 };
 
 /** The `<cosmoz-slideout>` element. */
-export type SlideoutElement = HTMLElement &
-	Props & { controls?: PartialControls };
+export type SlideoutElement = HTMLElement & Props;
 
 /** Props of `<cosmoz-slideout-panel>` (property-free by design). */
 export type PanelProps = Record<never, never>;

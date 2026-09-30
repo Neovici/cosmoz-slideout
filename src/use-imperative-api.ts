@@ -1,5 +1,5 @@
 import { useMemo } from '@pionjs/pion';
-import type { SlideoutElement, PartialControls } from './types';
+import type { PartialControls } from './types';
 
 /**
  * Assigns the controls returned by the lifecycle hooks onto the base
@@ -7,9 +7,10 @@ import type { SlideoutElement, PartialControls } from './types';
  * `toggleFullScreen()`) delegate to live hook closures.
  */
 export const useImperativeApi = (
-	host: SlideoutElement,
+	host: HTMLElement,
 	controls: PartialControls
 ) => {
-	const current = host.controls ??= {};
+	const current = ((host as HTMLElement & { controls?: PartialControls })
+		.controls ??= {});
 	return useMemo(() => Object.assign(current, controls), [controls]);
 };

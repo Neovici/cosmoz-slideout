@@ -127,11 +127,9 @@ export const Default: Story = {
 		);
 		const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
 		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
-		const surface = shell;
-
 
 		await step('opens with the slotted header and footer actions', async () => {
-			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
+			await waitFor(() => expect(shell.matches(':popover-open')).toBe(true));
 			await canvas.findByShadowText(/Acme Industries/u);
 			expect(
 				panel
@@ -154,7 +152,7 @@ export const Default: Story = {
 				.assignedElements()[0]
 				.querySelector<HTMLElement>('cosmoz-button[aria-label="Close"]')!
 				.click();
-			await waitFor(() => expect(surface.matches(':popover-open')).toBe(false));
+			await waitFor(() => expect(shell.matches(':popover-open')).toBe(false));
 		});
 	},
 };
@@ -274,11 +272,9 @@ export const BodyOnly: Story = {
 		);
 		const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
 		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
-		const surface = shell;
-
 
 		await step('header region stays present but empty', async () => {
-			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
+			await waitFor(() => expect(shell.matches(':popover-open')).toBe(true));
 			expect(
 				panel
 					.shadowRoot!.querySelector('[part="header"]')!

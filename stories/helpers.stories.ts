@@ -74,14 +74,11 @@ export const Dogfood: Story = {
 			await canvas.findByShadowRole('button', { name: /open \(helpers\)/iu }),
 		);
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-		const surface = el;
 
 		await step(
 			'helper-rendered slideout opens with the panel chrome',
 			async () => {
-				await waitFor(() =>
-					expect(surface.matches(':popover-open')).toBe(true),
-				);
+				await waitFor(() => expect(el.matches(':popover-open')).toBe(true));
 				const panel = el.querySelector('cosmoz-slideout-panel')!;
 				await waitFor(() =>
 					expect(
