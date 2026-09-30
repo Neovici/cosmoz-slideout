@@ -1,6 +1,6 @@
 import '@neovici/cosmoz-button/cosmoz-button';
 import { xCloseIcon } from '@neovici/cosmoz-icons/untitled';
-import { html } from 'lit-html';
+import { html, nothing } from 'lit-html';
 
 /**
  * A slotted close control dispatching `request-close`: the documented way for
@@ -55,8 +55,9 @@ export const header = (
 			style="display: flex; flex-direction: column; gap: calc(var(--cz-spacing) * 1); min-width: 0;"
 		>
 			<h2 style=${titleStyle}>${title}</h2>
-			${subtitle !== undefined &&
-			html`<p style=${subtitleStyle}>${subtitle}</p>`}
+			${subtitle
+				? html`<p style=${subtitleStyle}>${subtitle}</p>`
+				: nothing}
 		</div>
 		<cosmoz-button
 			variant="tertiary"
