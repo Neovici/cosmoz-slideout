@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-DE-Vrrk1.js";import{a as n,i as r,l as i,n as a,o,u as s}from"./cosmoz-slideout-BP0Tk7DN.js";var c,l=e((()=>{a(),c=r`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-D_VNwm9y.js";import{a as n,i as r,l as i,n as a,o,u as s}from"./cosmoz-slideout-DBoWdKAI.js";var c,l=e((()=>{a(),c=r`
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -6,10 +6,6 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-DE
 		height: 100%;
 		overflow: hidden;
 	}
-
-	/* cz-card pattern: the region wrappers are zero-cost shells (no padding,
-	   no border of their own); all chrome is painted on the slotted elements
-	   via ::slotted(*), so empty slots are completely invisible. */
 
 	.region {
 		display: contents;
