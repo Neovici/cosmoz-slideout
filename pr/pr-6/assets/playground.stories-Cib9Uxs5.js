@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./iframe-Bcd-qXPO.js";import{d as r,t as i,u as a}from"./cosmoz-slideout-B9klV7rt.js";import{t as o}from"./cosmoz-slideout-panel-DS-tkFRp.js";import{n as s,r as c,t as l}from"./arg-types-Cqgi3yBR.js";var u,d,f,p,m;e((()=>{n(),a(),i(),o(),s(),{expect:u,waitFor:d}=__STORYBOOK_MODULE_TEST__,f={title:`CosmozSlideoutPanel/Playground`,component:`cosmoz-slideout-panel`,argTypes:c,args:l},p={tags:[`!autodocs`],render:e=>t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n}from"./iframe-DE7MTPUt.js";import{d as r,t as i,u as a}from"./cosmoz-slideout-BA2Ekj5J.js";import{t as o}from"./cosmoz-slideout-panel-BPvpnkVe.js";import{n as s,r as c,t as l}from"./arg-types-Cqgi3yBR.js";var u,d,f,p,m;e((()=>{n(),a(),i(),o(),s(),{expect:u,waitFor:d}=__STORYBOOK_MODULE_TEST__,f={title:`CosmozSlideoutPanel/Playground`,component:`cosmoz-slideout-panel`,argTypes:c,args:l},p={tags:[`!autodocs`],render:e=>t`
         <cosmoz-slideout
             .opened=${e.opened}
             aria-label=${r(e[`aria-label`])}
