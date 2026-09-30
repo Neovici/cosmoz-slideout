@@ -3,6 +3,7 @@ import '@neovici/cosmoz-input/input';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html, render, type TemplateResult } from 'lit-html';
 import { expect, waitFor } from 'storybook/test';
+import { skipUnlessTrusted } from './trusted';
 import '../src/cosmoz-slideout';
 import '../src/cosmoz-slideout-panel';
 import { requestClose as closeSlideout, header } from './chrome';
@@ -78,12 +79,11 @@ export const NonModal: Story = {
 		const status = document.createElement('p');
 		status.dataset.testid = 'bg-count';
 		status.style.cssText =
-			'margin: calc(var(--cz-spacing) * 3) 0 0; color: var(--cz-color-text-tertiary); font-family: var(--cz-font-body); font-size: var(--cz-text-sm);';
+			'margin: calc(var(--cz-spacing) * 3) 0 0; color: var(--cz-color-text-tertiary);';
 		let count = 0;
 		status.textContent = 'Background clicks: 0';
 		const bump = () => {
-			count += 1;
-			status.textContent = `Background clicks: ${count}`;
+			status.textContent = `Background clicks: ${++count}`;
 		};
 		let opened = false;
 		const rerender = () =>
@@ -240,7 +240,11 @@ export const DismissalOptions: Story = {
 			expect(document.activeElement).not.toBe(el);
 		});
 		await step('Escape does not close the guarded panel', async () => {
-			await userEvent.keyboard('{Escape}');
+			// CloseWatcher ignores synthetic keys; skip in static builds
+			const trusted = await skipUnlessTrusted(step);
+			if (!trusted) return;
+			await trusted.keyboard('{Escape}');
+			await new Promise((r) => window.setTimeout(r, 100));
 			expect(surface.matches(':popover-open')).toBe(true);
 		});
 	},
@@ -257,9 +261,7 @@ const stackChrome = (title: string, body: unknown) => html`
 		>
 			✕
 		</cosmoz-button>
-		<h2
-			style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
-		>
+		<h2 style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;">
 			${title}
 		</h2>
 		<div style="padding: 12px 24px; color: var(--cz-color-text-tertiary);">
@@ -277,6 +279,7 @@ export const Stacking: Story = {
 		const mountB = document.createElement('div');
 		let openedA = false;
 		let openedB = false;
+
 
 		const rerenderB = () =>
 			render(
@@ -347,23 +350,22 @@ export const Stacking: Story = {
 			[...canvasElement.querySelectorAll('cosmoz-slideout')].filter((s) =>
 				s.shadowRoot!.querySelector('[popover]')!.matches(':popover-open'),
 			);
-		const openCount = () => openSurfaces().length;
-		const labels = () =>
-			openSurfaces().map((s) => s.getAttribute('aria-label'));
+		const labels = () => openSurfaces().map((s) => s.getAttribute('aria-label'));
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open first/iu }),
 		);
 		await step('opens a second slideout above the first', async () => {
-			await waitFor(() => expect(openCount()).toBe(1));
+			await waitFor(() => expect(openSurfaces().length).toBe(1));
 			await userEvent.click(
-				await canvas.findByShadowRole('button', {
-					name: /open a second slideout/iu,
-				}),
+				await canvas.findByShadowRole('button', { name: /open a second slideout/iu }),
 			);
-			await waitFor(() => expect(openCount()).toBe(2));
+			await waitFor(() => expect(openSurfaces().length).toBe(2));
 		});
 		await step('Escape closes the most recent slideout first', async () => {
-			await userEvent.keyboard('{Escape}');
+			// trusted key event: CloseWatcher ignores synthetic (dispatchEvent) keys
+			const trusted = await skipUnlessTrusted(step);
+			if (!trusted) return;
+			await trusted.keyboard('{Escape}');
 			await waitFor(() => expect(labels()).toEqual(['First']));
 		});
 	},

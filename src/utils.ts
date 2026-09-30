@@ -1,10 +1,5 @@
 export const FALLBACK_BUFFER_MS = 80;
 
-export const dropFrom = <T>(arr: T[], item: T) => {
-	const i = arr.indexOf(item);
-	if (i !== -1) arr.splice(i, 1);
-};
-
 export const animationTimeoutMs = (
 	surface: HTMLElement,
 	buffer = FALLBACK_BUFFER_MS

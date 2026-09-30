@@ -228,7 +228,9 @@ The surface is a `role="dialog"` with `aria-modal="false"` (it is non-modal by d
 `aria-label` / `aria-labelledby` on `<cosmoz-slideout>` - set it explicitly; nothing fills it in for
 you. The close control (in your slotted header) carries its own accessible name, e.g. "Close". On open, focus moves into the surface (opt out with `no-autofocus`); on close, focus
 returns to the opener **when focus was still inside the drawer at the moment it closed** (that check
-is captured then, before the popover hides). Escape closes the **top-most** open slideout only.
+is captured then, before the popover hides). Escape closes the **most recently opened**
+slideout (browser-held `CloseWatcher` sessions - newest first, regardless of where focus
+is; engines without support fall back to a per-instance keydown).
 Because the drawer is non-modal, the page behind stays reachable - this is intentional (quick-glance
 panels).
 
@@ -274,7 +276,8 @@ embellishment is **opt-out**: override its property (e.g. `--cosmoz-slideout-bor
   own-property can shadow the reactive accessor; prefer the attribute (or set the property after
   definition) for markup-time state.
 - **Multiple open slideouts** all render pinned to the right edge and therefore stack on top of one
-  another (they share the same position). Escape targets the most-recently-opened one.
+  another (they share the same position). Escape targets the most-recently-opened one
+  (and on mobile, the Android back button closes it too, via `CloseWatcher`).
 - **Close controls live in your slotted header** (`cz-header`'s suffix etc.) and close by dispatching
   `request-close`. They are independent of Escape-to-close, which is a surface behavior controlled by
   `no-escape` (on `<cosmoz-slideout>`) and stays active either way.

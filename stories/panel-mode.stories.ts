@@ -34,12 +34,8 @@ const panelInShell = (
 		@opened-changed=${(e: CustomEvent) => onOpenedChanged(e.detail.value)}
 	>
 		<cosmoz-slideout-panel>
-			${
-				content.header !== undefined &&
-				header(content.header.title, {
-					subtitle: content.header.subtitle,
-				})
-			}
+			${content.header !== undefined &&
+			header(content.header.title, { subtitle: content.header.subtitle })}
 			${content.body}
 		</cosmoz-slideout-panel>
 	</cosmoz-slideout>
@@ -131,6 +127,7 @@ export const Default: Story = {
 		const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
 		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
 		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+
 
 		await step('opens with the slotted header and footer actions', async () => {
 			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
@@ -279,6 +276,7 @@ export const BodyOnly: Story = {
 		const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
 		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
 		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+
 
 		await step('header region stays present but empty', async () => {
 			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
