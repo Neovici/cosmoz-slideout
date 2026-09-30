@@ -28,8 +28,7 @@ export const CosmozSlideout = (host: SlideoutElement) => {
 export class SlideoutBase extends HTMLElement {
 	controls?: SlideoutControls;
 
-	constructor() {
-		super();
+	connectedCallback() {
 		if (!this.hasAttribute('popover')) {
 			this.setAttribute('popover', 'manual');
 		}
