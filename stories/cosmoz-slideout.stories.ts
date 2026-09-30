@@ -3,6 +3,7 @@ import { xCloseIcon } from '@neovici/cosmoz-icons/untitled';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html, render } from 'lit-html';
 import { expect, waitFor } from 'storybook/test';
+import { skipUnlessTrusted } from './trusted';
 import '../src/cosmoz-slideout';
 import { componentDoc, storyDoc } from './story-docs';
 
@@ -92,7 +93,13 @@ export const Minimal: Story = {
 			).toBeNull();
 		});
 		await step('Escape is the only dismissal', async () => {
-			await userEvent.keyboard('{Escape}');
+			// trusted key event (vitest browser-mode userEvent -> Playwright):
+			// CloseWatcher is driven by the UA close-request pipeline and ignores
+			// synthetic (dispatchEvent) key events. Static Storybook builds cannot
+			// produce them - the step reports itself as skipped there.
+			const trusted = await skipUnlessTrusted(step);
+			if (!trusted) return;
+			await trusted.keyboard('{Escape}');
 			await waitFor(() => expect(surface.matches(':popover-open')).toBe(false));
 		});
 	},

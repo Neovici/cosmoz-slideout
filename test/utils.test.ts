@@ -1,25 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { FALLBACK_BUFFER_MS, animationTimeoutMs, dropFrom } from '../src/utils';
-
-describe('dropFrom', () => {
-	it('removes the item in place', () => {
-		const arr = ['a', 'b', 'c'];
-		dropFrom(arr, 'b');
-		expect(arr).toEqual(['a', 'c']);
-	});
-
-	it('is a no-op when the item is absent', () => {
-		const arr = ['a', 'b'];
-		dropFrom(arr, 'z');
-		expect(arr).toEqual(['a', 'b']);
-	});
-
-	it('removes only the first occurrence', () => {
-		const arr = ['a', 'b', 'a'];
-		dropFrom(arr, 'a');
-		expect(arr).toEqual(['b', 'a']);
-	});
-});
+import { FALLBACK_BUFFER_MS, animationTimeoutMs } from '../src/utils';
 
 describe('animationTimeoutMs', () => {
 	afterEach(() => vi.restoreAllMocks());

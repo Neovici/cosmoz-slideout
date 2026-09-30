@@ -96,6 +96,7 @@
     "@storybook/addon-vitest": "^10.5.0",
     "@storybook/web-components": "^10.5.0",
     "@storybook/web-components-vite": "^10.5.0",
+    "@types/dom-close-watcher": "^1.0.0",
     "@types/node": "^25.5.0",
     "@vitest/browser": "^4.1.10",
     "@vitest/browser-playwright": "^4.1.10",

@@ -1,10 +1,7 @@
 import { useCallback, useEffect, useRef } from '@pionjs/pion';
 import type { SlideoutElement } from './types';
 import { useAttribute } from './use-attribute';
-import { animationTimeoutMs, dropFrom } from './utils';
-
-const openSurfaces: HTMLElement[] = [];
-const dropFromStack = (surface: HTMLElement) => dropFrom(openSurfaces, surface);
+import { animationTimeoutMs } from './utils';
 
 const surfaceOf = (host: HTMLElement) =>
 	host.shadowRoot?.querySelector<HTMLElement>('[popover]') ?? undefined;
@@ -24,7 +21,11 @@ const restoreFocus = (opener: HTMLElement | null | undefined) => {
  * - `opened` true -> false plays the slide-out, then dispatches a bubbling `close`
  *   event, restores focus to the opener, and calls `onClose` - the element is NOT
  *   removed; it stays connected and can be re-opened;
- * - Escape closes the top-most slideout (unless `no-escape`) by flipping `opened`;
+ * - a browser-held `CloseWatcher` session is opened for every open slideout (unless
+ *   `no-escape`): the UA routes Escape (and the Android back button) to the most
+ *   recently opened watcher - newest-first across multiple slideouts, regardless of
+ *   where focus is. `preventDefault()` on the cancelable `opened-changed` vetoes;
+ *   engines without `CloseWatcher` fall back to a per-instance document keydown;
  * - a bubbling `request-close` from a slotted child closes it too, unless a listener
  *   calls `preventDefault()` (an "unsaved changes" veto). Removing the `opened`
  *   attribute (e.g. from devtools) closes it as well, since `opened` is observed.
@@ -43,6 +44,7 @@ export const useClose = (host: SlideoutElement) => {
 		opening: false,
 		closeTimer: 0,
 		openTimer: 0,
+		watcher: null as CloseWatcher | null,
 	});
 
 	const settleOpen = useCallback(() => {
@@ -58,9 +60,9 @@ export const useClose = (host: SlideoutElement) => {
 		if (!s.closing) return;
 		s.closing = false;
 		window.clearTimeout(s.closeTimer);
+		s.watcher?.destroy();
+		s.watcher = null;
 
-		const surface = surfaceOf(host);
-		if (surface) dropFromStack(surface);
 		if (s.shouldRestore) restoreFocus(s.opener);
 
 		host.dispatchEvent(new Event('close', { bubbles: true }));
@@ -75,6 +77,31 @@ export const useClose = (host: SlideoutElement) => {
 	}, []);
 	Object.assign(host, { open, close });
 
+	// Browser-held close-request session (one per open slideout): the UA routes
+	// Escape / back-button to the most recently opened watcher - newest-first
+	// across multiple slideouts, regardless of where focus is. The veto contract
+	// is the same as every close source: the app preventDefault()s the cancelable
+	// `opened-changed`, and bailing here keeps the session alive for the next try.
+	const attachWatcher = useCallback(
+		(watcher: CloseWatcher | null) => {
+			const s = lc.current!;
+			s.watcher?.destroy();
+			if (!watcher) {
+				s.watcher = null;
+				return;
+			}
+			watcher.oncancel = (e) => {
+				// the ONLY dispatch for UA-initiated closes (Escape / back button):
+				// attempt the real mutation here - vetoed -> watcher stays alive for
+				// the next press; applied -> the attribute flips and the lifecycle
+				// effect drives hidePopover (which ends the session)
+				if (!setOpened(false)) e.preventDefault();
+			};
+			s.watcher = watcher;
+		},
+		[setOpened]
+	);
+
 	const activate = useCallback((surface: HTMLElement) => {
 		const s = lc.current!;
 		s.opener = document.activeElement as HTMLElement | null;
@@ -84,9 +111,10 @@ export const useClose = (host: SlideoutElement) => {
 		if (!surface.matches(':popover-open')) {
 			surface.showPopover(); // @starting-style plays the slide-in
 		}
-		if (openSurfaces.indexOf(surface) === -1) {
-			openSurfaces.push(surface);
-		}
+		attachWatcher(
+			!host.noEscape && 'CloseWatcher' in window ? new CloseWatcher() : null
+		);
+
 		if (!host.noAutofocus) {
 			surface.focus({ preventScroll: true });
 		}
@@ -94,7 +122,7 @@ export const useClose = (host: SlideoutElement) => {
 		s.opening = true;
 		window.clearTimeout(s.openTimer);
 		s.openTimer = window.setTimeout(settleOpen, animationTimeoutMs(surface));
-	}, []);
+	}, [attachWatcher]);
 
 	const deactivate = useCallback((surface: HTMLElement) => {
 		const s = lc.current!;
@@ -106,7 +134,6 @@ export const useClose = (host: SlideoutElement) => {
 		}
 
 		s.shouldRestore = host.contains(document.activeElement);
-		dropFromStack(surface);
 		s.closing = true;
 		window.clearTimeout(s.closeTimer);
 		s.closeTimer = window.setTimeout(finish, animationTimeoutMs(surface));
@@ -130,13 +157,10 @@ export const useClose = (host: SlideoutElement) => {
 				settleOpen();
 			}
 		};
-
 		const onKeydown = (e: KeyboardEvent) => {
-			if (
-				e.key === 'Escape' &&
-				!host.noEscape &&
-				openSurfaces[openSurfaces.length - 1] === surface
-			) {
+			// fallback for engines without CloseWatcher: single-instance friendly,
+			// no arbitration (the UA-held watcher stack covers the multi-open case)
+			if (e.key === 'Escape' && !host.noEscape && host.opened) {
 				e.preventDefault();
 				close();
 			}
@@ -150,21 +174,25 @@ export const useClose = (host: SlideoutElement) => {
 		};
 
 		surface.addEventListener('transitionend', onTransitionEnd as EventListener);
-		document.addEventListener('keydown', onKeydown);
+		if (!('CloseWatcher' in window)) {
+			document.addEventListener('keydown', onKeydown);
+		}
 		host.addEventListener('request-close', onRequestClose);
 
-		return () => {
-			window.clearTimeout(lc.current!.closeTimer);
-			window.clearTimeout(lc.current!.openTimer);
-			dropFromStack(surface);
-			surface.removeEventListener(
-				'transitionend',
-				onTransitionEnd as EventListener
-			);
+	return () => {
+		window.clearTimeout(lc.current!.closeTimer);
+		window.clearTimeout(lc.current!.openTimer);
+		attachWatcher(null);
+		surface.removeEventListener(
+			'transitionend',
+			onTransitionEnd as EventListener
+		);
+		if (!('CloseWatcher' in window)) {
 			document.removeEventListener('keydown', onKeydown);
-			host.removeEventListener('request-close', onRequestClose);
-		};
-	}, []);
+		}
+		host.removeEventListener('request-close', onRequestClose);
+	};
+}, [attachWatcher]);
 
 	useEffect(() => {
 		const surface = surfaceOf(host);
