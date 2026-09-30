@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-DboistYl.js";import{a as n,c as r,f as i,l as a,p as o,s}from"./cosmoz-slideout-DeHmyx3c.js";var c,l=e((()=>{n(),c=s`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-7YYipE_4.js";import{a as n,i as r,l as i,n as a,o,u as s}from"./cosmoz-slideout-0dT-aTa9.js";var c,l=e((()=>{a(),c=r`
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -48,7 +48,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-Db
 				var(--cz-color-border-secondary, #e9eaeb)
 			);
 	}
-`})),u,d=e((()=>{r(),i(),l(),u=()=>t`
+`})),u,d=e((()=>{n(),i(),l(),u=()=>t`
 	<div class="region" part="header">
 		<slot name="header"></slot>
 	</div>
@@ -58,4 +58,4 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-Db
 	<div class="region" part="footer">
 		<slot name="footer"></slot>
 	</div>
-`,customElements.define(`cosmoz-slideout-panel`,o(u,{styleSheets:[a,c]}))}));export{d as t};
+`,customElements.define(`cosmoz-slideout-panel`,s(u,{styleSheets:[o,c]}))}));export{d as t};
