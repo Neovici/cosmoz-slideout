@@ -11,14 +11,6 @@ import { componentDoc, storyDoc } from './story-docs';
 
 type SlideoutEl = HTMLElement & { close(): void };
 
-const surfaceOf = (canvasElement: HTMLElement) => {
-	const el = canvasElement.querySelector<SlideoutEl>('cosmoz-slideout')!;
-	return {
-		el,
-		surface: el.shadowRoot!.querySelector<HTMLElement>('[popover]')!,
-	};
-};
-
 // shell + slotted panel opened by a trigger; `guarded` disables Escape+autofocus
 const shellStory =
 	(label: string, guarded: boolean, panel: unknown): (() => TemplateResult) =>
@@ -139,7 +131,7 @@ export const NonModal: Story = {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open panel/iu }),
 		);
-		const { surface } = surfaceOf(canvasElement);
+		const surface = canvasElement.querySelector<SlideoutEl>('cosmoz-slideout')!;
 
 		await step('background controls remain clickable while open', async () => {
 			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
@@ -184,11 +176,11 @@ export const FocusRestore: Story = {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /edit profile/iu }),
 		);
-		const { el, surface } = surfaceOf(canvasElement);
+		const surface = canvasElement.querySelector<SlideoutEl>('cosmoz-slideout')!;
 
 		await step('moves focus into the dialog surface', async () => {
 			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
-			await waitFor(() => expect(el.shadowRoot!.activeElement).toBe(surface));
+			await waitFor(() => expect(document.activeElement).toBe(surface));
 		});
 		await step('returns focus to the opener after close', async () => {
 			canvasElement
@@ -232,11 +224,12 @@ export const DismissalOptions: Story = {
 		await userEvent.click(
 			await canvas.findByShadowRole('button', { name: /open guarded draft/iu }),
 		);
-		const { el, surface } = surfaceOf(canvasElement);
+		const el = canvasElement.querySelector<SlideoutEl>('cosmoz-slideout')!;
+		const surface = el;
 
 		await step('opens without stealing focus from the trigger', async () => {
 			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
-			expect(el.shadowRoot!.activeElement).not.toBe(surface);
+			expect(document.activeElement).not.toBe(surface);
 			expect(document.activeElement).not.toBe(el);
 		});
 		await step('Escape does not close the guarded panel', async () => {
@@ -348,7 +341,7 @@ export const Stacking: Story = {
 	play: async ({ canvas, canvasElement, step, userEvent }) => {
 		const openSurfaces = () =>
 			[...canvasElement.querySelectorAll('cosmoz-slideout')].filter((s) =>
-				s.shadowRoot!.querySelector('[popover]')!.matches(':popover-open'),
+				s.matches(':popover-open'),
 			);
 		const labels = () => openSurfaces().map((s) => s.getAttribute('aria-label'));
 		await userEvent.click(

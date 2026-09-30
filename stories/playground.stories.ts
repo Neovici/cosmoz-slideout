@@ -55,7 +55,7 @@ export const Playground: Story = {
 	`,
 	play: async ({ canvasElement, step }) => {
 		const shell = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+		const surface = shell;
 		await step('opens configured from the args', async () => {
 			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
 		});

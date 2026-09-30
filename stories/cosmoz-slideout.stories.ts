@@ -78,7 +78,7 @@ export const Minimal: Story = {
 			await canvas.findByShadowRole('button', { name: /open bare slideout/iu })
 		);
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+		const surface = el;
 
 		await step('opens with no built-in controls', async () => {
 			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
@@ -178,7 +178,7 @@ export const ComposedChrome: Story = {
 			await canvas.findByShadowRole('button', { name: /edit supplier/iu })
 		);
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+		const surface = el;
 
 		await step('projects hand-composed chrome into the shell', async () => {
 			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));

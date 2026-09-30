@@ -60,17 +60,9 @@ export const ExplicitAriaLabel: Story = {
 			await canvas.findByShadowRole('button', { name: /open labelled/iu }),
 		);
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-		await step(
-			'the authored aria-label names the host and the dialog surface',
-			async () => {
-				// the actual role="dialog" node must carry the name
-				const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
-				expect(el.getAttribute('aria-label')).toBe('Supplier #4021');
-				await waitFor(() =>
-					expect(surface.getAttribute('aria-label')).toBe('Supplier #4021'),
-				);
-			},
-		);
+		await step('the authored aria-label names the host', async () => {
+			expect(el.getAttribute('aria-label')).toBe('Supplier #4021');
+		});
 	},
 };
 
@@ -171,7 +163,7 @@ export const VetoOpenedChanged: Story = {
 			await canvas.findByShadowRole('button', { name: /open guarded/iu }),
 		);
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+		const surface = el;
 		await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
 
 		await step(
@@ -227,7 +219,7 @@ export const VetoRequestClose: Story = {
 			await canvas.findByShadowRole('button', { name: /open vetoed x/iu }),
 		);
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+		const surface = el;
 		await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
 
 		await step(

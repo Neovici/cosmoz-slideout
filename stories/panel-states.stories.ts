@@ -107,7 +107,7 @@ export const FullScreen: Story = {
 			await canvas.findByShadowRole('button', { name: /open workspace/iu }),
 		);
 		const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
-		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+		const surface = shell;
 
 		await step(
 			'toggles to viewport width through the public method',
@@ -191,7 +191,7 @@ export const ThemedSurface: Story = {
 			}),
 		);
 		const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
-		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+		const surface = shell;
 
 		await step(
 			'resolves the local surface override through tokens',

@@ -3,9 +3,6 @@ import type { SlideoutElement } from './types';
 import { useAttribute } from './use-attribute';
 import { animationTimeoutMs } from './utils';
 
-const surfaceOf = (host: HTMLElement) =>
-	host.shadowRoot?.querySelector<HTMLElement>('[popover]') ?? undefined;
-
 const restoreFocus = (opener: HTMLElement | null | undefined) => {
 	if (opener?.isConnected) opener.focus({ preventScroll: true });
 };
@@ -68,52 +65,45 @@ export const useClose = (host: SlideoutElement) => {
 		[setOpened]
 	);
 
-	const activate = useCallback((surface: HTMLElement) => {
+	const activate = useCallback(() => {
 		const s = lc.current!;
 		s.opener = document.activeElement as HTMLElement | null;
-		s.closing = false; // cancel a stale close cycle...
-		window.clearTimeout(s.closeTimer); // ...and its fallback timer
+		s.closing = false;
+		window.clearTimeout(s.closeTimer);
 
-		if (!surface.matches(':popover-open')) {
-			surface.showPopover(); // @starting-style plays the slide-in
+		if (!host.matches(':popover-open')) {
+			host.showPopover();
 		}
-		attachWatcher(
-			!host.noEscape && 'CloseWatcher' in window ? new CloseWatcher() : null
-		);
+		attachWatcher(!host.noEscape && 'CloseWatcher' in window ? new CloseWatcher() : null);
 
 		if (!host.noAutofocus) {
-			surface.focus({ preventScroll: true });
+			host.focus({ preventScroll: true });
 		}
 
 		s.opening = true;
 		window.clearTimeout(s.openTimer);
-		s.openTimer = window.setTimeout(settleOpen, animationTimeoutMs(surface));
+		s.openTimer = window.setTimeout(settleOpen, animationTimeoutMs(host));
 	}, [attachWatcher]);
 
-	const deactivate = useCallback((surface: HTMLElement) => {
+	const deactivate = useCallback(() => {
 		const s = lc.current!;
 		s.opening = false;
 		window.clearTimeout(s.openTimer);
 
-		if (!surface.matches(':popover-open')) {
+		if (!host.matches(':popover-open')) {
 			return;
 		}
 
 		s.shouldRestore = host.contains(document.activeElement);
 		s.closing = true;
 		window.clearTimeout(s.closeTimer);
-		s.closeTimer = window.setTimeout(finish, animationTimeoutMs(surface));
-		surface.hidePopover(); // plays the slide-out -> transitionend -> finish
+		s.closeTimer = window.setTimeout(finish, animationTimeoutMs(host));
+		host.hidePopover();
 	}, []);
 
 	useEffect(() => {
-		const surface = surfaceOf(host);
-		if (!surface) {
-			return;
-		}
-
 		const onTransitionEnd = (e: TransitionEvent) => {
-			if (e.target !== surface || e.propertyName !== 'translate') {
+			if (e.target !== host || e.propertyName !== 'translate') {
 				return;
 			}
 			if (lc.current!.closing) {
@@ -128,7 +118,6 @@ export const useClose = (host: SlideoutElement) => {
 				close();
 			}
 		};
-
 		const onRequestClose = (e: Event) => {
 			if (host.opened && !e.defaultPrevented) {
 				e.stopPropagation();
@@ -136,36 +125,29 @@ export const useClose = (host: SlideoutElement) => {
 			}
 		};
 
-		surface.addEventListener('transitionend', onTransitionEnd as EventListener);
+		host.addEventListener('transitionend', onTransitionEnd as EventListener);
 		if (!('CloseWatcher' in window)) {
 			document.addEventListener('keydown', onKeydown);
 		}
 		host.addEventListener('request-close', onRequestClose);
 
-	return () => {
-		window.clearTimeout(lc.current!.closeTimer);
-		window.clearTimeout(lc.current!.openTimer);
-		attachWatcher(null);
-		surface.removeEventListener(
-			'transitionend',
-			onTransitionEnd as EventListener
-		);
-		if (!('CloseWatcher' in window)) {
-			document.removeEventListener('keydown', onKeydown);
-		}
-		host.removeEventListener('request-close', onRequestClose);
-	};
-}, [attachWatcher]);
+		return () => {
+			window.clearTimeout(lc.current!.closeTimer);
+			window.clearTimeout(lc.current!.openTimer);
+			attachWatcher(null);
+			host.removeEventListener('transitionend', onTransitionEnd as EventListener);
+			if (!('CloseWatcher' in window)) {
+				document.removeEventListener('keydown', onKeydown);
+			}
+			host.removeEventListener('request-close', onRequestClose);
+		};
+	}, [attachWatcher]);
 
 	useEffect(() => {
-		const surface = surfaceOf(host);
-		if (!surface) {
-			return;
-		}
 		if (opened) {
-			activate(surface);
+			activate();
 		} else {
-			deactivate(surface);
+			deactivate();
 		}
 	}, [opened]);
 

@@ -127,7 +127,7 @@ export const Default: Story = {
 		);
 		const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
 		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
-		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+		const surface = shell;
 
 
 		await step('opens with the slotted header and footer actions', async () => {
@@ -274,7 +274,7 @@ export const BodyOnly: Story = {
 		);
 		const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
 		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
-		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+		const surface = shell;
 
 
 		await step('header region stays present but empty', async () => {

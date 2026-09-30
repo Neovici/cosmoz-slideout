@@ -4,10 +4,10 @@ A non-modal, top-layer slideout (drawer / sidebar) web component built with pion
 
 This package ships **two custom elements that compose**:
 
-- **`<cosmoz-slideout>`** - the **surface**. It renders in the browser top-layer via the native
-  **Popover API** (`<div popover="manual">`), is **non-modal** (the page behind stays interactive),
+- **`<cosmoz-slideout>`** - the **surface**. It **is itself the popover** (`<cosmoz-slideout popover="manual">`): the element renders in the browser top-layer via the native
+  **Popover API**, is **non-modal** (the page behind stays interactive),
   and slides in **from the right** when its reactive **`opened`** state becomes true. It owns
-  everything _around_ the content - the surface, the `opened` / `full-screen` lifecycle, dismissal
+  everything _around_ the content - the `opened` / `full-screen` lifecycle, dismissal
   requests (Escape, hardware back), and focus management - and exposes a
   **single blank slot**. It adds no chrome of its own.
 - **`<cosmoz-slideout-panel>`** - layout **chrome**: a `header` region, a scrollable
@@ -88,10 +88,10 @@ Your own buttons can do the same, or call `closest('cosmoz-slideout')?.close()`.
   `toggleFullScreen()`.
 - `no-escape` - disable the built-in Escape-to-close.
 - `no-autofocus` - do not move focus into the surface on open.
-- `aria-label` - mirrored onto the surface (`role="dialog"`) to label the drawer. Set it
+- `aria-label` - label for the drawer. Set it
   **explicitly** - the panel carries no text of its own to name it with (and never reaches into the
-  surface). Note: `aria-labelledby` is an IDREF and only resolves to an element in the **same tree**
-  as the surface (the shell), not a slotted one - use `aria-label` (a plain string) to name the drawer.
+  element). Note: `aria-labelledby` is an IDREF and only resolves to an element in the **same tree**
+  as the element, not a slotted one - use `aria-label` (a plain string) to name the drawer.
 
 #### Methods
 
@@ -122,7 +122,7 @@ Your own buttons can do the same, or call `closest('cosmoz-slideout')?.close()`.
 #### Slot
 
 - _default_ - a single blank slot. Drop a `<cosmoz-slideout-panel>` in for the styled layout, or
-  author your own chrome. The single slotted child is stretched to fill the surface, so wrap
+  author your own chrome. The single slotted child is stretched to fill the slideout, so wrap
   hand-composed header/body/footer in **one** top-level element.
 
 ### `<cosmoz-slideout-panel>` - the layout chrome
@@ -230,19 +230,21 @@ const panel = document.querySelector('cosmoz-slideout-panel'); // typed (propert
 
 ### CSS `::part()`
 
-**`<cosmoz-slideout>`:** `surface` - the popover panel.
+**`<cosmoz-slideout>`:** none - the element *is* the surface; style it via `:host`-level custom
+properties (below) or the `cosmoz-slideout` element selector.
 
 **`<cosmoz-slideout-panel>`:** `header`, `body`, `footer` - the layout regions.
 
 ### Accessibility
 
-The surface is a `role="dialog"` with `aria-modal="false"` (it is non-modal by design). Label it via
+The element carries `role="dialog"`, `aria-modal="false"` (non-modal by design), and
+`tabindex="-1"` itself (set by the base class; an authored `role` wins). Label it via
 `aria-label` on `<cosmoz-slideout>` - set it explicitly; nothing fills it in for you. The close
 control (in your slotted header) carries its own accessible name, e.g. "Close". On open, focus moves
-into the surface (opt out with `no-autofocus`); on close, focus returns to the opener **when focus was
+into the element (opt out with `no-autofocus`); on close, focus returns to the opener **when focus was
 still inside the drawer at the moment it closed** (that check is captured then, before the popover
 hides). Escape (and hardware/gesture back navigation) closes the **most recently opened**
-slideout - each open panel holds a close-request session with the browser (newest first
+slideout - each open element holds a close-request session with the browser (newest first
 regardless of where focus is). Because the drawer is non-modal, the page behind stays reachable -
 this is intentional (quick-glance panels).
 

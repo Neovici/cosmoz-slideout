@@ -90,7 +90,7 @@ export const Width: Story = {
 			await canvas.findByShadowRole('button', { name: /open wide/iu })
 		);
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-		const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+		const surface = el;
 
 		await step('honors the width custom property', async () => {
 			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
