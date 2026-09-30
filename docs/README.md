@@ -102,7 +102,8 @@ Your own buttons can do the same, or call `closest('cosmoz-slideout')?.close()`.
 - `opened-changed` - dispatched (bubbling, **cancelable**) when the surface changes `opened` itself
   (`open()`/`close()`, Escape, `request-close`); `detail = { value }`. Use it for two-way binding;
   `preventDefault()` vetoes the change (an unsaved-changes guard). External writes (a direct attribute
-  edit) don't re-emit it - the mutator already knows.
+  edit) don't re-emit it - the mutator already knows. (Contrast: `full-screen-changed` fires for
+  **any** flip, external writes included.)
 - `open` - dispatched after the slide-**in** animation settles (bubbles), symmetric with `close` -
   handy for "scroll to top / focus the first field" timing.
 - `close` - dispatched after the slide-**out** animation settles (bubbles). Useful for teardown
