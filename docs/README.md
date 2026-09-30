@@ -217,6 +217,21 @@ are exported from the package root: `useClose` (the `opened` lifecycle + `open()
 generic `useAttribute` (a reactive boolean attribute with a cancelable `*-changed` event), and
 `renderSlideout` (the popover-surface template). `useSlideout` bundles the first three.
 
+### Typed lookups
+
+`HTMLElementTagNameMap` is augmented by importing the surface module, so DOM queries return fully
+typed elements:
+
+```ts
+import '@neovici/cosmoz-slideout/cosmoz-slideout';
+
+const view = document.querySelector('cosmoz-slideout');
+view.opened; // typed
+view.close(); // typed
+
+const panel = document.querySelector('cosmoz-slideout-panel'); // typed (property-free)
+```
+
 ### CSS `::part()`
 
 **`<cosmoz-slideout>`:** `surface` - the popover panel.

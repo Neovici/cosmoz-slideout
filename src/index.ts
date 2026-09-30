@@ -7,7 +7,13 @@ import { useClose } from './use-close';
 import { useFullScreen } from './use-full-screen';
 
 export { slideout, slideoutPanel } from './helpers';
-export type { Props, SlideoutElement, SlideoutProps } from './types';
+export type {
+	PanelElement,
+	PanelProps,
+	Props,
+	SlideoutElement,
+	SlideoutProps,
+} from './types';
 export { useAttribute } from './use-attribute';
 export { useClose } from './use-close';
 export { useFullScreen } from './use-full-screen';

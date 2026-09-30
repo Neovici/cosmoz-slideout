@@ -36,15 +36,10 @@ export default css`
 		gap: calc(var(--cz-spacing, 4px) * 3);
 		flex: none;
 		min-width: 0;
-	}
-
-	slot[name='header']::slotted(*),
-	slot[name='footer']::slotted(*) {
-		--_px: var(
+		padding-inline: var(
 			--cosmoz-slideout-panel-padding-x,
 			calc(var(--cz-spacing, 4px) * 4)
 		);
-		padding-inline: var(--_px);
 		padding-block: calc(var(--cz-spacing, 4px) * 4);
 	}
 

@@ -5,7 +5,7 @@ import {
 	surfaceStyleSheets,
 	useSlideout,
 } from './index';
-import type { Props, SlideoutElement } from './types';
+import type { PanelProps, Props, SlideoutElement } from './types';
 
 /**
  * `<cosmoz-slideout>` - the slideout surface.
@@ -37,6 +37,18 @@ import type { Props, SlideoutElement } from './types';
  * </cosmoz-slideout>
  * ```
  */
+/**
+ * Typed DOM lookups: `querySelector('cosmoz-slideout')` returns a fully
+ * typed element (props like `opened`, `fullScreen`, methods `open` /
+ * `close`, ... readable in JS), same for the panel.
+ */
+declare global {
+	interface HTMLElementTagNameMap {
+		'cosmoz-slideout': HTMLElement & Props;
+		'cosmoz-slideout-panel': HTMLElement & PanelProps;
+	}
+}
+
 customElements.define(
 	'cosmoz-slideout',
 	component<Props>(
