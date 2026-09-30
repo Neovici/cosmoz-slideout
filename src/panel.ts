@@ -3,33 +3,31 @@ import { html } from '@pionjs/pion';
 /**
  * `<cosmoz-slideout-panel>` - the layout chrome for slideout content.
  *
- * Purely structural, in the spirit of `cz-card`: content-conditional regions are
- * the author's business - all three slots are always rendered, and the panel adds
- * only the design-system layout: a `header` region, a scrollable padded `body`,
- * and a `footer` with a divider. It holds **no properties** and closes only via
- * a bubbling `request-close` event dispatched by whatever the author slots in
- * (e.g. a `cz-header` with a close control in its suffix slot).
+ * Purely structural, in the spirit of `cz-card`: the three slots (`header`,
+ * default body, `footer`) are **completely invisible when empty** - the regions
+ * have no box of their own, all spacing/borders/dividers are painted on the
+ * slotted elements (via `::slotted(*)`), exactly like `cz-card`. It holds
+ * **no properties** and closes only via a bubbling `request-close` event
+ * dispatched by whatever the author slots in (e.g. a `cz-header` with a close
+ * control in its suffix slot).
  *
  * ```html
  * <cosmoz-slideout opened>
  *   <cosmoz-slideout-panel>
- *     <div slot="header">
- *       <h2>Supplier #4021</h2>
- *     </div>
+ *     <cz-header slot="header">Supplier</cz-header>
  *     <p>…body…</p>
- *     <div slot="footer">…actions…</div>
  *   </cosmoz-slideout-panel>
  * </cosmoz-slideout>
  * ```
  */
 export const renderPanel = () => html`
-	<header part="header" class="header">
+	<div class="region" part="header">
 		<slot name="header"></slot>
-	</header>
-	<div part="body" class="body">
+	</div>
+	<div class="body" part="body">
 		<slot></slot>
 	</div>
-	<footer part="footer" class="footer">
+	<div class="region" part="footer">
 		<slot name="footer"></slot>
-	</footer>
+	</div>
 `;

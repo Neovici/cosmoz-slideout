@@ -7,15 +7,15 @@ export const useAttribute = (
 	host: HTMLElement,
 	name: string,
 	eventName: string = `${name}-changed`
-): readonly [boolean, (next: boolean) => void] => {
+): readonly [boolean, (next: boolean) => boolean] => {
 	const camel = toCamelCase(name);
 	const read = () =>
 		Boolean((host as unknown as Record<string, unknown>)[camel]);
 	const value = read();
 
-	const set = (next: boolean) => {
+	const set = (next: boolean): boolean => {
 		if (next === read()) {
-			return;
+			return false;
 		}
 		const event = new CustomEvent(eventName, {
 			detail: { value: next },
@@ -24,9 +24,10 @@ export const useAttribute = (
 		});
 		host.dispatchEvent(event);
 		if (event.defaultPrevented) {
-			return;
+			return false;
 		}
 		host.toggleAttribute(name, next);
+		return true;
 	};
 
 	useLayoutEffect(() => {

@@ -34,12 +34,8 @@ const panelInShell = (
 		@opened-changed=${(e: CustomEvent) => onOpenedChanged(e.detail.value)}
 	>
 		<cosmoz-slideout-panel>
-			${
-				content.header !== undefined &&
-				header(content.header.title, {
-					subtitle: content.header.subtitle,
-				})
-			}
+			${content.header !== undefined &&
+			header(content.header.title, { subtitle: content.header.subtitle })}
 			${content.body}
 		</cosmoz-slideout-panel>
 	</cosmoz-slideout>
@@ -132,18 +128,19 @@ export const Default: Story = {
 		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
 		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
+
 		await step('opens with the slotted header and footer actions', async () => {
 			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
 			await canvas.findByShadowText(/Acme Industries/u);
 			expect(
 				panel
-					.shadowRoot!.querySelector('.header')!
+					.shadowRoot!.querySelector('[part="header"]')!
 					.querySelector('slot[name="header"]'),
 			).not.toBeNull();
 			await waitFor(() =>
 				expect(
 					panel
-						.shadowRoot!.querySelector('.footer')!
+						.shadowRoot!.querySelector('[part="footer"]')!
 						.querySelector<HTMLSlotElement>('slot[name="footer"]')!
 						.assignedElements().length,
 				).toBeGreaterThan(0),
@@ -151,7 +148,7 @@ export const Default: Story = {
 		});
 		await step('the slotted close control dismisses the panel', async () => {
 			panel
-				.shadowRoot!.querySelector<HTMLElement>('.header')!
+				.shadowRoot!.querySelector('[part="header"]')!
 				.querySelector<HTMLSlotElement>('slot[name="header"]')!
 				.assignedElements()[0]
 				.querySelector<HTMLElement>('cosmoz-button[aria-label="Close"]')!
@@ -212,8 +209,9 @@ export const CustomHeader: Story = {
 			await canvas.findByShadowRole('button', { name: /open custom header/iu }),
 		);
 		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
-		const headerSlot =
-			panel.shadowRoot!.querySelector<HTMLSlotElement>('.header > slot')!;
+		const headerSlot = panel.shadowRoot!.querySelector<HTMLSlotElement>(
+			'[part="header"] > slot',
+		)!;
 
 		await step('projects slotted header content', async () => {
 			await waitFor(() =>
@@ -279,11 +277,12 @@ export const BodyOnly: Story = {
 		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
 		const surface = shell.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
 
+
 		await step('header region stays present but empty', async () => {
 			await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
 			expect(
 				panel
-					.shadowRoot!.querySelector('.header')!
+					.shadowRoot!.querySelector('[part="header"]')!
 					.querySelector<HTMLSlotElement>('slot[name="header"]')!
 					.assignedElements().length,
 			).toBe(0);
@@ -356,8 +355,8 @@ export const ScrollableContent: Story = {
 		);
 		const panel = canvasElement.querySelector('cosmoz-slideout-panel')!;
 		const body = panel.shadowRoot!.querySelector<HTMLElement>('.body')!;
-		const header = panel.shadowRoot!.querySelector<HTMLElement>('.header')!;
-		const footer = panel.shadowRoot!.querySelector<HTMLElement>('.footer')!;
+		const header = panel.shadowRoot!.querySelector('[part="header"]')!;
+		const footer = panel.shadowRoot!.querySelector('[part="footer"]')!;
 
 		await step('scrolls the body; header/footer stay outside it', async () => {
 			await waitFor(() => expect(body.scrollHeight).toBeGreaterThan(0));
