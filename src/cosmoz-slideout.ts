@@ -65,7 +65,7 @@ customElements.define(
 	'cosmoz-slideout',
 	component<Props>(CosmozSlideout, {
 		baseElement: SlideoutBase,
-		observedAttributes: ['opened', 'full-screen', 'no-escape', 'no-autofocus'],
+		observedAttributes: ['opened', 'full-screen', 'no-escape'],
 		styleSheets: [normalize, styles],
-	})
+	}),
 );

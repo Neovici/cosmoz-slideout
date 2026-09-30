@@ -29,14 +29,15 @@ const panelInShell = (
 		aria-label=${ifDefined(args['aria-label'] as string | undefined)}
 		?full-screen=${args['full-screen']}
 		?no-escape=${args['no-escape']}
-		?no-autofocus=${args['no-autofocus']}
 		style=${`--cosmoz-slideout-width: ${args.width};`}
 		@opened-changed=${(e: CustomEvent) => onOpenedChanged(e.detail.value)}
 	>
 		<cosmoz-slideout-panel>
-			${content.header
-				? header(content.header.title, { subtitle: content.header.subtitle })
-				: nothing}
+			${
+				content.header
+					? header(content.header.title, { subtitle: content.header.subtitle })
+					: nothing
+			}
 			${content.body}
 		</cosmoz-slideout-panel>
 	</cosmoz-slideout>
@@ -183,8 +184,8 @@ export const CustomHeader: Story = {
 						},
 						body: html`
 							<p>
-								The header region projects whatever you slot in - a header
-								with its own close control.
+								The header region projects whatever you slot in - a header with
+								its own close control.
 							</p>
 						`,
 					},

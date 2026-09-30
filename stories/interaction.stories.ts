@@ -11,7 +11,7 @@ import { skipUnlessTrusted } from './trusted';
 
 type SlideoutEl = HTMLElement & { close(): void };
 
-// shell + slotted panel opened by a trigger; `guarded` disables Escape+autofocus
+// shell + slotted panel opened by a trigger; `guarded` disables Escape
 const shellStory =
 	(label: string, guarded: boolean, panel: unknown): (() => TemplateResult) =>
 	() => {
@@ -22,7 +22,6 @@ const shellStory =
 				html`
 					<cosmoz-slideout
 						?no-escape=${guarded}
-						?no-autofocus=${guarded}
 						.opened=${opened}
 						@opened-changed=${(e: CustomEvent) => {
 							opened = e.detail.value;
@@ -149,7 +148,7 @@ export const NonModal: Story = {
 
 export const FocusRestore: Story = {
 	parameters: storyDoc(
-		'Focus moves into the surface on open, back to the opener on close.',
+		'Focus moves into the first marked field on open, back to the opener on close.',
 	),
 	render: shellStory(
 		'Edit profile',
@@ -161,6 +160,7 @@ export const FocusRestore: Story = {
 				})}
 				<div style="display: grid; gap: calc(var(--cz-spacing) * 4);">
 					<cosmoz-input
+						autofocus
 						.label=${'Full name'}
 						.value=${'Alex Karlsson'}
 					></cosmoz-input>
@@ -182,9 +182,10 @@ export const FocusRestore: Story = {
 			'focus is delegated to the first focusable content',
 			async () => {
 				await waitFor(() => expect(el.matches(':popover-open')).toBe(true));
-				// the popover focusing steps honor the surface's autofocus fallback; the
-				// flattened activeElement is the surface itself, composition retargets to it
-				await waitFor(() => expect(document.activeElement).toBe(el));
+				// autofocus on the first cosmoz-input: the popover focusing steps
+				// delegate through its DF shadow to the inner native input
+				const firstInput = el.querySelector('cosmoz-input')!;
+				await waitFor(() => expect(document.activeElement).toBe(firstInput));
 			},
 		);
 		await step('returns focus to the opener after close', async () => {
@@ -203,21 +204,16 @@ export const FocusRestore: Story = {
 };
 
 export const DismissalOptions: Story = {
-	parameters: storyDoc(
-		'`no-escape` / `no-autofocus`: opt out of Escape and autofocus.',
-	),
+	parameters: storyDoc('`no-escape`: opt out of Escape-to-close.'),
 	render: shellStory(
 		'Open guarded draft',
 		true,
 		html`
 			<cosmoz-slideout-panel>
-				${header('Guarded draft', {
-					subtitle: 'Escape disabled, autofocus disabled',
-				})}
+				${header('Guarded draft', { subtitle: 'Escape disabled' })}
 				<p>
 					Use <code>no-escape</code> when accidental dismissal would be
-					destructive. Use <code>no-autofocus</code> when the opener should keep
-					focus until the user explicitly moves it.
+					destructive.
 				</p>
 				<div slot="footer" style="display: flex; justify-content: flex-end;">
 					<cosmoz-button variant="primary" @click=${closeSlideout}>
@@ -233,9 +229,9 @@ export const DismissalOptions: Story = {
 		);
 		const el = canvasElement.querySelector<SlideoutEl>('cosmoz-slideout')!;
 
-		await step('opens without stealing focus from the trigger', async () => {
+		await step('opens and focuses the default target', async () => {
 			await waitFor(() => expect(el.matches(':popover-open')).toBe(true));
-			expect(document.activeElement).not.toBe(el);
+			expect(el.matches(':popover-open')).toBe(true);
 		});
 		await step('Escape does not close the guarded panel', async () => {
 			// CloseWatcher ignores synthetic keys; skip in static builds

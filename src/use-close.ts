@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from '@pionjs/pion';
 import type { SlideoutElement } from './types';
 import { useAttribute } from './use-attribute';
-import { animationTimeoutMs, markAutofocus } from './utils';
+import { animationTimeoutMs } from './utils';
 
 const restoreFocus = (opener: HTMLElement | null | undefined) => {
 	if (opener?.isConnected) opener.focus({ preventScroll: true });
@@ -67,17 +67,16 @@ export const useClose = (host: SlideoutElement) => {
 
 	const activate = useCallback(() => {
 		const s = lc.current!;
+		// capture the opener before the browser's popover focusing steps move
+		// focus into the slotted `[autofocus]` content (or the surface, when the
+		// author marks it); no focus() calls here.
 		s.opener = document.activeElement as HTMLElement | null;
 		s.closing = false;
 		window.clearTimeout(s.closeTimer);
 
-		markAutofocus(host);
 		if (!host.matches(':popover-open')) {
 			host.showPopover();
 		}
-		// focus is moved by the Popover API's own focusing steps: it honors
-		// `autofocus` on the surface (our no-markup fallback) or anywhere in the
-		// slotted content; no focus() calls here.
 		attachWatcher(
 			!host.noEscape && 'CloseWatcher' in window ? new CloseWatcher() : null,
 		);
@@ -146,7 +145,7 @@ export const useClose = (host: SlideoutElement) => {
 			}
 			host.removeEventListener('request-close', onRequestClose);
 		};
-	}, [attachWatcher]);
+	}, [attachWatcher, close]);
 
 	useEffect(() => {
 		if (opened) {

@@ -6,8 +6,6 @@ export interface Props {
 	fullScreen?: boolean;
 	/** Disable Escape-to-close (attribute `no-escape`). */
 	noEscape?: boolean;
-	/** Do not move focus into the surface on open (attribute `no-autofocus`). */
-	noAutofocus?: boolean;
 	/** Called right after the `close` event fires. */
 	onClose?: () => void;
 	/** Slide-in (guarded no-op when already open). */
@@ -51,8 +49,6 @@ export interface SlideoutProps {
 	fullScreen?: boolean;
 	/** Disable Escape-to-close. */
 	noEscape?: boolean;
-	/** Do not move focus into the surface on open. */
-	noAutofocus?: boolean;
 	/** Label for the dialog. */
 	ariaLabel?: string;
 	/** IDREF label for the dialog. */

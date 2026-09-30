@@ -9,7 +9,6 @@ export const slideout = (props: SlideoutProps, content: unknown) => html`
 		.opened=${props.opened ?? false}
 		?full-screen=${props.fullScreen}
 		?no-escape=${props.noEscape}
-		?no-autofocus=${props.noAutofocus}
 		aria-label=${ifDefined(props.ariaLabel)}
 		aria-labelledby=${ifDefined(props.ariaLabelledby)}
 		@opened-changed=${props.onOpenedChanged}
@@ -23,7 +22,7 @@ export const slideout = (props: SlideoutProps, content: unknown) => html`
 
 export const slideoutPanel = (
 	props: { class?: string; style?: string },
-	content: unknown
+	content: unknown,
 ) => html`
 	<cosmoz-slideout-panel
 		class=${ifDefined(props.class)}
