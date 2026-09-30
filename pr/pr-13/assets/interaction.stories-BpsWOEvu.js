@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,lt as i,ot as a,pt as o,st as s,ut as c}from"./iframe-DN1ZdUAV.js";import{C as l,D as u,E as d,T as f,_ as p,c as m,f as h,g,h as _,i as v,j as ee,l as y,m as b,n as te,p as ne,s as re,t as ie,u as ae,x,y as oe}from"./cosmoz-slideout-DaJafsGb.js";import{t as se}from"./cosmoz-button-CSmwY0Cn.js";import{a as S,i as ce}from"./untitled-CR8Y_Sxl.js";import{n as C,t as le}from"./trusted-6AwRJoKi.js";import{n as ue,r as w,t as de}from"./story-docs-CVcPOcP0.js";import{t as fe}from"./cosmoz-slideout-panel-DhGRes1Y.js";import{i as T,n as E,r as pe}from"./chrome-BypBf8Dc.js";var D,me=e((()=>{o(),g(),a(),D=b(class extends _{constructor(e){if(super(e),e.type!==p.PROPERTY&&e.type!==p.ATTRIBUTE&&e.type!==p.BOOLEAN_ATTRIBUTE)throw Error("The `live` directive is not allowed on child or event bindings");if(!t(e))throw Error("`live` bindings can only contain a single expression")}render(e){return e}update(e,[t]){if(t===n||t===i)return t;let r=e.element,a=e.name;if(e.type===p.PROPERTY){if(t===r[a])return n}else if(e.type===p.BOOLEAN_ATTRIBUTE){if(!!t===r.hasAttribute(a))return n}else if(e.type===p.ATTRIBUTE&&r.getAttribute(a)===t+``)return n;return s(e),t}})})),O,k,he=e((()=>{o(),ne(),g(),O=new WeakMap,k=b(class extends h{render(e){return i}update(e,[t]){let n=t!==this.G;return n&&this.rt(void 0),(n||this.lt!==this.ct)&&(this.G=t,this.ht=e.options?.host,this.rt(this.ct=e.element)),i}rt(e){if(this.G!==void 0)if(this.isConnected||(e=void 0),typeof this.G==`function`){let t=this.ht??globalThis,n=O.get(t);n===void 0&&(n=new WeakMap,O.set(t,n)),n.get(this.G)!==void 0&&this.G.call(this.ht,void 0),n.set(this.G,e),e!==void 0&&this.G.call(this.ht,e)}else this.G.value=e}get lt(){return typeof this.G==`function`?O.get(this.ht??globalThis)?.get(this.G):this.G?.value}disconnected(){this.lt===this.ct&&this.rt(void 0)}reconnected(){this.rt(this.ct)}})})),A,j,ge=e((()=>{o(),ce(),A=(e,{label:t,invalid:n,errorMessage:i})=>r`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,lt as i,ot as a,pt as o,st as s,ut as c}from"./iframe-BHcG80NJ.js";import{C as l,D as u,E as d,T as f,_ as p,c as m,f as h,g,h as _,i as v,j as ee,l as y,m as b,n as te,p as ne,s as re,t as ie,u as ae,x,y as oe}from"./cosmoz-slideout-iIRbT3tI.js";import{t as se}from"./cosmoz-button-BiAEfMwf.js";import{a as S,i as ce}from"./untitled-D0lSkgTX.js";import{n as C,t as le}from"./trusted-6AwRJoKi.js";import{n as ue,r as w,t as de}from"./story-docs-CVcPOcP0.js";import{t as fe}from"./cosmoz-slideout-panel-B414r9wa.js";import{i as T,n as E,r as pe}from"./chrome-Dj_r8rBM.js";var D,me=e((()=>{o(),g(),a(),D=b(class extends _{constructor(e){if(super(e),e.type!==p.PROPERTY&&e.type!==p.ATTRIBUTE&&e.type!==p.BOOLEAN_ATTRIBUTE)throw Error("The `live` directive is not allowed on child or event bindings");if(!t(e))throw Error("`live` bindings can only contain a single expression")}render(e){return e}update(e,[t]){if(t===n||t===i)return t;let r=e.element,a=e.name;if(e.type===p.PROPERTY){if(t===r[a])return n}else if(e.type===p.BOOLEAN_ATTRIBUTE){if(!!t===r.hasAttribute(a))return n}else if(e.type===p.ATTRIBUTE&&r.getAttribute(a)===t+``)return n;return s(e),t}})})),O,k,he=e((()=>{o(),ne(),g(),O=new WeakMap,k=b(class extends h{render(e){return i}update(e,[t]){let n=t!==this.G;return n&&this.rt(void 0),(n||this.lt!==this.ct)&&(this.G=t,this.ht=e.options?.host,this.rt(this.ct=e.element)),i}rt(e){if(this.G!==void 0)if(this.isConnected||(e=void 0),typeof this.G==`function`){let t=this.ht??globalThis,n=O.get(t);n===void 0&&(n=new WeakMap,O.set(t,n)),n.get(this.G)!==void 0&&this.G.call(this.ht,void 0),n.set(this.G,e),e!==void 0&&this.G.call(this.ht,e)}else this.G.value=e}get lt(){return typeof this.G==`function`?O.get(this.ht??globalThis)?.get(this.G):this.G?.value}disconnected(){this.lt===this.ct&&this.rt(void 0)}reconnected(){this.rt(this.ct)}})})),A,j,ge=e((()=>{o(),ce(),A=(e,{label:t,invalid:n,errorMessage:i})=>r`
 		<div class="float" part="float">&nbsp;</div>
 		<div class="wrap" part="wrap">
 			<slot name="prefix"></slot>
@@ -278,7 +278,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
 	@container style(--focused: focused) {
 		${M}
 	}
-`})),P,ve=e((()=>{y(),P=e=>l(()=>{if(e==null)return;let t=new RegExp(e,`u`);return e=>{!e.defaultPrevented&&e.data&&!t.test(e.data)&&e.preventDefault()}},[e])})),F,ye=e((()=>{y(),F=u(class extends d{values;constructor(e,t,n,r){super(e,t),Object.assign(t.host,n),this.values=r}update(e,t){this.hasChanged(t)&&(this.values=t,Object.assign(this.state.host,e))}hasChanged(e=[]){return e.some((e,t)=>this.values[t]!==e)}})})),be=e((()=>{y(),u(class extends d{update(){return this.state.host}})})),I,L,xe=e((()=>{y(),be(),I=/([A-Z])/gu,L=(e,t,n)=>{e[t]=n,e.dispatchEvent(new CustomEvent(t.replace(I,`-$1`).toLowerCase()+`-changed`,{detail:{value:n}}))}})),R,Se=e((()=>{ye(),xe(),y(),R=e=>{let t=oe(void 0),n=x(e=>t.current=e,[]),r=e.shadowRoot,i=x(t=>e.dispatchEvent(new Event(t.type,{bubbles:t.bubbles})),[]),a=x(t=>L(e,`value`,t.target.value),[]),o=x(t=>L(e,`focused`,t.type===`focus`),[]),s=x(()=>{let n=t.current?.checkValidity();return e.toggleAttribute(`invalid`,!n),n},[]);return F({validate:s},[s]),f(()=>{let e=e=>{e.composedPath()[0]?.closest?.(`input, textarea, label`)||(e.preventDefault(),t.current?.focus())};return r.addEventListener(`mousedown`,e),()=>r.removeEventListener(`mousedown`,e)},[]),{onChange:i,onFocus:o,onInput:a,onRef:n}}})),z,B,Ce=e((()=>{z=({placeholder:e,noLabelFloat:t,label:n})=>(t?n:void 0)||e||` `,B=(e,t)=>t??(e===`date`?`9999-12-31`:void 0)})),V,H,we=e((()=>{y(),o(),re(),me(),he(),ge(),_e(),ve(),Se(),Ce(),V=[`type`,`pattern`,`allowed-pattern`,`min`,`max`,`step`,`autosize`,`label`,`placeholder`,...j],H=e=>{let{type:t=`text`,pattern:n,allowedPattern:i,autocomplete:a,value:o,readonly:s,disabled:c,min:l,max:u,step:d,maxlength:f}=e,{onChange:p,onFocus:h,onInput:g,onRef:_}=R(e),v=P(i);return A(r`
+`})),P,F=e((()=>{y(),P=e=>l(()=>{if(e==null)return;let t=new RegExp(e,`u`);return e=>{!e.defaultPrevented&&e.data&&!t.test(e.data)&&e.preventDefault()}},[e])})),I,ve=e((()=>{y(),I=u(class extends d{values;constructor(e,t,n,r){super(e,t),Object.assign(t.host,n),this.values=r}update(e,t){this.hasChanged(t)&&(this.values=t,Object.assign(this.state.host,e))}hasChanged(e=[]){return e.some((e,t)=>this.values[t]!==e)}})})),ye=e((()=>{y(),u(class extends d{update(){return this.state.host}})})),L,R,be=e((()=>{y(),ye(),L=/([A-Z])/gu,R=(e,t,n)=>{e[t]=n,e.dispatchEvent(new CustomEvent(t.replace(L,`-$1`).toLowerCase()+`-changed`,{detail:{value:n}}))}})),z,xe=e((()=>{ve(),be(),y(),z=e=>{let t=oe(void 0),n=x(e=>t.current=e,[]),r=e.shadowRoot,i=x(t=>e.dispatchEvent(new Event(t.type,{bubbles:t.bubbles})),[]),a=x(t=>R(e,`value`,t.target.value),[]),o=x(t=>R(e,`focused`,t.type===`focus`),[]),s=x(()=>{let n=t.current?.checkValidity();return e.toggleAttribute(`invalid`,!n),n},[]);return I({validate:s},[s]),f(()=>{let e=e=>{e.composedPath()[0]?.closest?.(`input, textarea, label`)||(e.preventDefault(),t.current?.focus())};return r.addEventListener(`mousedown`,e),()=>r.removeEventListener(`mousedown`,e)},[]),{onChange:i,onFocus:o,onInput:a,onRef:n}}})),B,V,Se=e((()=>{B=({placeholder:e,noLabelFloat:t,label:n})=>(t?n:void 0)||e||` `,V=(e,t)=>t??(e===`date`?`9999-12-31`:void 0)})),H,U,Ce=e((()=>{y(),o(),re(),me(),he(),ge(),_e(),F(),xe(),Se(),H=[`type`,`pattern`,`allowed-pattern`,`min`,`max`,`step`,`autosize`,`label`,`placeholder`,...j],U=e=>{let{type:t=`text`,pattern:n,allowedPattern:i,autocomplete:a,value:o,readonly:s,disabled:c,min:l,max:u,step:d,maxlength:f}=e,{onChange:p,onFocus:h,onInput:g,onRef:_}=z(e),v=P(i);return A(r`
 			<input
 				${k(_)}
 				style="--chars: ${o?.toString()?.length??0}ch"
@@ -287,7 +287,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
 				type=${t}
 				pattern=${m(n)}
 				autocomplete=${m(a)}
-				placeholder=${z(e)}
+				placeholder=${B(e)}
 				?readonly=${s}
 				?aria-disabled=${c}
 				?disabled=${c}
@@ -299,10 +299,10 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
 				@focus=${h}
 				@blur=${h}
 				min=${m(l)}
-				max=${m(B(t,u))}
+				max=${m(V(t,u))}
 				step=${m(d)}
 			/>
-		`,e)},customElements.define(`cosmoz-input`,ae(H,{observedAttributes:V,styleSheets:[ee(N)],shadowRootInit:{mode:`open`,delegatesFocus:!0}}))})),U,W,G,K,q,J,Y,X,Z,Q,$;e((()=>{se(),we(),o(),le(),ie(),fe(),pe(),ue(),{expect:U,waitFor:W}=__STORYBOOK_MODULE_TEST__,G=e=>{let t=e.querySelector(`cosmoz-slideout`);return{el:t,surface:t.shadowRoot.querySelector(`[popover]`)}},K=(e,t,n)=>()=>{let i=document.createElement(`div`),a=!1,o=()=>c(r`
+		`,e)},customElements.define(`cosmoz-input`,ae(U,{observedAttributes:H,styleSheets:[ee(N)],shadowRootInit:{mode:`open`,delegatesFocus:!0}}))})),W,G,K,q,J,Y,X,Z,Q,$;e((()=>{se(),Ce(),o(),le(),ie(),fe(),pe(),ue(),{expect:W,waitFor:G}=__STORYBOOK_MODULE_TEST__,K=(e,t,n)=>()=>{let i=document.createElement(`div`),a=!1,o=()=>c(r`
                     <cosmoz-slideout
                         ?no-escape=${t}
                         ?no-autofocus=${t}
@@ -352,7 +352,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
                 </cosmoz-button>
             </div>
             ${t}${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open panel/iu}));let{surface:i}=G(t);await n(`background controls remain clickable while open`,async()=>{await W(()=>U(i.matches(`:popover-open`)).toBe(!0)),await r.click(await e.findByShadowRole(`button`,{name:/background action/iu})),U(t.querySelector(`[data-testid="bg-count"]`).textContent).toMatch(/Background clicks: 1/u)})}},Y={parameters:w(`Focus moves into the surface on open, back to the opener on close.`),render:K(`Edit profile`,!1,r`
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open panel/iu}));let i=t.querySelector(`cosmoz-slideout`);await n(`background controls remain clickable while open`,async()=>{await G(()=>W(i.matches(`:popover-open`)).toBe(!0)),await r.click(await e.findByShadowRole(`button`,{name:/background action/iu})),W(t.querySelector(`[data-testid="bg-count"]`).textContent).toMatch(/Background clicks: 1/u)})}},Y={parameters:w(`Focus moves into the surface on open, back to the opener on close.`),render:K(`Edit profile`,!1,r`
             <cosmoz-slideout-panel>
                 ${E(`Edit profile`,{subtitle:`Focus returns to the opener on close`})}
                 <div style="display: grid; gap: calc(var(--cz-spacing) * 4);">
@@ -366,7 +366,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
                     ></cosmoz-input>
                 </div>
             </cosmoz-slideout-panel>
-        `),play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/edit profile/iu}));let{el:i,surface:a}=G(t);await n(`moves focus into the dialog surface`,async()=>{await W(()=>U(a.matches(`:popover-open`)).toBe(!0)),await W(()=>U(i.shadowRoot.activeElement).toBe(a))}),await n(`returns focus to the opener after close`,async()=>{t.querySelector(`cosmoz-slideout-panel`).querySelector(`cosmoz-button[aria-label="Close"]`).click(),await W(()=>U(a.matches(`:popover-open`)).toBe(!1)),await W(()=>U(document.activeElement).toBe(t.querySelector(`cosmoz-button`)))})}},X={parameters:w("`no-escape` / `no-autofocus`: opt out of Escape and autofocus."),render:K(`Open guarded draft`,!0,r`
+        `),play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/edit profile/iu}));let i=t.querySelector(`cosmoz-slideout`);await n(`moves focus into the dialog surface`,async()=>{await G(()=>W(i.matches(`:popover-open`)).toBe(!0)),await G(()=>W(document.activeElement).toBe(i))}),await n(`returns focus to the opener after close`,async()=>{t.querySelector(`cosmoz-slideout-panel`).querySelector(`cosmoz-button[aria-label="Close"]`).click(),await G(()=>W(i.matches(`:popover-open`)).toBe(!1)),await G(()=>W(document.activeElement).toBe(t.querySelector(`cosmoz-button`)))})}},X={parameters:w("`no-escape` / `no-autofocus`: opt out of Escape and autofocus."),render:K(`Open guarded draft`,!0,r`
             <cosmoz-slideout-panel>
                 ${E(`Guarded draft`,{subtitle:`Escape disabled, autofocus disabled`})}
                 <p>
@@ -380,7 +380,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
                     </cosmoz-button>
                 </div>
             </cosmoz-slideout-panel>
-        `),play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open guarded draft/iu}));let{el:i,surface:a}=G(t);await n(`opens without stealing focus from the trigger`,async()=>{await W(()=>U(a.matches(`:popover-open`)).toBe(!0)),U(i.shadowRoot.activeElement).not.toBe(a),U(document.activeElement).not.toBe(i)}),await n(`Escape does not close the guarded panel`,async()=>{let e=await C(n);e&&(await e.keyboard(`{Escape}`),await new Promise(e=>window.setTimeout(e,100)),U(a.matches(`:popover-open`)).toBe(!0))})}},Z=(e,t)=>r`
+        `),play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open guarded draft/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i;await n(`opens without stealing focus from the trigger`,async()=>{await G(()=>W(a.matches(`:popover-open`)).toBe(!0)),W(document.activeElement).not.toBe(a),W(document.activeElement).not.toBe(i)}),await n(`Escape does not close the guarded panel`,async()=>{let e=await C(n);e&&(await e.keyboard(`{Escape}`),await new Promise(e=>window.setTimeout(e,100)),W(a.matches(`:popover-open`)).toBe(!0))})}},Z=(e,t)=>r`
     <div style="display: flex; flex-direction: column; height: 100%;">
         <cosmoz-button
             variant="tertiary"
@@ -425,7 +425,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
                 Open first
             </cosmoz-button>
             ${e}${t}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{let i=()=>[...t.querySelectorAll(`cosmoz-slideout`)].filter(e=>e.shadowRoot.querySelector(`[popover]`).matches(`:popover-open`)),a=()=>i().map(e=>e.getAttribute(`aria-label`));await r.click(await e.findByShadowRole(`button`,{name:/open first/iu})),await n(`opens a second slideout above the first`,async()=>{await W(()=>U(i().length).toBe(1)),await r.click(await e.findByShadowRole(`button`,{name:/open a second slideout/iu})),await W(()=>U(i().length).toBe(2))}),await n(`Escape closes the most recent slideout first`,async()=>{let e=await C(n);e&&(await e.keyboard(`{Escape}`),await W(()=>U(a()).toEqual([`First`])))})}},J.parameters={...J.parameters,docs:{...J.parameters?.docs,source:{originalSource:`{
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{let i=()=>[...t.querySelectorAll(`cosmoz-slideout`)].filter(e=>e.matches(`:popover-open`)),a=()=>i().map(e=>e.getAttribute(`aria-label`));await r.click(await e.findByShadowRole(`button`,{name:/open first/iu})),await n(`opens a second slideout above the first`,async()=>{await G(()=>W(i().length).toBe(1)),await r.click(await e.findByShadowRole(`button`,{name:/open a second slideout/iu})),await G(()=>W(i().length).toBe(2))}),await n(`Escape closes the most recent slideout first`,async()=>{let e=await C(n);e&&(await e.keyboard(`{Escape}`),await G(()=>W(a()).toEqual([`First`])))})}},J.parameters={...J.parameters,docs:{...J.parameters?.docs,source:{originalSource:`{
   parameters: storyDoc('Non-modal: the page behind stays interactive while open.'),
   render: () => {
     const mount = document.createElement('div');
@@ -493,9 +493,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
     await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open panel/iu
     }));
-    const {
-      surface
-    } = surfaceOf(canvasElement);
+    const surface = canvasElement.querySelector<SlideoutEl>('cosmoz-slideout')!;
     await step('background controls remain clickable while open', async () => {
       await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
       await userEvent.click(await canvas.findByShadowRole('button', {
@@ -532,13 +530,10 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
     await userEvent.click(await canvas.findByShadowRole('button', {
       name: /edit profile/iu
     }));
-    const {
-      el,
-      surface
-    } = surfaceOf(canvasElement);
+    const surface = canvasElement.querySelector<SlideoutEl>('cosmoz-slideout')!;
     await step('moves focus into the dialog surface', async () => {
       await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
-      await waitFor(() => expect(el.shadowRoot!.activeElement).toBe(surface));
+      await waitFor(() => expect(document.activeElement).toBe(surface));
     });
     await step('returns focus to the opener after close', async () => {
       canvasElement.querySelector('cosmoz-slideout-panel')!.querySelector<HTMLElement>('cosmoz-button[aria-label="Close"]')!.click();
@@ -574,13 +569,11 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
     await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open guarded draft/iu
     }));
-    const {
-      el,
-      surface
-    } = surfaceOf(canvasElement);
+    const el = canvasElement.querySelector<SlideoutEl>('cosmoz-slideout')!;
+    const surface = el;
     await step('opens without stealing focus from the trigger', async () => {
       await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
-      expect(el.shadowRoot!.activeElement).not.toBe(surface);
+      expect(document.activeElement).not.toBe(surface);
       expect(document.activeElement).not.toBe(el);
     });
     await step('Escape does not close the guarded panel', async () => {
@@ -652,7 +645,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
     step,
     userEvent
   }) => {
-    const openSurfaces = () => [...canvasElement.querySelectorAll('cosmoz-slideout')].filter(s => s.shadowRoot!.querySelector('[popover]')!.matches(':popover-open'));
+    const openSurfaces = () => [...canvasElement.querySelectorAll('cosmoz-slideout')].filter(s => s.matches(':popover-open'));
     const labels = () => openSurfaces().map(s => s.getAttribute('aria-label'));
     await userEvent.click(await canvas.findByShadowRole('button', {
       name: /open first/iu

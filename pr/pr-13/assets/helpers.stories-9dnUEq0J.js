@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-DN1ZdUAV.js";import{c as i,l as a,s as o,t as s}from"./cosmoz-slideout-DaJafsGb.js";import{t as c}from"./cosmoz-button-CSmwY0Cn.js";import{n as l,r as u,t as d}from"./story-docs-CVcPOcP0.js";import{t as f}from"./cosmoz-slideout-panel-DhGRes1Y.js";var p,m,h=e((()=>{a(),o(),p=(e,n)=>t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-BHcG80NJ.js";import{c as i,l as a,s as o,t as s}from"./cosmoz-slideout-iIRbT3tI.js";import{t as c}from"./cosmoz-button-BiAEfMwf.js";import{n as l,r as u,t as d}from"./story-docs-CVcPOcP0.js";import{t as f}from"./cosmoz-slideout-panel-B414r9wa.js";var p,m,h=e((()=>{a(),o(),p=(e,n)=>t`
 	<cosmoz-slideout
 		class=${i(e.class)}
 		style=${i(e.style)}
@@ -35,7 +35,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                 Open (helpers)
             </cosmoz-button>
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open \(helpers\)/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`helper-rendered slideout opens with the panel chrome`,async()=>{await _(()=>g(a.matches(`:popover-open`)).toBe(!0));let e=i.querySelector(`cosmoz-slideout-panel`);await _(()=>g(e.shadowRoot.querySelector(`[part="header"]`).querySelector(`slot`).assignedElements()[0].textContent).toMatch(/Acme Industries/u))})}},y.parameters={...y.parameters,docs:{...y.parameters?.docs,source:{originalSource:`{
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open \(helpers\)/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i;await n(`helper-rendered slideout opens with the panel chrome`,async()=>{await _(()=>g(a.matches(`:popover-open`)).toBe(!0));let e=i.querySelector(`cosmoz-slideout-panel`);await _(()=>g(e.shadowRoot.querySelector(`[part="header"]`).querySelector(`slot`).assignedElements()[0].textContent).toMatch(/Acme Industries/u))})}},y.parameters={...y.parameters,docs:{...y.parameters?.docs,source:{originalSource:`{
   parameters: storyDoc('Build the same slideout + panel with the typed \`slideout()\` / \`slideoutPanel()\` helpers.'),
   render: () => {
     const mount = document.createElement('div');
@@ -78,7 +78,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       name: /open \\(helpers\\)/iu
     }));
     const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-    const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+    const surface = el;
     await step('helper-rendered slideout opens with the panel chrome', async () => {
       await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
       const panel = el.querySelector('cosmoz-slideout-panel')!;

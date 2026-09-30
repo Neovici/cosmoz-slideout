@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-DN1ZdUAV.js";import{t as i}from"./cosmoz-slideout-DaJafsGb.js";import{t as a}from"./cosmoz-button-CSmwY0Cn.js";import{r as o,t as s}from"./untitled-CR8Y_Sxl.js";import{n as c,t as l}from"./trusted-6AwRJoKi.js";import{n as u,r as d,t as f}from"./story-docs-CVcPOcP0.js";var p,m,h,g,_,v,y;e((()=>{a(),s(),n(),l(),i(),u(),{expect:p,waitFor:m}=__STORYBOOK_MODULE_TEST__,h=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),g={title:`CosmozSlideout/Shell`,component:`cosmoz-slideout`,tags:[`autodocs`],parameters:f("The low-level surface: it owns the popover, the `opened` lifecycle, focus and Escape, and exposes a **single blank slot** - no UI of its own. These stories show driving it directly; for the styled preset, see **CosmozSlideoutPanel**.")},_={parameters:d("The barest usage: bind `opened` and drop content in the default slot. No header, buttons, or footer - Escape (or `close()`) dismisses it."),render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}from"./iframe-BHcG80NJ.js";import{t as i}from"./cosmoz-slideout-iIRbT3tI.js";import{t as a}from"./cosmoz-button-BiAEfMwf.js";import{r as o,t as s}from"./untitled-D0lSkgTX.js";import{n as c,t as l}from"./trusted-6AwRJoKi.js";import{n as u,r as d,t as f}from"./story-docs-CVcPOcP0.js";var p,m,h,g,_,v,y;e((()=>{a(),s(),n(),l(),i(),u(),{expect:p,waitFor:m}=__STORYBOOK_MODULE_TEST__,h=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),g={title:`CosmozSlideout/Shell`,component:`cosmoz-slideout`,tags:[`autodocs`],parameters:f("The low-level surface: it owns the popover, the `opened` lifecycle, focus and Escape, and exposes a **single blank slot** - no UI of its own. These stories show driving it directly; for the styled preset, see **CosmozSlideoutPanel**.")},_={parameters:d("The barest usage: bind `opened` and drop content in the default slot. No header, buttons, or footer - Escape (or `close()`) dismisses it."),render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
                     <cosmoz-slideout
                         aria-label="Release notes"
                         .opened=${n}
@@ -19,7 +19,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                 Open bare slideout
             </cosmoz-button>
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open bare slideout/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`opens with no built-in controls`,async()=>{await m(()=>p(a.matches(`:popover-open`)).toBe(!0)),p(i.querySelector(`cosmoz-button`)).toBeNull()}),await n(`the bare shell renders no panel UI`,async()=>{p(i.shadowRoot.querySelector(`.header`)).toBeNull(),p(i.shadowRoot.querySelector(`.body`)).toBeNull(),p(i.shadowRoot.querySelector(`.footer`)).toBeNull(),p(i.shadowRoot.querySelector(`cosmoz-button[aria-label="Close"]`)).toBeNull()}),await n(`Escape is the only dismissal`,async()=>{let e=await c(n);e&&(await e.keyboard(`{Escape}`),await m(()=>p(a.matches(`:popover-open`)).toBe(!1)))})}},v={parameters:d("The full-manual path: hand-compose header/body/footer inside the single slot (one wrapper element) when you want custom chrome. For the zero-markup styled version, use `<cosmoz-slideout-panel>`."),render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open bare slideout/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i;await n(`opens with no built-in controls`,async()=>{await m(()=>p(a.matches(`:popover-open`)).toBe(!0)),p(i.querySelector(`cosmoz-button`)).toBeNull()}),await n(`the bare shell renders no panel UI`,async()=>{p(i.shadowRoot.querySelector(`.header`)).toBeNull(),p(i.shadowRoot.querySelector(`.body`)).toBeNull(),p(i.shadowRoot.querySelector(`.footer`)).toBeNull(),p(i.shadowRoot.querySelector(`cosmoz-button[aria-label="Close"]`)).toBeNull()}),await n(`Escape is the only dismissal`,async()=>{let e=await c(n);e&&(await e.keyboard(`{Escape}`),await m(()=>p(a.matches(`:popover-open`)).toBe(!1)))})}},v={parameters:d("The full-manual path: hand-compose header/body/footer inside the single slot (one wrapper element) when you want custom chrome. For the zero-markup styled version, use `<cosmoz-slideout-panel>`."),render:()=>{let e=document.createElement(`div`),n=!1,i=()=>r(t`
                     <cosmoz-slideout
                         aria-label="Edit supplier"
                         .opened=${n}
@@ -63,7 +63,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
                 >Edit supplier</cosmoz-button
             >
             ${e}
-        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/edit supplier/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i.shadowRoot.querySelector(`[popover]`);await n(`projects hand-composed chrome into the shell`,async()=>{await m(()=>p(a.matches(`:popover-open`)).toBe(!0)),p(a).toHaveAttribute(`role`,`dialog`),await e.findByText(/Net 30 terms/u)}),await n(`closing keeps the column layout (no content cramming)`,async()=>{[...i.querySelectorAll(`cosmoz-button`)].find(e=>/^save$/iu.test((e.textContent??``).trim())).click(),await m(()=>p(a.matches(`:popover-open`)).toBe(!1)),p(getComputedStyle(a).display).toBe(`flex`),p(getComputedStyle(a).flexDirection).toBe(`column`)})}},_.parameters={..._.parameters,docs:{..._.parameters?.docs,source:{originalSource:`{
+        `},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/edit supplier/iu}));let i=t.querySelector(`cosmoz-slideout`),a=i;await n(`projects hand-composed chrome into the shell`,async()=>{await m(()=>p(a.matches(`:popover-open`)).toBe(!0)),p(a).toHaveAttribute(`role`,`dialog`),await e.findByText(/Net 30 terms/u)}),await n(`closing keeps the column layout (no content cramming)`,async()=>{[...i.querySelectorAll(`cosmoz-button`)].find(e=>/^save$/iu.test((e.textContent??``).trim())).click(),await m(()=>p(a.matches(`:popover-open`)).toBe(!1)),p(getComputedStyle(a).display).toBe(`flex`),p(getComputedStyle(a).flexDirection).toBe(`column`)})}},_.parameters={..._.parameters,docs:{..._.parameters?.docs,source:{originalSource:`{
   parameters: storyDoc('The barest usage: bind \`opened\` and drop content in the default slot. ' + 'No header, buttons, or footer - Escape (or \`close()\`) dismisses it.'),
   render: () => {
     const mount = document.createElement('div');
@@ -110,7 +110,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       name: /open bare slideout/iu
     }));
     const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-    const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+    const surface = el;
     await step('opens with no built-in controls', async () => {
       await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
       expect(el.querySelector('cosmoz-button')).toBeNull();
@@ -204,7 +204,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,pt as n,ut as r}
       name: /edit supplier/iu
     }));
     const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
-    const surface = el.shadowRoot!.querySelector<HTMLElement>('[popover]')!;
+    const surface = el;
     await step('projects hand-composed chrome into the shell', async () => {
       await waitFor(() => expect(surface.matches(':popover-open')).toBe(true));
       expect(surface).toHaveAttribute('role', 'dialog');
