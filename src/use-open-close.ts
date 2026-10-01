@@ -2,7 +2,7 @@ import { useCallback } from '@pionjs/pion';
 import type { SlideoutElement } from './types';
 import { useAttribute } from './use-attribute';
 import { useEscapeClose } from './use-escape-close';
-import { useFocusRestore } from './use-focus-restore';
+import { useFocusRestorer } from './use-focus-restorer';
 import { useSettleEvents } from './use-settle-events';
 
 /**
@@ -16,7 +16,7 @@ import { useSettleEvents } from './use-settle-events';
  * - `useEscapeClose` holds the per-instance `CloseWatcher` session
  *   (Escape + Android back; newest first) and the `request-close`/keydown
  *   plumbing.
- * - `useFocusRestore` remembers the opener on open and restores focus on
+ * - `useFocusRestorer` remembers the opener on open and restores focus on
  *   close (focus *into* the content is the browser's popover focusing
  *   steps; only the way back can't be native for `popover="manual"`).
  */
@@ -35,7 +35,7 @@ export const useAttributeControls = (host: SlideoutElement) => {
 
 export const useOpenClose = (host: SlideoutElement) => {
 	const { opened, open, close } = useAttributeControls(host);
-	const focus = useFocusRestore(host);
+	const focusRestorer = useFocusRestorer(host);
 	useEscapeClose(host, close);
 
 	// the restore-eligibility check is a pre-hide commitment: it must run
@@ -43,7 +43,7 @@ export const useOpenClose = (host: SlideoutElement) => {
 	// showPopover, whose focusing steps move focus synchronously;
 	// `focus` carries the commit callbacks under the settle hook's names
 	// and has a stable ref identity - no memoization needed
-	useSettleEvents(host, focus);
+	useSettleEvents(host, focusRestorer);
 
 	return { opened, open, close };
 };

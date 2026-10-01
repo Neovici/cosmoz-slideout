@@ -2,7 +2,7 @@ import { useRef } from '@pionjs/pion';
 import type { SlideoutElement } from './types';
 
 /**
- * Focus bookkeeping around the open/close lifecycle: remembers the opener
+ * Focus restorer: bookkeeping around the open/close lifecycle: remembers the opener
  * when the surface opens, and restores focus to it when the surface closes
  * with focus still inside.
  *
@@ -16,7 +16,7 @@ import type { SlideoutElement } from './types';
  * has a stable identity, so it can be handed to a lifecycle hook without
  * memoization.
  */
-type FocusRestore = {
+type FocusRestorer = {
 	opener: HTMLElement | null;
 	shouldRestore: boolean;
 	onBeforeShow(): void;
@@ -24,8 +24,8 @@ type FocusRestore = {
 	onSettle(open: boolean): void;
 };
 
-export const useFocusRestore = (host: SlideoutElement): FocusRestore =>
-	useRef<FocusRestore>({
+export const useFocusRestorer = (host: SlideoutElement): FocusRestorer =>
+	useRef<FocusRestorer>({
 		opener: null,
 		shouldRestore: false,
 		onBeforeShow() {
@@ -45,4 +45,4 @@ export const useFocusRestore = (host: SlideoutElement): FocusRestore =>
 				opener.focus({ preventScroll: true });
 			}
 		},
-	}).current as FocusRestore;
+	}).current as FocusRestorer;
