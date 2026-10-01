@@ -16,7 +16,18 @@ type Action = 'OPEN' | 'CLOSE' | 'SETTLE';
 /** The lifecycle's edge context: the surface and the settle-cap slot. */
 type SettleCtx = {
 	host: HTMLElement;
-	timer: { current: number | undefined };
+};
+
+const useCapTimer = () => {
+	const timer = useRef(0),
+		armCap = useCallback(({ send }: EdgeCtx<State, Action, SettleCtx>) => {
+			timer.current = window.setTimeout(() => send('SETTLE'), settleCapMs);
+		}, []),
+		clearCap = useCallback(() => {
+			window.clearTimeout(timer.current);
+		}, []);
+
+	return { armCap, clearCap };
 };
 
 /**
@@ -64,8 +75,6 @@ export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 	useCloseFallback({ opened, noEscape, close });
 
 	const host = useHost<HTMLElement>();
-	const timer = useRef(0);
-	// self-captured refs: all members stable, destructuring holds
 	const { captureOpener, judgeRestore, restore } = useFocusRestorer();
 
 	const settleOpened = useCallback(() => {
@@ -80,22 +89,7 @@ export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 
 	const showPopover = useCallback(() => host.showPopover(), []);
 	const hidePopover = useCallback(() => host.hidePopover(), []);
-
-	const armCap = useCallback(
-		({ send, timer }: EdgeCtx<State, Action, SettleCtx>) => {
-			timer.current = window.setTimeout(() => send('SETTLE'), settleCapMs);
-		},
-		[],
-	);
-
-	// the flight rows' teardown: retire the cap (an armed settle must
-	// not fire detached or after the phase resolved some other way)
-	const clearCap = useCallback(
-		({ timer }: EdgeCtx<State, Action, SettleCtx>) => {
-			window.clearTimeout(timer.current);
-		},
-		[],
-	);
+	const { armCap, clearCap } = useCapTimer();
 
 	const machine = useStateMachine<State, Action, SettleCtx>(
 		'closed',
@@ -142,7 +136,7 @@ export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 				},
 			},
 		},
-		{ host, timer },
+		{ host },
 	);
 
 	useEffect(
