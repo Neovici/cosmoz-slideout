@@ -1,113 +1,151 @@
-import { useCallback, useEffect, useRef } from '@pionjs/pion';
-import type { SlideoutElement } from './types';
-import { useStateMachine } from './use-state-machine';
+import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
+import { useCallback, useEffect, useHost, useRef } from '@pionjs/pion';
+import { type EdgeCtx, useStateMachine } from './use-state-machine';
 import { settleCapMs } from './utils';
 
-/**
- * Surface lifecycle phase table (shared, immutable): `idle` until a
- * phase flip assigns one, one settle (`translate` transitionend, or the
- * `settleCapMs` safety net) puts it back. `SETTLE` from `idle` is
- * ignored - the stale guard, e.g. a late transitionend after the flip.
- * The machine itself is instantiated per hook call in `useSettleEvents`;
- * only the table is shared.
- */
-const transitionTable = {
-	idle: {
-		OPEN: 'opening',
-		CLOSE: 'closing',
-	},
-	opening: {
-		OPEN: 'opening',
-		CLOSE: 'closing',
-		SETTLE: 'idle',
-	},
-	closing: {
-		CLOSE: 'closing',
-		OPEN: 'opening',
-		SETTLE: 'idle',
-	},
-} as const;
+type State = 'closed' | 'opening' | 'open' | 'closing';
+type Action = 'OPEN' | 'CLOSE' | 'SETTLE';
+
+/** The settle hook's edge context: the surface and the settle-cap slot. */
+type SettleCtx = {
+	host: HTMLElement;
+	timer: { current: number | undefined };
+};
 
 /**
- * Surface lifecycle: promotes the popover to the top layer when `opened`
- * flips on and hides it when it flips off, then fires the settled
- * `open`/`close` events once the slide transition is over -
- * `transitionend` for the surface's `translate` is the primary signal,
- * `settleCapMs` a safety net for reduced motion and other no-transition
- * cases (see utils). `onSettle` runs once the respective transition
- * settles (used by the open/close hook to commit phase-side effects such
- * as focus restoration).
+ * Surface lifecycle with the four phase states:
+ *
+ * - `closed` - inert; open requests only
+ * - `opening` - slide-in in flight (popover promoted, settle cap armed)
+ * - `open` - visible and settled: the `open`.announce
+ * - `closing` - slide-out in flight
+ *
+ * Rows own their establishment and undo: `setup` runs on every entry
+ * (so the settle announcements ride entering `open`/`closed`, and a
+ * re-appended element's resume re-establishes via the self-heal
+ * edges), `teardown` runs on exit via any edge and on disconnect (an
+ * armed settle never fires detached). Guards bind the idle edges to
+ * the DOM's `:popover-open` truth (a closed mount commits nothing);
+ * the stale case is structural - `SETTLE` has no edge from open or
+ * closed. `opened` is the reactive read driving the machine.
  */
-export const useSettleEvents = (
-	host: SlideoutElement,
-	hooks?: {
-		/** Runs before the popover is shown. */
-		onBeforeShow?: () => void;
-		/** Runs before the popover hides (still showing). */
-		onBeforeHide?: () => void;
-		/** Runs when the slide-in/out transition settles. */
-		onSettle?: (open: boolean) => void;
-	},
-) => {
-	const { send, is } = useStateMachine('idle', transitionTable);
+export const useSettleEvents = ({
+	opened,
+	onBeforeShow,
+	onBeforeHide,
+	onSettle,
+}: {
+	/** The reactive read, driving the phase machine. */
+	opened: boolean;
+	/** Runs before the popover is shown. */
+	onBeforeShow?: () => void;
+	/** Runs before the popover hides (still showing). */
+	onBeforeHide?: () => void;
+	/** Runs on transition settle (arg: `true` for slide-in). */
+	onSettle?: (open: boolean) => void;
+}) => {
+	const host = useHost<HTMLElement>();
+	const meta = useMeta({ onBeforeShow, onBeforeHide, onSettle });
 	const timer = useRef(0);
 
-	const finish = useCallback(() => {
-		const wasClosing = is('closing');
-		if (send('SETTLE') === null) {
-			return; // stale settle (already idle): nothing in flight
-		}
-		window.clearTimeout(timer.current);
-		host.dispatchEvent(
-			new Event(wasClosing ? 'close' : 'open', { bubbles: true }),
-		);
-		if (wasClosing) {
-			host.onClose?.();
-		}
-		hooks?.onSettle?.(!wasClosing);
-	}, [host, is, send, hooks]);
+	// named refs with live bodies - they read the stable `meta` bag at
+	// run time, so caller-passed inline callbacks stay latest-wins
+	const beginShow = useCallback(() => meta.onBeforeShow?.(), []);
+	const beginHide = useCallback(() => meta.onBeforeHide?.(), []);
 
-	const onTransitionEnd = useCallback(
-		(e: TransitionEvent) => {
-			if (e.target !== host || e.propertyName !== 'translate') {
-				return;
-			}
-			// settle what is in flight; a settle during a flip race (e.g.
-			// transitionend after re-open) settles the NEW phase
-			finish();
+	const settleOpened = useCallback(() => {
+		host.dispatchEvent(new Event('open', { bubbles: true }));
+		meta.onSettle?.(true);
+	}, []);
+
+	const settleClosed = useCallback(() => {
+		host.dispatchEvent(new Event('close', { bubbles: true }));
+		meta.onSettle?.(false);
+	}, []);
+
+	const showPopover = useCallback(() => host.showPopover(), []);
+	const hidePopover = useCallback(() => host.hidePopover(), []);
+
+	const armCap = useCallback(
+		({ send, timer }: EdgeCtx<State, Action, SettleCtx>) => {
+			timer.current = window.setTimeout(() => send('SETTLE'), settleCapMs);
 		},
-		[host, finish],
+		[],
 	);
 
-	useEffect(() => {
-		host.addEventListener('transitionend', onTransitionEnd as EventListener);
-		return () => {
+	// the flight rows' teardown: retire the cap (an armed settle must
+	// not fire detached or after the phase resolved some other way)
+	const clearCap = useCallback(
+		({ timer }: EdgeCtx<State, Action, SettleCtx>) => {
 			window.clearTimeout(timer.current);
-			host.removeEventListener(
-				'transitionend',
-				onTransitionEnd as EventListener,
-			);
-		};
-	}, [host, onTransitionEnd]);
+		},
+		[],
+	);
 
-	const opened = Boolean(host.opened);
+	const machine = useStateMachine<State, Action, SettleCtx>(
+		'closed',
+		{
+			closed: {
+				setup: [settleClosed],
+				transitions: {
+					// opener capture (onBeforeShow) precedes showPopover: the
+					// popover's focusing steps read it synchronously
+					OPEN: {
+						to: 'opening',
+						guard: [({ host }) => !host.matches(':popover-open')],
+					},
+				},
+			},
+			opening: {
+				setup: [beginShow, showPopover, armCap],
+				teardown: [clearCap],
+				transitions: {
+					// self-heal: detached mid-flight, re-appended per the
+					// attribute's truth - the resume re-runs this setup
+					OPEN: { to: 'opening' },
+					CLOSE: { to: 'closing' },
+					SETTLE: { to: 'open' },
+				},
+			},
+			open: {
+				setup: [settleOpened],
+				transitions: {
+					CLOSE: {
+						to: 'closing',
+						guard: [({ host }) => host.matches(':popover-open')],
+					},
+				},
+			},
+			closing: {
+				setup: [beginHide, hidePopover, armCap],
+				teardown: [clearCap],
+				transitions: {
+					// self-heal, mirror of opening.OPEN
+					CLOSE: { to: 'closing' },
+					OPEN: { to: 'opening' },
+					SETTLE: { to: 'closed' },
+				},
+			},
+		},
+		{ host, timer },
+	);
+
+	useEffect(
+		() =>
+			host.addEventListener('transitionend', (e) => {
+				if (e.target !== host || e.propertyName !== 'translate') {
+					return;
+				}
+				// settle what is in flight; a settle during a flip race (e.g.
+				// transitionend after re-open) settles the NEW phase
+				machine.send('SETTLE');
+			}),
+		[],
+	);
+
+	// the flip: fires on mount, `opened` flips and reconnects (the
+	// resume); churn re-runs hit guards and no-op
 	useEffect(() => {
-		send(opened ? 'OPEN' : 'CLOSE');
-		window.clearTimeout(timer.current);
-		timer.current = window.setTimeout(() => finish(), settleCapMs);
-
-		if (opened) {
-			// the opener capture must precede showPopover: its focusing steps
-			// move focus into the `[autofocus]` content synchronously
-			hooks?.onBeforeShow?.();
-			if (!host.matches(':popover-open')) {
-				host.showPopover();
-			}
-		} else if (host.matches(':popover-open')) {
-			// the restore-eligibility check is a pre-hide commitment: it must
-			// run while the popover is still showing
-			hooks?.onBeforeHide?.();
-			host.hidePopover();
-		}
-	}, [opened, hooks]);
+		machine.send(opened ? 'OPEN' : 'CLOSE');
+	}, [opened]);
 };
