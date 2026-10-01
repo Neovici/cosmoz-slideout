@@ -1,5 +1,4 @@
 import { useHost, useLayoutEffect } from '@pionjs/pion';
-import type { SlideoutElement } from './types';
 
 const toCamelCase = (name: string) =>
 	name.replace(/-([a-z])/gu, (_, c: string) => c.toUpperCase());
@@ -7,21 +6,19 @@ const toCamelCase = (name: string) =>
 const eventName = (name: string) => `${name}-changed`;
 
 /**
- * Reactive boolean attribute holder, reusable as a virtual (no host arg):
- * `set()` applies a change through the cancelable `name-changed` event
- * (`preventDefault()` vetoes the write) and reflects the attribute.
+ * Reactive boolean attribute holder: `set()` applies a change through
+ * the cancelable `name-changed` event (`preventDefault()` vetoes the
+ * write) and reflects the attribute.
  */
 export const useAttribute = (
 	name: string,
-	options: { host?: HTMLElement } = {},
 ): readonly [
 	boolean,
 	(next: boolean | ((current: boolean) => boolean)) => boolean,
 ] => {
-	const host = options.host ?? useHost<SlideoutElement>();
+	const host = useHost();
 	const camel = toCamelCase(name);
-	const read = () =>
-		Boolean((host as unknown as Record<string, unknown>)[camel]);
+	const read = () => camel in host && Boolean(host[camel as keyof HTMLElement]);
 	const value = read();
 
 	const set = (next: boolean | ((current: boolean) => boolean)): boolean => {
