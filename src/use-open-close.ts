@@ -8,8 +8,8 @@ import { useSettleEvents } from './use-settle-events';
 /**
  * The surface's open/close lifecycle, composed from independent hooks.
  *
- * - `useAttributeControls` (below) owns the reactive `opened` state;
- *   `open()`/`close()` funnel every close source through the cancelable
+ * - `useAttributeControls` owns the reactive `opened` state; `open()`/
+ *   `close()` funnel every close source through the cancelable
  *   `opened-changed` contract.
  * - `useSettleEvents` promotes/hides the popover and fires the settled
  *   `open`/`close` events when the slide transition completes.

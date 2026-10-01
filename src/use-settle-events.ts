@@ -1,6 +1,32 @@
 import { useCallback, useEffect, useRef } from '@pionjs/pion';
 import type { SlideoutElement } from './types';
+import { useStateMachine } from './use-state-machine';
 import { settleCapMs } from './utils';
+
+/**
+ * Surface lifecycle phase table (shared, immutable): `idle` until a
+ * phase flip assigns one, one settle (`translate` transitionend, or the
+ * `settleCapMs` safety net) puts it back. `SETTLE` from `idle` is
+ * ignored - the stale guard, e.g. a late transitionend after the flip.
+ * The machine itself is instantiated per hook call in `useSettleEvents`;
+ * only the table is shared.
+ */
+const transitionTable = {
+	idle: {
+		OPEN: 'opening',
+		CLOSE: 'closing',
+	},
+	opening: {
+		OPEN: 'opening',
+		CLOSE: 'closing',
+		SETTLE: 'idle',
+	},
+	closing: {
+		CLOSE: 'closing',
+		OPEN: 'opening',
+		SETTLE: 'idle',
+	},
+} as const;
 
 /**
  * Surface lifecycle: promotes the popover to the top layer when `opened`
@@ -23,26 +49,32 @@ export const useSettleEvents = (
 		onSettle?: (open: boolean) => void;
 	},
 ) => {
-	const closing = useRef(false);
+	const { send, is } = useStateMachine('idle', transitionTable);
 	const timer = useRef(0);
 
-	const finish = useCallback(
-		(open: boolean) => {
-			closing.current = false;
-			window.clearTimeout(timer.current);
-			host.dispatchEvent(new Event(open ? 'open' : 'close', { bubbles: true }));
-			if (!open) host.onClose?.();
-			hooks?.onSettle?.(open);
-		},
-		[host, hooks],
-	);
+	const finish = useCallback(() => {
+		const wasClosing = is('closing');
+		if (send('SETTLE') === null) {
+			return; // stale settle (already idle): nothing in flight
+		}
+		window.clearTimeout(timer.current);
+		host.dispatchEvent(
+			new Event(wasClosing ? 'close' : 'open', { bubbles: true }),
+		);
+		if (wasClosing) {
+			host.onClose?.();
+		}
+		hooks?.onSettle?.(!wasClosing);
+	}, [host, is, send, hooks]);
 
 	const onTransitionEnd = useCallback(
 		(e: TransitionEvent) => {
 			if (e.target !== host || e.propertyName !== 'translate') {
 				return;
 			}
-			finish(!closing.current);
+			// settle what is in flight; a settle during a flip race (e.g.
+			// transitionend after re-open) settles the NEW phase
+			finish();
 		},
 		[host, finish],
 	);
@@ -60,9 +92,9 @@ export const useSettleEvents = (
 
 	const opened = Boolean(host.opened);
 	useEffect(() => {
-		closing.current = !opened;
+		send(opened ? 'OPEN' : 'CLOSE');
 		window.clearTimeout(timer.current);
-		timer.current = window.setTimeout(() => finish(opened), settleCapMs);
+		timer.current = window.setTimeout(() => finish(), settleCapMs);
 
 		if (opened) {
 			// the opener capture must precede showPopover: its focusing steps
