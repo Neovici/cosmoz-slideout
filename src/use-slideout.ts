@@ -65,6 +65,7 @@ const useCapTimer = () => {
  * nothing); the stale case is structural - `SETTLE` has no edge from
  * `open`/`closed`. `opened` is the reactive read driving the machine.
  */
+// eslint-disable-next-line max-statements -- a table + callbacks (data), not procedural flow
 export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 	const [opened, setOpened] = useAttribute('opened');
 	const open = useCallback(() => setOpened(true), [setOpened]);
