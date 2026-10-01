@@ -111,9 +111,6 @@ Your own buttons can do the same, or call `closest('cosmoz-slideout')?.close()`.
   descendant (e.g. your slotted close button) that asks the surface to close; `preventDefault()`
   vetoes.
 
-`onClose?: () => void` - a property-based alternative to the `close` event, invoked right after
-`close` fires. Set it on the element (`el.onClose = …`) if a callback is handier than a listener.
-
 #### Slot
 
 - _default_ - a single blank slot. Drop a `<cosmoz-slideout-panel>` in for the styled layout, or
@@ -201,15 +198,11 @@ slideout(
 ```
 
 `slideout(props, content)` accepts `opened`, `fullScreen`, `noEscape`, `ariaLabel`,
-`ariaLabelledby`, `class`, `style`, and the event handlers `onOpenedChanged` / `onOpen` / `onClose` /
-`onFullScreenChanged` (so plain listeners and pion's `lift` both compose). `slideoutPanel(props,
-content)` accepts only `class` and `style` (the panel is property-free). The `SlideoutProps` type is
-exported from the package root.
-
-### Composables
-
-The lifecycle hooks (`useClose`, `useFullScreen`, `useAttribute`) are internal — the public
-extension point for custom surfaces is the `slideout()` / `slideoutPanel()` render helpers.
+`ariaLabelledby`, `class`, `style`, and the event handlers `onOpenedChanged` / `onOpen` /
+`onClose` / `onFullScreenChanged` (so plain listeners and pion's `lift` both compose). Those `on*`
+props are render-helper sugar for listening to the element's events (`@close=${props.onClose}`); the
+element itself has no callback properties. `slideoutPanel(props, content)` accepts only `class` and
+`style` (the panel is property-free). The `SlideoutProps` type is exported from the package root.
 
 ### Typed lookups
 
