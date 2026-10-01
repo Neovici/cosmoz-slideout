@@ -194,10 +194,14 @@ export const FocusRestore: Story = {
 				.querySelector<HTMLElement>('cosmoz-button[aria-label="Close"]')!
 				.click();
 			await waitFor(() => expect(el.matches(':popover-open')).toBe(false));
-			await waitFor(() =>
-				expect(document.activeElement).toBe(
-					canvasElement.querySelector('cosmoz-button'),
-				),
+			// focus restore rides the settle cap, which matches the waitFor
+			// default; give the assertion room beyond it
+			await waitFor(
+				() =>
+					expect(document.activeElement).toBe(
+						canvasElement.querySelector('cosmoz-button'),
+					),
+				{ timeout: 3000 },
 			);
 		});
 	},

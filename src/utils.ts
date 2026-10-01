@@ -1,17 +1,7 @@
-export const FALLBACK_BUFFER_MS = 80;
-
-export const animationTimeoutMs = (
-	surface: HTMLElement,
-	buffer = FALLBACK_BUFFER_MS,
-) => {
-	const cs = getComputedStyle(surface);
-	const toMs = (v: string) =>
-		v.split(',').map((s) => parseFloat(s) * 1000 || 0);
-	const durations = toMs(cs.transitionDuration);
-	const delays = toMs(cs.transitionDelay);
-	const longest = durations.reduce(
-		(max, d, i) => Math.max(max, d + (delays[i] ?? 0)),
-		0,
-	);
-	return longest + buffer;
-};
+/**
+ * Safety net behind `transitionend` for firing the `open`/`close` settle
+ * events; `transitionend` is the primary signal, so this only has to exceed
+ * any duration an author might configure (including slow-motion dev
+ * tweaks). Under reduced motion no transition runs and the cap fires alone.
+ */
+export const settleCapMs = 1000;

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from '@pionjs/pion';
 import type { SlideoutElement } from './types';
 import { useAttribute } from './use-attribute';
-import { animationTimeoutMs } from './utils';
+import { settleCapMs } from './utils';
 
 const restoreFocus = (opener: HTMLElement | null | undefined) => {
 	if (opener?.isConnected) opener.focus({ preventScroll: true });
@@ -83,7 +83,7 @@ export const useClose = (host: SlideoutElement) => {
 
 		s.opening = true;
 		window.clearTimeout(s.openTimer);
-		s.openTimer = window.setTimeout(settleOpen, animationTimeoutMs(host));
+		s.openTimer = window.setTimeout(settleOpen, settleCapMs);
 	}, [attachWatcher]);
 
 	const deactivate = useCallback(() => {
@@ -98,7 +98,7 @@ export const useClose = (host: SlideoutElement) => {
 		s.shouldRestore = host.contains(document.activeElement);
 		s.closing = true;
 		window.clearTimeout(s.closeTimer);
-		s.closeTimer = window.setTimeout(finish, animationTimeoutMs(host));
+		s.closeTimer = window.setTimeout(finish, settleCapMs);
 		host.hidePopover();
 	}, []);
 
