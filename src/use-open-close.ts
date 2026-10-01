@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from '@pionjs/pion';
+import { useCallback } from '@pionjs/pion';
 import type { SlideoutElement } from './types';
 import { useAttribute } from './use-attribute';
 import { useEscapeClose } from './use-escape-close';
@@ -40,18 +40,10 @@ export const useOpenClose = (host: SlideoutElement) => {
 
 	// the restore-eligibility check is a pre-hide commitment: it must run
 	// while the popover is still showing; the opener capture must precede
-	// showPopover, whose focusing steps move focus synchronously
-	const hooks = useMemo(
-		() => ({
-			onBeforeShow: focus.capture,
-			onBeforeHide: focus.markInside,
-			onSettle: (didOpen: boolean) => {
-				if (!didOpen) focus.restore();
-			},
-		}),
-		[focus],
-	);
-	useSettleEvents(host, hooks);
+	// showPopover, whose focusing steps move focus synchronously;
+	// `focus` carries the commit callbacks under the settle hook's names
+	// and has a stable ref identity - no memoization needed
+	useSettleEvents(host, focus);
 
 	return { opened, open, close };
 };

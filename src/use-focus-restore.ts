@@ -1,4 +1,4 @@
-import { useCallback, useRef } from '@pionjs/pion';
+import { useRef } from '@pionjs/pion';
 import type { SlideoutElement } from './types';
 
 /**
@@ -11,29 +11,38 @@ import type { SlideoutElement } from './types';
  * authors can target the surface itself); this hook only deals with the
  * way back - `popover="manual"` never captures the previously focused
  * element, so the restore on close cannot be native.
+ *
+ * Everything, callbacks included, lives in one ref: the returned object
+ * has a stable identity, so it can be handed to a lifecycle hook without
+ * memoization.
  */
-export const useFocusRestore = (host: SlideoutElement) => {
-	const state = useRef({
-		opener: null as HTMLElement | null,
-		shouldRestore: false,
-	});
-
-	const capture = useCallback(() => {
-		state.current!.opener = document.activeElement as HTMLElement | null;
-		state.current!.shouldRestore = false;
-	}, []);
-
-	const markInside = useCallback(() => {
-		state.current!.shouldRestore = host.contains(document.activeElement);
-	}, []);
-
-	const restore = useCallback(() => {
-		const { opener, shouldRestore } = state.current!;
-		state.current!.shouldRestore = false;
-		if (shouldRestore && opener?.isConnected) {
-			opener.focus({ preventScroll: true });
-		}
-	}, []);
-
-	return { capture, markInside, restore };
+type FocusRestore = {
+	opener: HTMLElement | null;
+	shouldRestore: boolean;
+	onBeforeShow(): void;
+	onBeforeHide(): void;
+	onSettle(open: boolean): void;
 };
+
+export const useFocusRestore = (host: SlideoutElement): FocusRestore =>
+	useRef<FocusRestore>({
+		opener: null,
+		shouldRestore: false,
+		onBeforeShow() {
+			this.opener = document.activeElement as HTMLElement | null;
+			this.shouldRestore = false;
+		},
+		onBeforeHide() {
+			this.shouldRestore = host.contains(document.activeElement);
+		},
+		onSettle(open: boolean) {
+			if (open) {
+				return;
+			}
+			const { opener, shouldRestore } = this;
+			this.shouldRestore = false;
+			if (shouldRestore && opener?.isConnected) {
+				opener.focus({ preventScroll: true });
+			}
+		},
+	}).current as FocusRestore;
