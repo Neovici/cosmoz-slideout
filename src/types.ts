@@ -8,8 +8,6 @@ export interface Props {
 	fullScreen?: boolean;
 	/** Disable Escape-to-close (attribute `no-escape`). */
 	noEscape?: boolean;
-	/** Called right after the `close` event fires. */
-	onClose?: () => void;
 	/** Slide-in (guarded no-op when already open). */
 	open: () => void;
 	/** Slide-out (guarded no-op when already closed). */
