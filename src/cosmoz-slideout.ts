@@ -8,7 +8,7 @@ import { useOpenClose } from './use-open-close';
 
 export const useSlideout = (host: SlideoutElement) => {
 	const { close, open } = useOpenClose(host);
-	const { fullScreen, toggle } = useFullScreen(host);
+	const { fullScreen, toggle } = useFullScreen();
 	useImperativeApi(host, { open, close, toggleFullScreen: toggle });
 
 	return { close, open, fullScreen, toggleFullScreen: toggle };

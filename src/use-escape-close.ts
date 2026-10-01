@@ -1,8 +1,12 @@
-import { useCallback, useEffect, useRef } from '@pionjs/pion';
+import { useCallback, useEffect, useHost, useRef } from '@pionjs/pion';
 import type { SlideoutElement } from './types';
+import { useAttribute } from './use-attribute';
 
 /**
- * Escape and close-request plumbing.
+ * Escape and close-request plumbing, fully reusable (no arguments): takes
+ * the host from `useHost()`; the reactive reads are destructured per
+ * render; every close funnels through the cancelable `opened-changed`
+ * contract.
  *
  * Per open surface a `CloseWatcher` session is held (Escape + Android
  * back; newest-first across stacked slideouts as the user agent routes
@@ -10,35 +14,38 @@ import type { SlideoutElement } from './types';
  * Escape working on engines without `CloseWatcher` (e.g. Safari - not
  * Baseline); slotted content closes the surface through the cancelable
  * `request-close` event.
- *
- * Every close funnels through the `close` control, i.e. the cancelable
- * `opened-changed` contract (watcher `cancel` / `request-close`
- * `preventDefault()`).
  */
-export const useEscapeClose = (
-	host: SlideoutElement,
-	close: () => void | boolean,
-) => {
+export const useEscapeClose = () => {
+	const host = useHost<SlideoutElement>();
+	const { noEscape, opened } = host;
+	const [, setOpened] = useAttribute('opened');
+
+	const closer = useCallback((): boolean | void => {
+		if (!opened) return;
+		return setOpened(false);
+	}, [opened, setOpened]);
+	const close = useCallback(closer, [closer]);
+
 	const watcher = useRef<CloseWatcher | null>(null);
 
 	const onEscape = useCallback(
 		(e: KeyboardEvent) => {
-			if (e.key === 'Escape' && !host.noEscape && host.opened) {
+			if (e.key === 'Escape' && !noEscape && opened) {
 				e.preventDefault();
 				close();
 			}
 		},
-		[host, close],
+		[noEscape, opened, close],
 	);
 
 	const onRequestClose = useCallback(
 		(e: Event) => {
-			if (host.opened && !e.defaultPrevented) {
+			if (opened && !e.defaultPrevented) {
 				e.stopPropagation();
 				close();
 			}
 		},
-		[host, close],
+		[opened, close],
 	);
 
 	useEffect(() => {
@@ -59,7 +66,7 @@ export const useEscapeClose = (
 	// one session per open phase; the user agent stacks close requests
 	// newest-first across surfaces
 	useEffect(() => {
-		if (host.opened && !host.noEscape && 'CloseWatcher' in window) {
+		if (opened && !noEscape && 'CloseWatcher' in window) {
 			watcher.current?.destroy();
 			const w = new CloseWatcher();
 			w.oncancel = (e) => {
@@ -73,5 +80,5 @@ export const useEscapeClose = (
 			watcher.current?.destroy();
 			watcher.current = null;
 		}
-	}, [host.opened, host.noEscape, host, close]);
+	}, [opened, noEscape, host, close]);
 };

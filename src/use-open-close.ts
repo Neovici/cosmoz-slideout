@@ -6,7 +6,7 @@ import { useFocusRestorer } from './use-focus-restorer';
 import { useSettleEvents } from './use-settle-events';
 
 export const useOpened = (host: SlideoutElement) => {
-	const [opened, setOpened] = useAttribute(host, 'opened');
+	const [opened, setOpened] = useAttribute('opened');
 
 	const open = useCallback(() => {
 		if (!host.opened) setOpened(true);
@@ -39,7 +39,7 @@ export const useOpened = (host: SlideoutElement) => {
 export const useOpenClose = (host: SlideoutElement) => {
 	const { opened, open, close } = useOpened(host);
 	const focusRestorer = useFocusRestorer(host);
-	useEscapeClose(host, close);
+	useEscapeClose();
 	useSettleEvents(host, focusRestorer);
 
 	return { opened, open, close };
