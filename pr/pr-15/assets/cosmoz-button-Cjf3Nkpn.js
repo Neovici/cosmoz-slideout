@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r}from"./iframe-BcG7XiY2.js";import{D as i,E as a,K as o,O as s,Q as c,X as l,k as u}from"./cosmoz-slideout-DdZo1DvL.js";var d,f=e((()=>{s(),d=c(l`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r}from"./iframe-B96TJTx9.js";import{D as i,E as a,J as o,T as s,W as c,X as l,w as u}from"./cosmoz-slideout-Ch6C6gpM.js";var d,f=e((()=>{a(),d=l(o`
 	/*
 	 * Use border-box sizing for all elements.
 	 * This is safe and doesn't conflict with child component styles.
@@ -208,7 +208,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r}
 	[hidden]:where(:not([hidden='until-found'])) {
 		display: none !important;
 	}
-`)})),p,m=e((()=>{s(),p=l`
+`)})),p,m=e((()=>{a(),p=o`
 	position: relative;
 
 	&::before {
@@ -221,7 +221,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r}
 		mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
 		-webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
 	}
-`})),h,g=e((()=>{m(),s(),h=l`
+`})),h,g=e((()=>{m(),a(),h=o`
 	:host {
 		display: inline-flex;
 	}
@@ -457,23 +457,23 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t,lt as n,pt as r}
 		height: 20px;
 		flex-shrink: 0;
 	}
-`})),_,v,y=e((()=>{f(),s(),r(),a(),g(),_=[`variant`,`size`,`disabled`,`full-width`,`type`,`value`,`href`,`target`,`rel`,`download`],v=e=>{let r=e.hasAttribute(`disabled`),a=e.getAttribute(`type`)||`button`,s=e.getAttribute(`href`);o(()=>{let t=t=>{e.hasAttribute(`disabled`)&&t.stopImmediatePropagation()};return e.addEventListener(`click`,t,{capture:!0}),()=>e.removeEventListener(`click`,t,{capture:!0})},[]);let c=t`
+`})),_,v,y=e((()=>{f(),a(),r(),u(),g(),_=[`variant`,`size`,`disabled`,`full-width`,`type`,`value`,`href`,`target`,`rel`,`download`],v=e=>{let r=e.hasAttribute(`disabled`),i=e.getAttribute(`type`)||`button`,a=e.getAttribute(`href`);c(()=>{let t=t=>{e.hasAttribute(`disabled`)&&t.stopImmediatePropagation()};return e.addEventListener(`click`,t,{capture:!0}),()=>e.removeEventListener(`click`,t,{capture:!0})},[]);let o=t`
 		<slot name="prefix"></slot>
 		<slot></slot>
 		<slot name="suffix"></slot>
-	`;if(s!=null){let a=e.getAttribute(`target`),o=e.getAttribute(`rel`),l=e.getAttribute(`download`);return t`
+	`;if(a!=null){let i=e.getAttribute(`target`),c=e.getAttribute(`rel`),l=e.getAttribute(`download`);return t`
 			<a
-				href=${s}
+				href=${a}
 				class="button"
 				part="button"
 				aria-disabled=${r?`true`:n}
-				target=${i(a)}
-				rel=${i(o)}
-				download=${i(l)}
-				>${c}</a
+				target=${s(i)}
+				rel=${s(c)}
+				download=${s(l)}
+				>${o}</a
 			>
 		`}return t`
-		<button type=${a} class="button" ?disabled=${r} part="button">
-			${c}
+		<button type=${i} class="button" ?disabled=${r} part="button">
+			${o}
 		</button>
-	`},customElements.define(`cosmoz-button`,u(v,{observedAttributes:_,styleSheets:[d,h],shadowRootInit:{mode:`open`,delegatesFocus:!0}}))}));export{y as t};
+	`},customElements.define(`cosmoz-button`,i(v,{observedAttributes:_,styleSheets:[d,h],shadowRootInit:{mode:`open`,delegatesFocus:!0}}))}));export{y as t};

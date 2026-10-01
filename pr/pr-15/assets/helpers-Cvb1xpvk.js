@@ -1,39 +1,39 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-BcG7XiY2.js";import{D as n,E as r,O as i}from"./cosmoz-slideout-DdZo1DvL.js";var a,o,s,c=e((()=>{i(),r(),a=(e,r)=>t`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ft as t}from"./iframe-B96TJTx9.js";import{E as n,T as r,w as i}from"./cosmoz-slideout-Ch6C6gpM.js";var a,o,s,c=e((()=>{n(),i(),a=(e,n)=>t`
 	<cosmoz-slideout
-		class=${n(e.class)}
-		style=${n(e.style)}
+		class=${r(e.class)}
+		style=${r(e.style)}
 		.opened=${e.opened??!1}
 		?full-screen=${e.fullScreen}
 		?no-escape=${e.noEscape}
-		aria-label=${n(e.ariaLabel)}
-		aria-labelledby=${n(e.ariaLabelledby)}
+		aria-label=${r(e.ariaLabel)}
+		aria-labelledby=${r(e.ariaLabelledby)}
 		@opened-changed=${e.onOpenedChanged}
 		@open=${e.onOpen}
 		@close=${e.onClose}
 		@full-screen-changed=${e.onFullScreenChanged}
 	>
-		${r}
+		${n}
 	</cosmoz-slideout>
-`,o=(e,r)=>t`
+`,o=(e,n)=>t`
 	<cosmoz-modal-slideout
-		class=${n(e.class)}
-		style=${n(e.style)}
+		class=${r(e.class)}
+		style=${r(e.style)}
 		.opened=${e.opened??!1}
 		?full-screen=${e.fullScreen}
-		aria-label=${n(e.ariaLabel)}
-		aria-labelledby=${n(e.ariaLabelledby)}
+		aria-label=${r(e.ariaLabel)}
+		aria-labelledby=${r(e.ariaLabelledby)}
 		@opened-changed=${e.onOpenedChanged}
 		@open=${e.onOpen}
 		@close=${e.onClose}
 		@full-screen-changed=${e.onFullScreenChanged}
 	>
-		${r}
+		${n}
 	</cosmoz-modal-slideout>
-`,s=(e,r)=>t`
+`,s=(e,n)=>t`
 	<cosmoz-slideout-panel
-		class=${n(e.class)}
-		style=${n(e.style)}
+		class=${r(e.class)}
+		style=${r(e.style)}
 	>
-		${r}
+		${n}
 	</cosmoz-slideout-panel>
 `}));export{s as i,o as n,a as r,c as t};
