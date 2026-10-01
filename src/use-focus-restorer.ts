@@ -1,15 +1,16 @@
 import { useHost, useRef } from '@pionjs/pion';
 
-type FocusRestorer = {
+/** The focus domain: capture → arm → restore. */
+type Focus = {
 	host: HTMLElement;
 	opener: HTMLElement | null;
-	shouldRestore: boolean;
+	armed: boolean;
 	/** Remembers the currently focused element as the opener. */
-	captureOpener(): void;
-	/** Marks whether focus should be restored, judging at hide time. */
-	judgeRestore(): void;
-	/** Restores focus to the opener (no-op for slide-in settles). */
-	restore(open: boolean): void;
+	capture(): void;
+	/** Arms the pending restore when focus is inside the surface. */
+	arm(): void;
+	/** Walks focus back to the opener (the close settle). */
+	restore(): void;
 };
 
 /**
@@ -22,28 +23,25 @@ type FocusRestorer = {
  * never captures the previously focused element, so the restore on
  * close cannot be native.
  */
-export const useFocusRestorer = (): FocusRestorer => {
-	const self = useRef<FocusRestorer>({
+export const useFocusRestorer = (): Focus => {
+	const self = useRef<Focus>({
 		host: useHost(),
 		opener: null,
-		shouldRestore: false,
-		captureOpener() {
+		armed: false,
+		capture() {
 			self.opener = document.activeElement as HTMLElement | null;
-			self.shouldRestore = false;
+			self.armed = false;
 		},
-		judgeRestore() {
-			self.shouldRestore = self.host.contains(document.activeElement);
+		arm() {
+			self.armed = self.host.contains(document.activeElement);
 		},
-		restore(open: boolean) {
-			if (open) {
-				return;
-			}
-			const { opener, shouldRestore } = self;
-			self.shouldRestore = false;
-			if (shouldRestore && opener?.isConnected) {
+		restore() {
+			const { opener, armed } = self;
+			self.armed = false;
+			if (armed && opener?.isConnected) {
 				opener.focus({ preventScroll: true });
 			}
 		},
-	}).current as FocusRestorer;
+	}).current as Focus;
 	return self;
 };

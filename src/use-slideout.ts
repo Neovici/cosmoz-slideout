@@ -1,71 +1,25 @@
-import { useCallback, useEffect, useHost, useRef } from '@pionjs/pion';
+import { useCallback, useEffect, useHost } from '@pionjs/pion';
 import type { SlideoutElement } from './types';
 import { useAttribute } from './use-attribute';
 import { useCloseFallback } from './use-close-fallback';
 import { useCloseWatcher } from './use-close-watcher';
+import { useEggTimer } from './use-egg-timer';
 import { useFocusRestorer } from './use-focus-restorer';
 import { useFullScreen } from './use-full-screen';
 import { useHandleRequestClose } from './use-handle-request-close';
 import { useImperativeApi } from './use-imperative-api';
-import { type EdgeCtx, useStateMachine } from './use-state-machine';
-import { settleCapMs } from './utils';
+import { useStateMachine } from './use-state-machine';
 
 type State = 'closed' | 'opening' | 'open' | 'closing';
 type Action = 'OPEN' | 'CLOSE' | 'SETTLE';
 
-/** The lifecycle's edge context: the surface and the settle-cap slot. */
-type SettleCtx = {
-	host: HTMLElement;
-};
-
-const useCapTimer = () => {
-	const timer = useRef(0),
-		armCap = useCallback(({ send }: EdgeCtx<State, Action, SettleCtx>) => {
-			timer.current = window.setTimeout(() => send('SETTLE'), settleCapMs);
-		}, []),
-		clearCap = useCallback(() => {
-			window.clearTimeout(timer.current);
-		}, []);
-
-	return { armCap, clearCap };
-};
-
 /**
- * The slideout's lifecycle, composed from independent hooks:
- *
- * - `opened` is the reactive attribute state (`useAttribute('opened')`);
- *   `open()`/`close()` funnel every close source through the cancelable
- *   `opened-changed` contract.
- * - the settle machine (below) promotes/hides the popover and fires
- *   the settled `open`/`close` events when the slide transition
- *   completes.
- * - `useHandleRequestClose` - slotted content's cancelable
- *   `request-close` asks the surface to close.
- * - `useCloseWatcher` - the per-instance `CloseWatcher` session (Escape
- *   + Android back).
- * - `useCloseFallback` - Escape on engines without `CloseWatcher`.
- * - `useFocusRestorer` restores focus to the opener on close.
- * - `useFullScreen` owns the reactive `full-screen` attribute.
- * - `useImperativeApi` assigns the controls onto the base element's
- *   `controls` bag, so prototype methods delegate to live closures.
- *
- * The settle lifecycle, as a four-phase machine:
- *
- * - `closed` - inert; open requests only
- * - `opening` - slide-in in flight (popover promoted, settle cap armed)
- * - `open` - visible and settled: the `open` announce
- * - `closing` - slide-out in flight
- *
- * Rows own their establishment and undo: `setup` runs on every entry
- * (so the settle announcements ride entering `open`/`closed`, and a
- * re-appended element's resume re-establishes via the self-heal
- * edges), `teardown` runs on exit via any edge and on disconnect (an
- * armed settle never fires detached). Guards bind the flight-entry
- * edges to the DOM's `:popover-open` truth (a closed mount opens
- * nothing); the stale case is structural - `SETTLE` has no edge from
- * `open`/`closed`. `opened` is the reactive read driving the machine.
+ * The slideout's lifecycle: open()/close() funnel every close source
+ * through the cancelable `opened-changed` contract; the settle machine
+ * (below) promotes/hides the popover and fires the settled `open`/
+ * `close` events when the slide transition completes; focus returns to
+ * the opener on close.
  */
-// eslint-disable-next-line max-statements -- a table + callbacks (data), not procedural flow
 export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 	const [opened, setOpened] = useAttribute('opened');
 	const open = useCallback(() => setOpened(true), [setOpened]);
@@ -76,69 +30,70 @@ export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 	useCloseFallback({ opened, noEscape, close });
 
 	const host = useHost<HTMLElement>();
-	const { captureOpener, judgeRestore, restore } = useFocusRestorer();
+	const focus = useFocusRestorer();
+	const timer = useEggTimer();
 
-	const settleOpened = useCallback(() => {
-		host.dispatchEvent(new Event('open', { bubbles: true }));
-		restore(true);
-	}, [restore]);
-
-	const settleClosed = useCallback(() => {
-		host.dispatchEvent(new Event('close', { bubbles: true }));
-		restore(false);
-	}, [restore]);
-
-	const showPopover = useCallback(() => host.showPopover(), []);
-	const hidePopover = useCallback(() => host.hidePopover(), []);
-	const { armCap, clearCap } = useCapTimer();
-
-	const machine = useStateMachine<State, Action, SettleCtx>(
-		'closed',
-		{
-			closed: {
-				setup: [settleClosed],
-				transitions: {
-					OPEN: {
-						to: 'opening',
-						guard: [({ host }) => !host.matches(':popover-open')],
-					},
+	const machine = useStateMachine<State, Action>('closed', {
+		closed: {
+			setup: [
+				() => {
+					host.dispatchEvent(new Event('close', { bubbles: true }));
+					focus.restore();
 				},
-			},
-			opening: {
-				// captureOpener precedes showPopover: the browser's popover
-				// focusing steps read it synchronously
-				setup: [captureOpener, showPopover, armCap],
-				teardown: [clearCap],
-				transitions: {
-					// self-heal: detached mid-flight, re-appended per the
-					// attribute's truth - the resume re-runs this setup
-					OPEN: { to: 'opening' },
-					CLOSE: { to: 'closing' },
-					SETTLE: { to: 'open' },
-				},
-			},
-			open: {
-				setup: [settleOpened],
-				transitions: {
-					CLOSE: {
-						to: 'closing',
-						guard: [({ host }) => host.matches(':popover-open')],
-					},
-				},
-			},
-			closing: {
-				setup: [judgeRestore, hidePopover, armCap],
-				teardown: [clearCap],
-				transitions: {
-					// self-heal, mirror of opening.OPEN
-					CLOSE: { to: 'closing' },
-					OPEN: { to: 'opening' },
-					SETTLE: { to: 'closed' },
+			],
+			transitions: {
+				OPEN: {
+					to: 'opening',
+					guard: [() => !host.matches(':popover-open')],
 				},
 			},
 		},
-		{ host },
-	);
+		opening: {
+			// focus.capture precedes showPopover: the browser's popover
+			// focusing steps read it synchronously
+			setup: [
+				focus.capture,
+				() => host.showPopover(),
+				({ send }) => timer.arm(() => send('SETTLE')),
+			],
+			teardown: [timer.clear],
+			transitions: {
+				// self-heal: detached mid-flight, re-appended per the
+				// attribute's truth - the resume re-runs this setup
+				OPEN: { to: 'opening' },
+				CLOSE: { to: 'closing' },
+				SETTLE: { to: 'open' },
+			},
+		},
+		open: {
+			setup: [
+				() => {
+					host.dispatchEvent(new Event('open', { bubbles: true }));
+					focus.restore();
+				},
+			],
+			transitions: {
+				CLOSE: {
+					to: 'closing',
+					guard: [() => host.matches(':popover-open')],
+				},
+			},
+		},
+		closing: {
+			setup: [
+				focus.arm,
+				() => host.hidePopover(),
+				({ send }) => timer.arm(() => send('SETTLE')),
+			],
+			teardown: [timer.clear],
+			transitions: {
+				// self-heal, mirror of opening.OPEN
+				CLOSE: { to: 'closing' },
+				OPEN: { to: 'opening' },
+				SETTLE: { to: 'closed' },
+			},
+		},
+	});
 
 	useEffect(
 		() =>
