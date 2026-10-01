@@ -1,18 +1,19 @@
-import { useCallback, useEffect, useLayoutEffect, useRef } from '@pionjs/pion';
+import { useCallback, useEffect, useRef } from '@pionjs/pion';
 import type { SlideoutElement } from './types';
+import { useAttribute } from './use-attribute';
 
 export const useFullScreen = (host: SlideoutElement) => {
-	const fullScreen = Boolean(host.fullScreen);
+	// useAttribute owns reflecting the attribute; the effect below only
+	// emits the flip event (for external writes too, unlike `opened-changed`
+	// which is mutation-driven only).
+	const [fullScreen, setFullScreen] = useAttribute(host, 'full-screen');
 
 	const toggle = useCallback(() => {
-		host.toggleAttribute('full-screen');
-	}, []);
-
-	useLayoutEffect(() => {
-		host.toggleAttribute('full-screen', fullScreen);
-	}, [fullScreen]);
+		setFullScreen((prev) => !prev);
+	}, [setFullScreen]);
 
 	const mounted = useRef(false);
+
 	useEffect(() => {
 		if (!mounted.current) {
 			mounted.current = true;
@@ -22,7 +23,7 @@ export const useFullScreen = (host: SlideoutElement) => {
 			new CustomEvent('full-screen-changed', {
 				detail: { fullScreen },
 				bubbles: true,
-			})
+			}),
 		);
 	}, [fullScreen]);
 

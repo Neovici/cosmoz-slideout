@@ -1,3 +1,5 @@
+import type { SlideoutBase } from './cosmoz-slideout';
+
 /** Props of `<cosmoz-slideout>`; all attributes/properties are optional. */
 export interface Props {
 	/** Show/hide the slideout (reactive, two-way; removing the attribute closes it). */
@@ -40,6 +42,13 @@ export type PanelProps = Record<never, never>;
 
 /** The `<cosmoz-slideout-panel>` element. */
 export type PanelElement = HTMLElement & PanelProps;
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'cosmoz-slideout': SlideoutBase & Props;
+		'cosmoz-slideout-panel': HTMLElement & PanelProps;
+	}
+}
 
 /** Props accepted by the `slideout()` render helper. */
 export interface SlideoutProps {

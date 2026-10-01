@@ -6,15 +6,20 @@ const toCamelCase = (name: string) =>
 export const useAttribute = (
 	host: HTMLElement,
 	name: string,
-	eventName: string = `${name}-changed`
-): readonly [boolean, (next: boolean) => boolean] => {
+	eventName: string = `${name}-changed`,
+): readonly [
+	boolean,
+	(next: boolean | ((current: boolean) => boolean)) => boolean,
+] => {
 	const camel = toCamelCase(name);
 	const read = () =>
 		Boolean((host as unknown as Record<string, unknown>)[camel]);
 	const value = read();
 
-	const set = (next: boolean): boolean => {
-		if (next === read()) {
+	const set = (next: boolean | ((current: boolean) => boolean)): boolean => {
+		const current = read();
+		const value = typeof next === 'function' ? next(current) : next;
+		if (value === current) {
 			return false;
 		}
 		const event = new CustomEvent(eventName, {
@@ -26,7 +31,7 @@ export const useAttribute = (
 		if (event.defaultPrevented) {
 			return false;
 		}
-		host.toggleAttribute(name, next);
+		host.toggleAttribute(name, value);
 		return true;
 	};
 
