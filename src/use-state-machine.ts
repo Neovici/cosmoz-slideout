@@ -6,10 +6,10 @@ export type Send<Action extends string, State extends string> = (
 ) => State | null;
 
 /**
- * What every edge callback receives: the hook-supplied `context`
- * (opaque to the machine) plus the machine's own transition trigger.
+ * What every edge callback receives: the machine's own transition
+ * trigger.
  */
-export type EdgeCtx<State extends string, Action extends string, C> = C & {
+export type EdgeCtx<State extends string, Action extends string> = {
 	send: Send<Action, State>;
 };
 
@@ -18,11 +18,11 @@ export type EdgeCtx<State extends string, Action extends string, C> = C & {
  * receive the edge context and are given as (arrays of) optional
  * refs; `undefined` elements are skipped.
  */
-export type Edge<State extends string, Action extends string, C> = {
+export type Edge<State extends string, Action extends string> = {
 	/** The destination state. */
 	to: State;
 	/** Any guard returning `false` prevents the transition entirely. */
-	guard?: ((ctx: EdgeCtx<State, Action, C>) => boolean | void | undefined)[];
+	guard?: ((ctx: EdgeCtx<State, Action>) => boolean | void | undefined)[];
 };
 
 export type Machine<State extends string, Action extends string> = {
@@ -34,19 +34,18 @@ export type Machine<State extends string, Action extends string> = {
 /**
  * One state: its establishment (setup, run on every entry) and its
  * undo (teardown, run on exit via any edge and on the element's
- * disconnect - the state is preserved across, so reconnect can
- * re-establish via a resume send); plus its edges.
+ * disconnect); plus its edges.
  */
-export type Row<State extends string, Action extends string, C> = {
+export type Row<State extends string, Action extends string> = {
 	/** Establishes the phase on every entry. */
-	setup?: ((ctx: EdgeCtx<State, Action, C>) => void | undefined)[];
+	setup?: ((ctx: EdgeCtx<State, Action>) => void | undefined)[];
 	/** Undoes the phase's establishment. */
-	teardown?: ((ctx: EdgeCtx<State, Action, C>) => void | undefined)[];
-	transitions: Partial<Record<Action, Edge<State, Action, C>>>;
+	teardown?: ((ctx: EdgeCtx<State, Action>) => void | undefined)[];
+	transitions: Partial<Record<Action, Edge<State, Action>>>;
 };
 
-type Table<State extends string, Action extends string, C> = Readonly<
-	Record<State, Row<State, Action, C>>
+type Table<State extends string, Action extends string> = Readonly<
+	Record<State, Row<State, Action>>
 >;
 
 /**
@@ -59,44 +58,34 @@ type Table<State extends string, Action extends string, C> = Readonly<
  * 3. the state flips
  * 4. the destination state's `setup` establishes the incoming phase
  *
- * Every callback receives the edge context: the hook-supplied
- * `context` (per-instance constants, e.g. DOM refs) plus the machine's
- * `send`, so a commit can arm a later action without closing over the
- * machine. An action with no edge from the current state is a stale
+ * Every callback receives the edge context: the machine's `send`, so
+ * a setup can arm a later action without closing over the machine
+ * itself. An action with no edge from the current state is a stale
  * no-op (`send` returns null): races degrade instead of firing stale
  * side effects. Instantiated per hook call (stable identity, state on
- * the machine object); tables and context are shared.
+ * the machine object); only tables are shared.
  *
  * ```ts
- * const machine = useStateMachine(
- *   'idle',
- *   {
- *     idle: {
- *       transitions: {
- *         OPEN: { to: 'opening' },
- *       },
- *     },
- *     opening: {
- *       setup: [({ host }) => host.setAttribute('open', '')],
- *       teardown: [({ host }) => host.removeAttribute('open')],
- *       transitions: { SETTLE: { to: 'idle' } },
+ * const machine = useStateMachine('idle', {
+ *   idle: {
+ *     transitions: {
+ *       OPEN: { to: 'opening' },
  *     },
  *   },
- *   { host: document.body },
- * );
- * machine.send('OPEN');  // 'idle' -> 'opening', sets the attribute
+ *   opening: {
+ *     setup: [() => console.log('opening!')],
+ *     teardown: [() => console.log('leaving!')],
+ *     transitions: { SETTLE: { to: 'idle' } },
+ *   },
+ * });
+ * machine.send('OPEN');  // 'idle' -> 'opening', logs both lines
  * machine.send('X');     // no edge -> null
  * machine.is('opening'); // true
  * ```
  */
-export const useStateMachine = <
-	State extends string,
-	Action extends string,
-	C = Record<never, never>,
->(
+export const useStateMachine = <State extends string, Action extends string>(
 	initial: State,
-	transitions: Table<State, Action, C>,
-	context?: C,
+	transitions: Table<State, Action>,
 ) => {
 	// deferred `self` read inside `send`: the ctx's `send` is the
 	// machine's own (created in this ref) - built lazily per dispatch
@@ -107,10 +96,7 @@ export const useStateMachine = <
 			if (!edge) {
 				return null; // stale: no edge
 			}
-			const ctx: EdgeCtx<State, Action, C> = {
-				...(context as C),
-				send: self.send,
-			};
+			const ctx = { send: self.send };
 			if (array(edge.guard).some((guard) => guard?.(ctx) === false)) {
 				return null; // prevented
 			}
@@ -124,15 +110,12 @@ export const useStateMachine = <
 		},
 	}).current as Machine<State, Action>;
 
-	// disconnect: undo the current phase's establishment - the state is
-	// preserved (a re-appended element resumes per its `opened`
-	// attribute); reconnect re-runs the effects and the resume send
-	// re-establishes via the self-heal edges
+	// disconnect: undo the current phase's establishment
 	useEffect(() => {
 		const machine = self;
 		return () => {
 			array(transitions[machine.state].teardown).forEach((t) =>
-				t?.({ ...(context as C), send: machine.send }),
+				t?.({ send: machine.send }),
 			);
 		};
 	}, []);
