@@ -344,19 +344,26 @@ export const Stacking: Story = {
 			${mountA}${mountB}
 		`;
 	},
-	play: async ({ canvas, canvasElement, step, userEvent }) => {
+	play: async ({ canvas, canvasElement, step }) => {
 		const openSurfaces = () =>
 			[...canvasElement.querySelectorAll('cosmoz-slideout')].filter((s) =>
 				s.matches(':popover-open'),
 			);
 		const labels = () =>
 			openSurfaces().map((s) => s.getAttribute('aria-label'));
-		await userEvent.click(
+		// the stacked close-request sessions need real user activation at
+		// their creation: synthetic clicks (storybook userEvent) create
+		// none and the user agent then groups the watchers, so one close
+		// request would close every surface; the open clicks use the
+		// Playwright-backed trusted input for that guarantee
+		const trusted = await skipUnlessTrusted(step);
+		if (!trusted) return;
+		await trusted.click(
 			await canvas.findByShadowRole('button', { name: /open first/iu }),
 		);
 		await step('opens a second slideout above the first', async () => {
 			await waitFor(() => expect(openSurfaces().length).toBe(1));
-			await userEvent.click(
+			await trusted.click(
 				await canvas.findByShadowRole('button', {
 					name: /open a second slideout/iu,
 				}),
@@ -364,9 +371,6 @@ export const Stacking: Story = {
 			await waitFor(() => expect(openSurfaces().length).toBe(2));
 		});
 		await step('Escape closes the most recent slideout first', async () => {
-			// trusted key event: CloseWatcher ignores synthetic (dispatchEvent) keys
-			const trusted = await skipUnlessTrusted(step);
-			if (!trusted) return;
 			await trusted.keyboard('{Escape}');
 			await waitFor(() => expect(labels()).toEqual(['First']));
 		});

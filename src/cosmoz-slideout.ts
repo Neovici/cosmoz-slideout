@@ -2,12 +2,12 @@ import { normalize } from '@neovici/cosmoz-tokens/normalize';
 import { component, html } from '@pionjs/pion';
 import styles from './cosmoz-slideout.css';
 import type { Props, SlideoutControls, SlideoutElement } from './types';
-import { useClose } from './use-close';
 import { useFullScreen } from './use-full-screen';
 import { useImperativeApi } from './use-imperative-api';
+import { useOpenClose } from './use-open-close';
 
 export const useSlideout = (host: SlideoutElement) => {
-	const { close, open } = useClose(host);
+	const { close, open } = useOpenClose(host);
 	const { fullScreen, toggle } = useFullScreen(host);
 	useImperativeApi(host, { open, close, toggleFullScreen: toggle });
 
