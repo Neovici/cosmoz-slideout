@@ -16,11 +16,11 @@ type Action = 'OPEN' | 'CLOSE' | 'SETTLE';
 /**
  * The slideout's lifecycle: open()/close() funnel every close source
  * through the cancelable `opened-changed` contract; the settle machine
- * is the cleanup ledger of the surface's phases (see useStateMachine):
- * each row owns its establishment - popover promotion/demotion, the
- * settle cap, the settled `open`/`close` announce, focus restoration -
- * and its symmetric undo; `opened` (the reactive attribute read)
- * re-drives the machine on flips and reconnects.
+ * is `useReducer` inverted - it runs this surface's phase effects
+ * (popover promotion/demotion, the settle cap, the settled `open`/
+ * `close` announce, focus restoration) synchronously instead of
+ * rendering, as a cleanup ledger; `opened` (the reactive attribute
+ * read) dispatches the flips and the reconnect resume.
  */
 export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 	const [opened, setOpened] = useAttribute('opened');

@@ -49,21 +49,16 @@ type Table<State extends string, Action extends string> = Readonly<
 >;
 
 /**
- * A per-state cleanup ledger: each row declares what its phase OWNS
- * (setup) and the symmetric undo of exactly that (teardown, running
- * on every exit - flips, resumes, and the element's disconnect), so
- * cleanup is declared once per phase instead of scattered through
- * effects and timers.
+ * A per-state cleanup ledger - `useReducer` INVERTED: the reducer
+ * schedules renders from actions; this runs effects from actions,
+ * synchronously (guard -> teardown -> flip -> setup), never rendering;
+ * the only state it keeps is "what to undo". Each row declares what
+ * its phase OWNS and the symmetric undo of exactly that. Full
+ * rationale: docs/state-machine-rationale.md.
  *
  * Not view state: what the user sees lives in the DOM (the `opened`
  * attribute, `:popover-open` truth) - the machine only knows which
  * phase is in flight, and writing its state re-renders nothing.
- *
- * A transition runs:
- *  1. guards (any returning `false` prevents: no undo, no flip)
- *  2. the current row's teardown
- *  3. the state flips
- *  4. the destination row's setup
  *
  * An action with no edge (e.g. a late settle after the phase
  * resolved) returns null - races degrade to no-ops, never stale side
