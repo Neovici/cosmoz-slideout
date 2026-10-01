@@ -1,4 +1,3 @@
-import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
 import { useCallback, useEffect, useHost, useRef } from '@pionjs/pion';
 import type { SlideoutElement } from './types';
 import { useAttribute } from './use-attribute';
@@ -65,28 +64,19 @@ export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 	useCloseFallback({ opened, noEscape, close });
 
 	const host = useHost<HTMLElement>();
-	const focusRestorer = useFocusRestorer();
-	const meta = useMeta({
-		onBeforeShow: focusRestorer.onBeforeShow,
-		onBeforeHide: focusRestorer.onBeforeHide,
-		onSettle: focusRestorer.onSettle,
-	});
 	const timer = useRef(0);
-
-	// named refs with live bodies - they read the stable `meta` bag at
-	// run time, so the restorer's methods stay latest-wins
-	const beginShow = useCallback(() => meta.onBeforeShow?.(), []);
-	const beginHide = useCallback(() => meta.onBeforeHide?.(), []);
+	// self-captured refs: all members stable, destructuring holds
+	const { captureOpener, judgeRestore, restore } = useFocusRestorer();
 
 	const settleOpened = useCallback(() => {
 		host.dispatchEvent(new Event('open', { bubbles: true }));
-		meta.onSettle?.(true);
-	}, []);
+		restore(true);
+	}, [restore]);
 
 	const settleClosed = useCallback(() => {
 		host.dispatchEvent(new Event('close', { bubbles: true }));
-		meta.onSettle?.(false);
-	}, []);
+		restore(false);
+	}, [restore]);
 
 	const showPopover = useCallback(() => host.showPopover(), []);
 	const hidePopover = useCallback(() => host.hidePopover(), []);
@@ -113,8 +103,6 @@ export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 			closed: {
 				setup: [settleClosed],
 				transitions: {
-					// opener capture (onBeforeShow) precedes showPopover: the
-					// popover's focusing steps read it synchronously
 					OPEN: {
 						to: 'opening',
 						guard: [({ host }) => !host.matches(':popover-open')],
@@ -122,7 +110,9 @@ export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 				},
 			},
 			opening: {
-				setup: [beginShow, showPopover, armCap],
+				// captureOpener precedes showPopover: the browser's popover
+				// focusing steps read it synchronously
+				setup: [captureOpener, showPopover, armCap],
 				teardown: [clearCap],
 				transitions: {
 					// self-heal: detached mid-flight, re-appended per the
@@ -142,7 +132,7 @@ export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 				},
 			},
 			closing: {
-				setup: [beginHide, hidePopover, armCap],
+				setup: [judgeRestore, hidePopover, armCap],
 				teardown: [clearCap],
 				transitions: {
 					// self-heal, mirror of opening.OPEN

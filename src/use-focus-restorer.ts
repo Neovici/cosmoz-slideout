@@ -4,9 +4,12 @@ type FocusRestorer = {
 	host: HTMLElement;
 	opener: HTMLElement | null;
 	shouldRestore: boolean;
-	onBeforeShow(): void;
-	onBeforeHide(): void;
-	onSettle(open: boolean): void;
+	/** Remembers the currently focused element as the opener. */
+	captureOpener(): void;
+	/** Marks whether focus should be restored, judging at hide time. */
+	judgeRestore(): void;
+	/** Restores focus to the opener (no-op for slide-in settles). */
+	restore(open: boolean): void;
 };
 
 /**
@@ -24,14 +27,14 @@ export const useFocusRestorer = (): FocusRestorer => {
 		host: useHost(),
 		opener: null,
 		shouldRestore: false,
-		onBeforeShow() {
+		captureOpener() {
 			self.opener = document.activeElement as HTMLElement | null;
 			self.shouldRestore = false;
 		},
-		onBeforeHide() {
+		judgeRestore() {
 			self.shouldRestore = self.host.contains(document.activeElement);
 		},
-		onSettle(open: boolean) {
+		restore(open: boolean) {
 			if (open) {
 				return;
 			}
