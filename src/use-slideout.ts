@@ -1,55 +1,80 @@
 import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
 import { useCallback, useEffect, useHost, useRef } from '@pionjs/pion';
+import type { SlideoutElement } from './types';
+import { useAttribute } from './use-attribute';
+import { useCloseFallback } from './use-close-fallback';
+import { useCloseWatcher } from './use-close-watcher';
+import { useFocusRestorer } from './use-focus-restorer';
+import { useFullScreen } from './use-full-screen';
+import { useHandleRequestClose } from './use-handle-request-close';
+import { useImperativeApi } from './use-imperative-api';
 import { type EdgeCtx, useStateMachine } from './use-state-machine';
 import { settleCapMs } from './utils';
 
 type State = 'closed' | 'opening' | 'open' | 'closing';
 type Action = 'OPEN' | 'CLOSE' | 'SETTLE';
 
-/** The settle hook's edge context: the surface and the settle-cap slot. */
+/** The lifecycle's edge context: the surface and the settle-cap slot. */
 type SettleCtx = {
 	host: HTMLElement;
 	timer: { current: number | undefined };
 };
 
 /**
- * Surface lifecycle with the four phase states:
+ * The slideout's lifecycle, composed from independent hooks:
+ *
+ * - `opened` is the reactive attribute state (`useAttribute('opened')`);
+ *   `open()`/`close()` funnel every close source through the cancelable
+ *   `opened-changed` contract.
+ * - the settle machine (below) promotes/hides the popover and fires
+ *   the settled `open`/`close` events when the slide transition
+ *   completes.
+ * - `useHandleRequestClose` - slotted content's cancelable
+ *   `request-close` asks the surface to close.
+ * - `useCloseWatcher` - the per-instance `CloseWatcher` session (Escape
+ *   + Android back).
+ * - `useCloseFallback` - Escape on engines without `CloseWatcher`.
+ * - `useFocusRestorer` restores focus to the opener on close.
+ * - `useFullScreen` owns the reactive `full-screen` attribute.
+ * - `useImperativeApi` assigns the controls onto the base element's
+ *   `controls` bag, so prototype methods delegate to live closures.
+ *
+ * The settle lifecycle, as a four-phase machine:
  *
  * - `closed` - inert; open requests only
  * - `opening` - slide-in in flight (popover promoted, settle cap armed)
- * - `open` - visible and settled: the `open`.announce
+ * - `open` - visible and settled: the `open` announce
  * - `closing` - slide-out in flight
  *
  * Rows own their establishment and undo: `setup` runs on every entry
  * (so the settle announcements ride entering `open`/`closed`, and a
  * re-appended element's resume re-establishes via the self-heal
  * edges), `teardown` runs on exit via any edge and on disconnect (an
- * armed settle never fires detached). Guards bind the idle edges to
- * the DOM's `:popover-open` truth (a closed mount commits nothing);
- * the stale case is structural - `SETTLE` has no edge from open or
- * closed. `opened` is the reactive read driving the machine.
+ * armed settle never fires detached). Guards bind the flight-entry
+ * edges to the DOM's `:popover-open` truth (a closed mount opens
+ * nothing); the stale case is structural - `SETTLE` has no edge from
+ * `open`/`closed`. `opened` is the reactive read driving the machine.
  */
-export const useSettleEvents = ({
-	opened,
-	onBeforeShow,
-	onBeforeHide,
-	onSettle,
-}: {
-	/** The reactive read, driving the phase machine. */
-	opened: boolean;
-	/** Runs before the popover is shown. */
-	onBeforeShow?: () => void;
-	/** Runs before the popover hides (still showing). */
-	onBeforeHide?: () => void;
-	/** Runs on transition settle (arg: `true` for slide-in). */
-	onSettle?: (open: boolean) => void;
-}) => {
+export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
+	const [opened, setOpened] = useAttribute('opened');
+	const open = useCallback(() => setOpened(true), [setOpened]);
+	const close = useCallback(() => setOpened(false), [setOpened]);
+
+	useHandleRequestClose({ opened, close });
+	useCloseWatcher({ opened, noEscape, close });
+	useCloseFallback({ opened, noEscape, close });
+
 	const host = useHost<HTMLElement>();
-	const meta = useMeta({ onBeforeShow, onBeforeHide, onSettle });
+	const focusRestorer = useFocusRestorer();
+	const meta = useMeta({
+		onBeforeShow: focusRestorer.onBeforeShow,
+		onBeforeHide: focusRestorer.onBeforeHide,
+		onSettle: focusRestorer.onSettle,
+	});
 	const timer = useRef(0);
 
 	// named refs with live bodies - they read the stable `meta` bag at
-	// run time, so caller-passed inline callbacks stay latest-wins
+	// run time, so the restorer's methods stay latest-wins
 	const beginShow = useCallback(() => meta.onBeforeShow?.(), []);
 	const beginHide = useCallback(() => meta.onBeforeHide?.(), []);
 
@@ -148,4 +173,10 @@ export const useSettleEvents = ({
 	useEffect(() => {
 		machine.send(opened ? 'OPEN' : 'CLOSE');
 	}, [opened]);
+
+	const { fullScreen, toggle } = useFullScreen();
+
+	useImperativeApi({ open, close, toggleFullScreen: toggle });
+
+	return { opened, open, close, fullScreen, toggleFullScreen: toggle };
 };
