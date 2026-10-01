@@ -5,21 +5,6 @@ import { useEscapeClose } from './use-escape-close';
 import { useFocusRestorer } from './use-focus-restorer';
 import { useSettleEvents } from './use-settle-events';
 
-/**
- * The surface's open/close lifecycle, composed from independent hooks.
- *
- * - `useOpened` owns the reactive `opened` state; `open()`/
- *   `close()` funnel every close source through the cancelable
- *   `opened-changed` contract.
- * - `useSettleEvents` promotes/hides the popover and fires the settled
- *   `open`/`close` events when the slide transition completes.
- * - `useEscapeClose` holds the per-instance `CloseWatcher` session
- *   (Escape + Android back; newest first) and the `request-close`/keydown
- *   plumbing.
- * - `useFocusRestorer` remembers the opener on open and restores focus on
- *   close (focus *into* the content is the browser's popover focusing
- *   steps; only the way back can't be native for `popover="manual"`).
- */
 export const useOpened = (host: SlideoutElement) => {
 	const [opened, setOpened] = useAttribute(host, 'opened');
 
@@ -33,6 +18,23 @@ export const useOpened = (host: SlideoutElement) => {
 	return { opened, open, close };
 };
 
+/**
+ * The surface's open/close lifecycle, composed from independent hooks:
+ *
+ * - `useOpened` owns the reactive `opened` state (with `useAttribute`);
+ *   `open()`/`close()` funnel every close source through the cancelable
+ *   `opened-changed` contract.
+ * - `useSettleEvents` promotes/hides the popover and fires the settled
+ *   `open`/`close` events when the slide transition completes; the
+ *   commit points (`onBeforeShow`/`onBeforeHide`/`onSettle`) are carried
+ *   by `focusRestorer`.
+ * - `useEscapeClose` holds the per-instance `CloseWatcher` session
+ *   (Escape + Android back; newest first) and the `request-close`/keydown
+ *   plumbing.
+ * - `useFocusRestorer` remembers the opener on open and restores focus on
+ *   close (focus *into* the content is the browser's popover focusing
+ *   steps; only the way back can't be native for `popover="manual"`).
+ */
 export const useOpenClose = (host: SlideoutElement) => {
 	const { opened, open, close } = useOpened(host);
 	const focusRestorer = useFocusRestorer(host);
@@ -40,9 +42,7 @@ export const useOpenClose = (host: SlideoutElement) => {
 
 	// the restore-eligibility check is a pre-hide commitment: it must run
 	// while the popover is still showing; the opener capture must precede
-	// showPopover, whose focusing steps move focus synchronously;
-	// `focus` carries the commit callbacks under the settle hook's names
-	// and has a stable ref identity - no memoization needed
+	// showPopover, whose focusing steps move focus synchronously
 	useSettleEvents(host, focusRestorer);
 
 	return { opened, open, close };
