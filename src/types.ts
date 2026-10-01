@@ -73,5 +73,5 @@ export interface SlideoutProps {
 	/** Slide-out settled handler. */
 	onClose?: (e: Event) => void;
 	/** Full-screen flip handler. */
-	onFullScreenChanged?: (e: CustomEvent) => void;
+	onFullScreenChanged?: (e: CustomEvent<{ value: boolean }>) => void;
 }

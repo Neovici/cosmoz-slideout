@@ -58,7 +58,7 @@ export const Events: Story = {
 							rerender();
 						}}
 						@full-screen-changed=${(e: CustomEvent) =>
-							addLog(`full-screen: ${e.detail.fullScreen}`)}
+							addLog(`full-screen: ${String(e.detail.value)}`)}
 						@close=${() => addLog('close event')}
 					>
 						<cosmoz-slideout-panel>

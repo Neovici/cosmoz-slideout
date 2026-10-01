@@ -3,10 +3,16 @@ import { useLayoutEffect } from '@pionjs/pion';
 const toCamelCase = (name: string) =>
 	name.replace(/-([a-z])/gu, (_, c: string) => c.toUpperCase());
 
+const eventName = (name: string) => `${name}-changed`;
+
+/**
+ * Reactive boolean attribute holder: `set()` applies a change through
+ * the cancelable `name-changed` event (`preventDefault()` vetoes the
+ * write) and reflects the attribute.
+ */
 export const useAttribute = (
 	host: HTMLElement,
 	name: string,
-	eventName: string = `${name}-changed`,
 ): readonly [
 	boolean,
 	(next: boolean | ((current: boolean) => boolean)) => boolean,
@@ -22,8 +28,8 @@ export const useAttribute = (
 		if (value === current) {
 			return false;
 		}
-		const event = new CustomEvent(eventName, {
-			detail: { value: next },
+		const event = new CustomEvent(eventName(name), {
+			detail: { value },
 			cancelable: true,
 			bubbles: true,
 		});
