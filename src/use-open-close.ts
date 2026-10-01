@@ -25,15 +25,16 @@ export const useOpened = (host: SlideoutElement) => {
  *   `open()`/`close()` funnel every close source through the cancelable
  *   `opened-changed` contract.
  * - `useSettleEvents` promotes/hides the popover and fires the settled
- *   `open`/`close` events when the slide transition completes; the
- *   commit points (`onBeforeShow`/`onBeforeHide`/`onSettle`) are carried
- *   by `focusRestorer`.
+ *   `open`/`close` events when the slide transition completes, calling
+ *   back at the commit points of the phase: before show, before hide,
+ *   and on settle.
  * - `useEscapeClose` holds the per-instance `CloseWatcher` session
  *   (Escape + Android back; newest first) and the `request-close`/keydown
  *   plumbing.
- * - `useFocusRestorer` remembers the opener on open and restores focus on
- *   close (focus *into* the content is the browser's popover focusing
- *   steps; only the way back can't be native for `popover="manual"`).
+ * - `useFocusRestorer` handles the focus bookkeeping at those commit
+ *   points: remembers the opener on open and restores focus on close
+ *   (focus *into* the content is the browser's popover focusing steps;
+ *   only the way back can't be native for `popover="manual"`).
  */
 export const useOpenClose = (host: SlideoutElement) => {
 	const { opened, open, close } = useOpened(host);
