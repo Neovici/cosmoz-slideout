@@ -27,7 +27,6 @@ export const Playground: Story = {
 			aria-label=${ifDefined(args['aria-label'])}
 			?full-screen=${args['full-screen']}
 			?no-escape=${args['no-escape']}
-			?no-autofocus=${args['no-autofocus']}
 			style=${`--cosmoz-slideout-width: ${args.width};`}
 		>
 			<cosmoz-slideout-panel>

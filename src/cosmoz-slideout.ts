@@ -1,25 +1,10 @@
 import { normalize } from '@neovici/cosmoz-tokens/normalize';
 import { component, html } from '@pionjs/pion';
 import styles from './cosmoz-slideout.css';
-import type {
-	PanelProps,
-	Props,
-	SlideoutControls,
-	SlideoutElement,
-} from './types';
-import { useClose } from './use-close';
-import { useFullScreen } from './use-full-screen';
-import { useImperativeApi } from './use-imperative-api';
+import type { Props, SlideoutControls, SlideoutElement } from './types';
+import { useSlideout } from './use-slideout';
 
-export const useSlideout = (host: SlideoutElement) => {
-	const { close, open } = useClose(host);
-	const { fullScreen, toggle } = useFullScreen(host);
-	useImperativeApi(host, { open, close, toggleFullScreen: toggle });
-
-	return { close, open, fullScreen, toggleFullScreen: toggle };
-};
-
-export const CosmozSlideout = (host: SlideoutElement) => {
+const CosmozSlideout = (host: SlideoutElement) => {
 	useSlideout(host);
 
 	return html`<slot></slot>`;
@@ -54,18 +39,11 @@ export class SlideoutBase extends HTMLElement {
 	}
 }
 
-declare global {
-	interface HTMLElementTagNameMap {
-		'cosmoz-slideout': SlideoutBase & Props;
-		'cosmoz-slideout-panel': HTMLElement & PanelProps;
-	}
-}
-
 customElements.define(
 	'cosmoz-slideout',
 	component<Props>(CosmozSlideout, {
 		baseElement: SlideoutBase,
-		observedAttributes: ['opened', 'full-screen', 'no-escape', 'no-autofocus'],
+		observedAttributes: ['opened', 'full-screen', 'no-escape'],
 		styleSheets: [normalize, styles],
-	})
+	}),
 );

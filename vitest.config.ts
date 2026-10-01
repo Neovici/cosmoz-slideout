@@ -14,8 +14,23 @@ export default defineConfig({
 				extends: true,
 				test: {
 					name: 'unit',
-					include: ['test/**/*.test.ts', 'src/**/*.test.ts'],
+					include: ['src/**/*.test.ts'],
 					environment: 'jsdom',
+				},
+			},
+			// Browser tests: real Chromium, components directly (no
+			// storybook) - lifecycle/semantics coverage
+			{
+				extends: true,
+				test: {
+					name: 'browser',
+					include: ['test/**/*.browser.test.ts'],
+					browser: {
+						enabled: true,
+						provider: playwright({ headless: true }),
+						headless: true,
+						instances: [{ browser: 'chromium' }],
+					},
 				},
 			},
 			// Storybook tests: component rendering and interactions

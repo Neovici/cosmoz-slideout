@@ -11,7 +11,6 @@ type SlideoutEl = HTMLElement & {
 	open(): void;
 	close(): void;
 	toggleFullScreen(): void;
-	onClose?: () => void;
 };
 
 const meta: Meta = {
@@ -26,8 +25,8 @@ type Story = StoryObj;
 
 export const Events: Story = {
 	parameters: storyDoc(
-		'The surface event & callback lifecycle: `open` / `opened-changed` / ' +
-			'`full-screen-changed` / `close` (+ the `onClose` callback). The element ' +
+		'The surface event lifecycle: `open` / `opened-changed` / ' +
+			'`full-screen-changed` / `close`. The element ' +
 			'persists in the DOM across open/close cycles.',
 	),
 	render: () => {
@@ -58,12 +57,12 @@ export const Events: Story = {
 							rerender();
 						}}
 						@full-screen-changed=${(e: CustomEvent) =>
-							addLog(`full-screen: ${e.detail.fullScreen}`)}
+							addLog(`full-screen: ${String(e.detail.value)}`)}
 						@close=${() => addLog('close event')}
 					>
 						<cosmoz-slideout-panel>
 							${header('Lifecycle', {
-								subtitle: 'Events and imperative callbacks',
+								subtitle: 'Events and imperative methods',
 							})}
 							<p>
 								The element persists in the DOM. It emits <code>opened-changed</code>
@@ -94,7 +93,6 @@ export const Events: Story = {
 			);
 		rerender();
 		const el = mount.querySelector('cosmoz-slideout') as SlideoutEl;
-		el.onClose = () => addLog('onClose callback');
 		const open = () => {
 			log.replaceChildren();
 			el.open();
@@ -131,13 +129,10 @@ export const Events: Story = {
 			);
 			await waitFor(() => expect(logItems()).toContain('full-screen: true'));
 		});
-		await step(
-			'fires close and onClose when the animation finishes',
-			async () => {
-				el.querySelector<HTMLElement>('cosmoz-button:last-of-type')!.click();
-				await waitFor(() => expect(logItems()).toContain('close event'));
-				await waitFor(() => expect(logItems()).toContain('onClose callback'));
-			},
-		);
+		await step('fires close when the animation finishes', async () => {
+			el.querySelector<HTMLElement>('cosmoz-button:last-of-type')!.click();
+			await waitFor(() => expect(el.matches(':popover-open')).toBe(false));
+			await waitFor(() => expect(logItems()).toContain('close event'));
+		});
 	},
 };

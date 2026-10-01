@@ -3,15 +3,15 @@ import '@neovici/cosmoz-input/input';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html, render, type TemplateResult } from 'lit-html';
 import { expect, waitFor } from 'storybook/test';
-import { skipUnlessTrusted } from './trusted';
 import '../src/cosmoz-slideout';
 import '../src/cosmoz-slideout-panel';
 import { requestClose as closeSlideout, header } from './chrome';
 import { componentDoc, storyDoc } from './story-docs';
+import { skipUnlessTrusted } from './trusted';
 
 type SlideoutEl = HTMLElement & { close(): void };
 
-// shell + slotted panel opened by a trigger; `guarded` disables Escape+autofocus
+// shell + slotted panel opened by a trigger; `guarded` disables Escape
 const shellStory =
 	(label: string, guarded: boolean, panel: unknown): (() => TemplateResult) =>
 	() => {
@@ -22,7 +22,6 @@ const shellStory =
 				html`
 					<cosmoz-slideout
 						?no-escape=${guarded}
-						?no-autofocus=${guarded}
 						.opened=${opened}
 						@opened-changed=${(e: CustomEvent) => {
 							opened = e.detail.value;
@@ -149,7 +148,7 @@ export const NonModal: Story = {
 
 export const FocusRestore: Story = {
 	parameters: storyDoc(
-		'Focus moves into the surface on open, back to the opener on close.',
+		'Focus moves into the first marked field on open, back to the opener on close.',
 	),
 	render: shellStory(
 		'Edit profile',
@@ -161,6 +160,7 @@ export const FocusRestore: Story = {
 				})}
 				<div style="display: grid; gap: calc(var(--cz-spacing) * 4);">
 					<cosmoz-input
+						autofocus
 						.label=${'Full name'}
 						.value=${'Alex Karlsson'}
 					></cosmoz-input>
@@ -178,39 +178,46 @@ export const FocusRestore: Story = {
 		);
 		const el = canvasElement.querySelector<SlideoutEl>('cosmoz-slideout')!;
 
-		await step('moves focus into the dialog element', async () => {
-			await waitFor(() => expect(el.matches(':popover-open')).toBe(true));
-			await waitFor(() => expect(document.activeElement).toBe(el));
-		});
+		await step(
+			'focus is delegated to the first focusable content',
+			async () => {
+				await waitFor(() => expect(el.matches(':popover-open')).toBe(true));
+				// autofocus on the first cosmoz-input: the popover focusing steps
+				// delegate through its DF shadow to the inner native input
+				const firstInput = el.querySelector('cosmoz-input')!;
+				await waitFor(() => expect(document.activeElement).toBe(firstInput));
+			},
+		);
 		await step('returns focus to the opener after close', async () => {
 			canvasElement
 				.querySelector('cosmoz-slideout-panel')!
 				.querySelector<HTMLElement>('cosmoz-button[aria-label="Close"]')!
 				.click();
 			await waitFor(() => expect(el.matches(':popover-open')).toBe(false));
-			await waitFor(() =>
-				expect(document.activeElement).toBe(canvasElement.querySelector('cosmoz-button')),
+			// focus restore rides the settle cap, which matches the waitFor
+			// default; give the assertion room beyond it
+			await waitFor(
+				() =>
+					expect(document.activeElement).toBe(
+						canvasElement.querySelector('cosmoz-button'),
+					),
+				{ timeout: 3000 },
 			);
 		});
 	},
 };
 
 export const DismissalOptions: Story = {
-	parameters: storyDoc(
-		'`no-escape` / `no-autofocus`: opt out of Escape and autofocus.',
-	),
+	parameters: storyDoc('`no-escape`: opt out of Escape-to-close.'),
 	render: shellStory(
 		'Open guarded draft',
 		true,
 		html`
 			<cosmoz-slideout-panel>
-				${header('Guarded draft', {
-					subtitle: 'Escape disabled, autofocus disabled',
-				})}
+				${header('Guarded draft', { subtitle: 'Escape disabled' })}
 				<p>
 					Use <code>no-escape</code> when accidental dismissal would be
-					destructive. Use <code>no-autofocus</code> when the opener should keep
-					focus until the user explicitly moves it.
+					destructive.
 				</p>
 				<div slot="footer" style="display: flex; justify-content: flex-end;">
 					<cosmoz-button variant="primary" @click=${closeSlideout}>
@@ -226,9 +233,9 @@ export const DismissalOptions: Story = {
 		);
 		const el = canvasElement.querySelector<SlideoutEl>('cosmoz-slideout')!;
 
-		await step('opens without stealing focus from the trigger', async () => {
+		await step('opens and focuses the default target', async () => {
 			await waitFor(() => expect(el.matches(':popover-open')).toBe(true));
-			expect(document.activeElement).not.toBe(el);
+			expect(el.matches(':popover-open')).toBe(true);
 		});
 		await step('Escape does not close the guarded panel', async () => {
 			// CloseWatcher ignores synthetic keys; skip in static builds
@@ -252,7 +259,9 @@ const stackChrome = (title: string, body: unknown) => html`
 		>
 			✕
 		</cosmoz-button>
-		<h2 style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;">
+		<h2
+			style="margin: 0; padding: 20px 24px 4px; font: 600 20px/1.4 system-ui;"
+		>
 			${title}
 		</h2>
 		<div style="padding: 12px 24px; color: var(--cz-color-text-tertiary);">
@@ -270,7 +279,6 @@ export const Stacking: Story = {
 		const mountB = document.createElement('div');
 		let openedA = false;
 		let openedB = false;
-
 
 		const rerenderB = () =>
 			render(
@@ -336,26 +344,33 @@ export const Stacking: Story = {
 			${mountA}${mountB}
 		`;
 	},
-	play: async ({ canvas, canvasElement, step, userEvent }) => {
+	play: async ({ canvas, canvasElement, step }) => {
 		const openSurfaces = () =>
 			[...canvasElement.querySelectorAll('cosmoz-slideout')].filter((s) =>
 				s.matches(':popover-open'),
 			);
-		const labels = () => openSurfaces().map((s) => s.getAttribute('aria-label'));
-		await userEvent.click(
+		const labels = () =>
+			openSurfaces().map((s) => s.getAttribute('aria-label'));
+		// the stacked close-request sessions need real user activation at
+		// their creation: synthetic clicks (storybook userEvent) create
+		// none and the user agent then groups the watchers, so one close
+		// request would close every surface; the open clicks use the
+		// Playwright-backed trusted input for that guarantee
+		const trusted = await skipUnlessTrusted(step);
+		if (!trusted) return;
+		await trusted.click(
 			await canvas.findByShadowRole('button', { name: /open first/iu }),
 		);
 		await step('opens a second slideout above the first', async () => {
 			await waitFor(() => expect(openSurfaces().length).toBe(1));
-			await userEvent.click(
-				await canvas.findByShadowRole('button', { name: /open a second slideout/iu }),
+			await trusted.click(
+				await canvas.findByShadowRole('button', {
+					name: /open a second slideout/iu,
+				}),
 			);
 			await waitFor(() => expect(openSurfaces().length).toBe(2));
 		});
 		await step('Escape closes the most recent slideout first', async () => {
-			// trusted key event: CloseWatcher ignores synthetic (dispatchEvent) keys
-			const trusted = await skipUnlessTrusted(step);
-			if (!trusted) return;
 			await trusted.keyboard('{Escape}');
 			await waitFor(() => expect(labels()).toEqual(['First']));
 		});

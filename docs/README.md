@@ -55,10 +55,8 @@ persists in the DOM across open/close cycles - there is no add-to-open / remove-
 
 ```html
 <!-- lit-html two-way binding -->
-<cosmoz-slideout
-	.opened=${this.open}
-	@opened-changed=${(e) => (this.open = e.detail.value)}
->
+<cosmoz-slideout .opened="${this.open}" @opened-changed="${(e)" ="">
+	(this.open = e.detail.value)} >
 	<cosmoz-slideout-panel>
 		<my-header slot="header">Acme</my-header>
 		<p>…body…</p>
@@ -87,7 +85,6 @@ Your own buttons can do the same, or call `closest('cosmoz-slideout')?.close()`.
 - `full-screen` - when present the surface covers the whole document. Flip the attribute or call
   `toggleFullScreen()`.
 - `no-escape` - disable the built-in Escape-to-close.
-- `no-autofocus` - do not move focus into the surface on open.
 - `aria-label` - label for the drawer. Set it
   **explicitly** - the panel carries no text of its own to name it with (and never reaches into the
   element). Note: `aria-labelledby` is an IDREF and only resolves to an element in the **same tree**
@@ -103,21 +100,16 @@ Your own buttons can do the same, or call `closest('cosmoz-slideout')?.close()`.
 
 - `opened-changed` - dispatched (bubbling, **cancelable**) when the surface changes `opened` itself
   (`open()`/`close()`, Escape/back-button, `request-close`); `detail = { value }`. Use it for two-way
-  binding; `preventDefault()` vetoes the change (an unsaved-changes guard). External writes (a direct
-  attribute edit) don't re-emit it - the mutator already knows. (Contrast: `full-screen-changed` fires
-  for **any** flip, external writes included.)
+  binding; `preventDefault()` vetoes the change (an unsaved-changes guard).
 - `open` - dispatched after the slide-**in** animation settles (bubbles), symmetric with `close` -
   handy for "scroll to top / focus the first field" timing.
 - `close` - dispatched after the slide-**out** animation settles (bubbles). Useful for teardown
   timing; the element is **not** removed.
-- `full-screen-changed` - dispatched when the `full-screen` state changes; `detail = { fullScreen }`
-  (bubbles).
+- `full-screen-changed` - dispatched when the `full-screen` state changes; `detail = { value }`
+  (bubbles, cancelable - `preventDefault()` vetoes the flip).
 - `request-close` - **listened for**, not emitted: a bubbling, **cancelable** event from any
   descendant (e.g. your slotted close button) that asks the surface to close; `preventDefault()`
   vetoes.
-
-`onClose?: () => void` - a property-based alternative to the `close` event, invoked right after
-`close` fires. Set it on the element (`el.onClose = …`) if a callback is handier than a listener.
 
 #### Slot
 
@@ -152,7 +144,10 @@ only when you need it.
 	<cosmoz-slideout-panel>
 		<my-header slot="header">
 			Acme Industries
-			<cosmoz-button slot="suffix" aria-label="Close" @click="${fireRequestClose}"
+			<cosmoz-button
+				slot="suffix"
+				aria-label="Close"
+				@click="${fireRequestClose}"
 				>✕</cosmoz-button
 			>
 		</my-header>
@@ -197,21 +192,17 @@ slideout(
 		html`
 			<my-header slot="header">Details</my-header>
 			<p>…body…</p>
-		`
-	)
+		`,
+	),
 );
 ```
 
-`slideout(props, content)` accepts `opened`, `fullScreen`, `noEscape`, `noAutofocus`, `ariaLabel`,
-`ariaLabelledby`, `class`, `style`, and the event handlers `onOpenedChanged` / `onOpen` / `onClose` /
-`onFullScreenChanged` (so plain listeners and pion's `lift` both compose). `slideoutPanel(props,
-content)` accepts only `class` and `style` (the panel is property-free). The `SlideoutProps` type is
-exported from the package root.
-
-### Composables
-
-The lifecycle hooks (`useClose`, `useFullScreen`, `useAttribute`) are internal — the public
-extension point for custom surfaces is the `slideout()` / `slideoutPanel()` render helpers.
+`slideout(props, content)` accepts `opened`, `fullScreen`, `noEscape`, `ariaLabel`,
+`ariaLabelledby`, `class`, `style`, and the event handlers `onOpenedChanged` / `onOpen` /
+`onClose` / `onFullScreenChanged` (so plain listeners and pion's `lift` both compose). Those `on*`
+props are render-helper sugar for listening to the element's events (`@close=${props.onClose}`); the
+element itself has no callback properties. `slideoutPanel(props, content)` accepts only `class` and
+`style` (the panel is property-free). The `SlideoutProps` type is exported from the package root.
 
 ### Typed lookups
 
@@ -230,7 +221,7 @@ const panel = document.querySelector('cosmoz-slideout-panel'); // typed (propert
 
 ### CSS `::part()`
 
-**`<cosmoz-slideout>`:** none - the element *is* the surface; style it via `:host`-level custom
+**`<cosmoz-slideout>`:** none - the element _is_ the surface; style it via `:host`-level custom
 properties (below) or the `cosmoz-slideout` element selector.
 
 **`<cosmoz-slideout-panel>`:** `header`, `body`, `footer` - the layout regions.
@@ -238,12 +229,15 @@ properties (below) or the `cosmoz-slideout` element selector.
 ### Accessibility
 
 The element carries `role="dialog"`, `aria-modal="false"` (non-modal by design), and
-`tabindex="-1"` itself (set by the base class; an authored `role` wins). Label it via
-`aria-label` on `<cosmoz-slideout>` - set it explicitly; nothing fills it in for you. The close
-control (in your slotted header) carries its own accessible name, e.g. "Close". On open, focus moves
-into the element (opt out with `no-autofocus`); on close, focus returns to the opener **when focus was
-still inside the drawer at the moment it closed** (that check is captured then, before the popover
-hides). Escape (and hardware/gesture back navigation) closes the **most recently opened**
+`tabindex="-1"` itself (set by the base class; an authored `role` wins) - the latter makes the
+surface a valid focus target for the Popover API. Label it via `aria-label` on
+`<cosmoz-slideout>` - set it explicitly; nothing fills it in for you. The close control (in your
+slotted header) carries its own accessible name, e.g. "Close". On open, the browser's popover
+focusing steps move focus: mark a focus target in your content with the standard `autofocus`
+attribute (`<cosmoz-input autofocus>` lands on its field), or put `autofocus` on the surface
+itself to announce the drawer by name; with no `autofocus` anywhere, focus does not move. On
+close, focus returns to the opener **when focus was still inside the drawer at the moment it
+closed** (that check is captured then, before the popover hides). Escape (and hardware/gesture back navigation) closes the **most recently opened**
 slideout - each open element holds a close-request session with the browser (newest first
 regardless of where focus is). Because the drawer is non-modal, the page behind stays reachable -
 this is intentional (quick-glance panels).
@@ -272,10 +266,10 @@ Set `opened` synchronously inside the opening handler (e.g. the click); if you s
   from the trigger button - instead the trigger toggles `opened`, and the `open`/`close` events
   let you announce state if you must (`aria-live`). Keep the announcements minimal: drawer
   open/close is signaled by focus movement itself.
-- **Focus is the state announcer**: on open, focus enters the element (`tabindex="-1"`,
-  announced with the accessible name); on close, focus returns to the opener. If the drawer hosts
-  a form, move focus into its first field via slotted markup (`autofocus` attribute on the input
-  or a `tabindex="-1"` wrapper) after the `open` event.
+- **Focus is the state announcer**: on open, the browser's popover focusing steps move focus to
+  your `autofocus`-marked field (composite components work - `<cosmoz-input autofocus>` focuses
+  its inner input) or to the surface when `autofocus` is on the element itself; on close, focus
+  returns to the opener. No `autofocus` anywhere means focus does not move on open.
 - **Loading states**: announce with `aria-live="polite"` on a slotted status node or
   `aria-busy` from the author's own slotted markup - the panel itself adds no busy/announcement
   attributes (property-free chrome).

@@ -1,3 +1,5 @@
+import type { SlideoutBase } from './cosmoz-slideout';
+
 /** Props of `<cosmoz-slideout>`; all attributes/properties are optional. */
 export interface Props {
 	/** Show/hide the slideout (reactive, two-way; removing the attribute closes it). */
@@ -6,10 +8,6 @@ export interface Props {
 	fullScreen?: boolean;
 	/** Disable Escape-to-close (attribute `no-escape`). */
 	noEscape?: boolean;
-	/** Do not move focus into the surface on open (attribute `no-autofocus`). */
-	noAutofocus?: boolean;
-	/** Called right after the `close` event fires. */
-	onClose?: () => void;
 	/** Slide-in (guarded no-op when already open). */
 	open: () => void;
 	/** Slide-out (guarded no-op when already closed). */
@@ -43,6 +41,13 @@ export type PanelProps = Record<never, never>;
 /** The `<cosmoz-slideout-panel>` element. */
 export type PanelElement = HTMLElement & PanelProps;
 
+declare global {
+	interface HTMLElementTagNameMap {
+		'cosmoz-slideout': SlideoutBase & Props;
+		'cosmoz-slideout-panel': HTMLElement & PanelProps;
+	}
+}
+
 /** Props accepted by the `slideout()` render helper. */
 export interface SlideoutProps {
 	/** Whether the slideout is open. */
@@ -51,8 +56,6 @@ export interface SlideoutProps {
 	fullScreen?: boolean;
 	/** Disable Escape-to-close. */
 	noEscape?: boolean;
-	/** Do not move focus into the surface on open. */
-	noAutofocus?: boolean;
 	/** Label for the dialog. */
 	ariaLabel?: string;
 	/** IDREF label for the dialog. */
@@ -68,5 +71,5 @@ export interface SlideoutProps {
 	/** Slide-out settled handler. */
 	onClose?: (e: Event) => void;
 	/** Full-screen flip handler. */
-	onFullScreenChanged?: (e: CustomEvent) => void;
+	onFullScreenChanged?: (e: CustomEvent<{ value: boolean }>) => void;
 }

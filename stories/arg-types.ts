@@ -28,11 +28,6 @@ export const slideoutArgTypes: Meta['argTypes'] = {
 		description: 'Disable the built-in Escape-to-close.',
 		table: { category: 'Behavior', defaultValue: { summary: 'false' } },
 	},
-	'no-autofocus': {
-		control: 'boolean',
-		description: 'Do not move focus into the surface on open.',
-		table: { category: 'Behavior', defaultValue: { summary: 'false' } },
-	},
 	width: {
 		control: 'text',
 		description: 'Sets the `--cosmoz-slideout-width` custom property.',
@@ -48,7 +43,6 @@ export const defaultSlideoutArgs: Meta['args'] = {
 	'aria-label': 'Slideout',
 	'full-screen': false,
 	'no-escape': false,
-	'no-autofocus': false,
 	width: 'min(400px, 100vw)',
 };
 
@@ -73,6 +67,5 @@ export const defaultPanelArgs: Meta['args'] = {
 	'aria-label': undefined,
 	'full-screen': false,
 	'no-escape': false,
-	'no-autofocus': false,
 	width: 'min(400px, 100vw)',
 };
