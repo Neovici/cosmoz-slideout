@@ -39,10 +39,6 @@ export const useOpenClose = (host: SlideoutElement) => {
 	const { opened, open, close } = useOpened(host);
 	const focusRestorer = useFocusRestorer(host);
 	useEscapeClose(host, close);
-
-	// the restore-eligibility check is a pre-hide commitment: it must run
-	// while the popover is still showing; the opener capture must precede
-	// showPopover, whose focusing steps move focus synchronously
 	useSettleEvents(host, focusRestorer);
 
 	return { opened, open, close };
