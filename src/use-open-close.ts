@@ -8,7 +8,7 @@ import { useSettleEvents } from './use-settle-events';
 /**
  * The surface's open/close lifecycle, composed from independent hooks.
  *
- * - `useAttributeControls` owns the reactive `opened` state; `open()`/
+ * - `useOpened` owns the reactive `opened` state; `open()`/
  *   `close()` funnel every close source through the cancelable
  *   `opened-changed` contract.
  * - `useSettleEvents` promotes/hides the popover and fires the settled
@@ -20,7 +20,7 @@ import { useSettleEvents } from './use-settle-events';
  *   close (focus *into* the content is the browser's popover focusing
  *   steps; only the way back can't be native for `popover="manual"`).
  */
-export const useAttributeControls = (host: SlideoutElement) => {
+export const useOpened = (host: SlideoutElement) => {
 	const [opened, setOpened] = useAttribute(host, 'opened');
 
 	const open = useCallback(() => {
@@ -34,7 +34,7 @@ export const useAttributeControls = (host: SlideoutElement) => {
 };
 
 export const useOpenClose = (host: SlideoutElement) => {
-	const { opened, open, close } = useAttributeControls(host);
+	const { opened, open, close } = useOpened(host);
 	const focusRestorer = useFocusRestorer(host);
 	useEscapeClose(host, close);
 
