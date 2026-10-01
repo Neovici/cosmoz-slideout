@@ -49,21 +49,25 @@ type Table<State extends string, Action extends string> = Readonly<
 >;
 
 /**
- * A ref-based finite state machine: no re-renders, transitions are
- * plain function calls. A transition runs:
+ * A per-state cleanup ledger: each row declares what its phase OWNS
+ * (setup) and the symmetric undo of exactly that (teardown, running
+ * on every exit - flips, resumes, and the element's disconnect), so
+ * cleanup is declared once per phase instead of scattered through
+ * effects and timers.
  *
- * 1. `guard` - any guard returning `false` prevents the transition
- *    (no teardown, no flip, no setup, `send` returns null)
- * 2. the current state's `teardown` undoes its establishment
- * 3. the state flips
- * 4. the destination state's `setup` establishes the incoming phase
+ * Not view state: what the user sees lives in the DOM (the `opened`
+ * attribute, `:popover-open` truth) - the machine only knows which
+ * phase is in flight, and writing its state re-renders nothing.
  *
- * Every callback receives the edge context: the machine's `send`, so
- * a setup can arm a later action without closing over the machine
- * itself. An action with no edge from the current state is a stale
- * no-op (`send` returns null): races degrade instead of firing stale
- * side effects. Instantiated per hook call (stable identity, state on
- * the machine object); only tables are shared.
+ * A transition runs:
+ *  1. guards (any returning `false` prevents: no undo, no flip)
+ *  2. the current row's teardown
+ *  3. the state flips
+ *  4. the destination row's setup
+ *
+ * An action with no edge (e.g. a late settle after the phase
+ * resolved) returns null - races degrade to no-ops, never stale side
+ * effects. Ref-carried: stable identity, no render subscriptions.
  *
  * ```ts
  * const machine = useStateMachine('idle', {
