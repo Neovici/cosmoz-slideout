@@ -16,3 +16,4 @@ codecov.SHA256SUM.sig
 # Editor / local scratch
 .idea/
 __stuff/
+.vscode/
