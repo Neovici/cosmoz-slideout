@@ -1,6 +1,7 @@
 import { useCallback } from '@pionjs/pion';
 import { useAttribute } from './use-attribute';
-import { useDialogBridges, useDialogReconcile } from './use-dialog';
+import { useDialogBridges } from './use-dialog-bridges';
+import { useDialogReconcile } from './use-dialog-reconcile';
 import { useFullScreen } from './use-full-screen';
 import { useHandleRequestClose } from './use-handle-request-close';
 import { useImperativeApi } from './use-imperative-api';
