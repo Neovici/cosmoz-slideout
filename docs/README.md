@@ -151,10 +151,13 @@ is funneled the same way (the click's target _is_ the dialog - the backdrop abso
 behind receives it). Programmatic closes, a slotted `request-close`, and attribute writes work
 exactly as on `<cosmoz-slideout>`.
 
-**Stacking changes with modality**: modal drawers do _not_ light-dismiss one another (that is
-`popover="auto"` law; dialogs stack). One Esc closes every open modal drawer (the platform's
-`cancel` broadcast reaches each one), each recording through its own funnel; focus rides the
-platform's dialog focus restore. Open modals also inert the non-modal surfaces and the rest of
+**Modality stacks; popover light-dismisses.** Modal drawers do _not_
+light-dismiss one another (sibling-close is `popover="auto"` law; dialogs
+stack). One Esc closes every open modal drawer (the platform's
+`cancel` broadcast reaches each one), each recording through its own
+funnel; focus rides the
+platform's dialog focus restore. Open modals also inert the non-modal
+surfaces and the rest of
 the page - that is what "modal" means here.
 
 ### Backdrop
@@ -174,8 +177,8 @@ page behind never sees it.
   the string label is the reliable name - `aria-labelledby` cannot resolve slotted light-DOM
   ids across the shadow boundary).
 - Focus behavior on open is the dialog's: the focusing steps honor `autofocus` in your content
-  (or on the dialog). On close the platform restores focus to the pre-show element - natively,
-  the restore the non-modal surface's hook hand-replicates.
+  (or on the dialog). On close the platform restores focus to the pre-show element; the non-modal
+  surface's hook supplies the same itself.
 
 ## API
 
@@ -209,7 +212,7 @@ page behind never sees it.
   `preventDefault()` vetoes the change (an unsaved-changes guard).
 - `toggle` / `beforetoggle` - the platform's own `ToggleEvent`s: the record of the popover flip,
   fired whatever the closer and not cancelable; `newState` is `'open'`/`'closed'`. Post-flip
-  timing (the retired settled `open`/`close` events) rides this, or a `transitionend` listener
+  timing rides this, or a `transitionend` listener
   hung off the element (it _is_ the popover).
 - `full-screen-changed` - dispatched when the `full-screen` state changes; `detail = { value }`
   (bubbles, cancelable - `preventDefault()` vetoes the flip).
