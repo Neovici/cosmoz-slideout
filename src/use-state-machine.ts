@@ -32,15 +32,15 @@ export type Machine<State extends string, Action extends string> = {
 };
 
 /**
- * One state: its establishment (setup, run on every entry) and its
- * undo (teardown, run on exit via any edge and on the element's
+ * One state: what it establishes on entry (enter, run on every
+ * entry) and its undo (exit, run on every exit and on the element's
  * disconnect); plus its edges.
  */
 export type Row<State extends string, Action extends string> = {
 	/** Establishes the phase on every entry. */
-	setup?: ((ctx: EdgeCtx<State, Action>) => void | undefined)[];
+	enter?: ((ctx: EdgeCtx<State, Action>) => void | undefined)[];
 	/** Undoes the phase's establishment. */
-	teardown?: ((ctx: EdgeCtx<State, Action>) => void | undefined)[];
+	exit?: ((ctx: EdgeCtx<State, Action>) => void | undefined)[];
 	transitions: Partial<Record<Action, Edge<State, Action>>>;
 };
 
@@ -49,20 +49,17 @@ type Table<State extends string, Action extends string> = Readonly<
 >;
 
 /**
- * A per-state cleanup ledger - `useReducer` INVERTED: the reducer
- * schedules renders from actions; this runs effects from actions,
- * synchronously (guard -> teardown -> flip -> setup), never rendering;
- * the only state it keeps is "what to undo". Each row declares what
- * its phase OWNS and the symmetric undo of exactly that. Full
- * rationale: docs/state-machine-rationale.md.
+ * A per-phase cleanup ledger: each row declares what its phase owns
+ * (enter, run on every entry) and the symmetric undo of exactly that
+ * (exit, run on every exit and on the element's disconnect), so
+ * cleanup is declared once per phase instead of scattered through
+ * effects and timers. A transition runs guard -> exit -> flip ->
+ * enter, synchronously, never rendering - the state is bookkeeping
+ * ("what to undo"), the user-visible truth lives in the DOM.
  *
- * Not view state: what the user sees lives in the DOM (the `opened`
- * attribute, `:popover-open` truth) - the machine only knows which
- * phase is in flight, and writing its state re-renders nothing.
- *
- * An action with no edge (e.g. a late settle after the phase
- * resolved) returns null - races degrade to no-ops, never stale side
- * effects. Ref-carried: stable identity, no render subscriptions.
+ * An action with no edge from the current state returns null - stale
+ * actions (a late settle after the phase resolved) are no-ops. The
+ * machine is ref-carried: stable identity, no render subscriptions.
  *
  * ```ts
  * const machine = useStateMachine('idle', {
@@ -72,8 +69,8 @@ type Table<State extends string, Action extends string> = Readonly<
  *     },
  *   },
  *   opening: {
- *     setup: [() => console.log('opening!')],
- *     teardown: [() => console.log('leaving!')],
+ *     enter: [() => console.log('opening!')],
+ *     exit: [() => console.log('leaving!')],
  *     transitions: { SETTLE: { to: 'idle' } },
  *   },
  * });
@@ -86,22 +83,20 @@ export const useStateMachine = <State extends string, Action extends string>(
 	initial: State,
 	transitions: Table<State, Action>,
 ) => {
-	// deferred `self` read inside `send`: the ctx's `send` is the
-	// machine's own (created in this ref) - built lazily per dispatch
 	const self = useRef<Machine<State, Action>>({
 		state: initial,
 		send(action) {
 			const edge = transitions[self.state]?.transitions[action];
 			if (!edge) {
-				return null; // stale: no edge
+				return null;
 			}
 			const ctx = { send: self.send };
 			if (array(edge.guard).some((guard) => guard?.(ctx) === false)) {
-				return null; // prevented
+				return null;
 			}
-			array(transitions[self.state].teardown).forEach((t) => t?.(ctx));
+			array(transitions[self.state].exit).forEach((t) => t?.(ctx));
 			self.state = edge.to;
-			array(transitions[edge.to].setup).forEach((s) => s?.(ctx));
+			array(transitions[edge.to].enter).forEach((s) => s?.(ctx));
 			return edge.to;
 		},
 		is(state) {
@@ -109,11 +104,11 @@ export const useStateMachine = <State extends string, Action extends string>(
 		},
 	}).current as Machine<State, Action>;
 
-	// disconnect: undo the current phase's establishment
+	// the element's disconnect undoes the current phase
 	useEffect(() => {
 		const machine = self;
 		return () => {
-			array(transitions[machine.state].teardown).forEach((t) =>
+			array(transitions[machine.state].exit).forEach((t) =>
 				t?.({ send: machine.send }),
 			);
 		};

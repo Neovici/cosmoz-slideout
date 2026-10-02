@@ -16,11 +16,10 @@ type Action = 'OPEN' | 'CLOSE' | 'SETTLE';
 /**
  * The slideout's lifecycle: open()/close() funnel every close source
  * through the cancelable `opened-changed` contract; the settle machine
- * is `useReducer` inverted - it runs this surface's phase effects
- * (popover promotion/demotion, the settle cap, the settled `open`/
- * `close` announce, focus restoration) synchronously instead of
- * rendering, as a cleanup ledger; `opened` (the reactive attribute
- * read) dispatches the flips and the reconnect resume.
+ * runs the surface's phase effects (popover promotion/demotion, the
+ * settle cap, the settled `open`/`close` announce, focus restoration)
+ * synchronously, as a per-phase cleanup ledger; `opened` (the reactive
+ * attribute read) dispatches the flips and the reconnect resume.
  */
 export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 	const [opened, setOpened] = useAttribute('opened');
@@ -37,7 +36,7 @@ export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 
 	const machine = useStateMachine<State, Action>('closed', {
 		closed: {
-			setup: [
+			enter: [
 				() => {
 					host.dispatchEvent(new Event('close', { bubbles: true }));
 					focus.restore();
@@ -51,24 +50,22 @@ export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 			},
 		},
 		opening: {
-			// focus.capture precedes showPopover: the browser's popover
-			// focusing steps read it synchronously
-			setup: [
+			// capture precedes showPopover: the focusing steps read it
+			enter: [
 				focus.capture,
 				() => host.showPopover(),
 				({ send }) => timer.arm(() => send('SETTLE')),
 			],
-			teardown: [timer.clear],
+			exit: [timer.clear],
 			transitions: {
-				// self-heal: detached mid-flight, re-appended per the
-				// attribute's truth - the resume re-runs this setup
+				// re-append resume: per the attribute's truth
 				OPEN: { to: 'opening' },
 				CLOSE: { to: 'closing' },
 				SETTLE: { to: 'open' },
 			},
 		},
 		open: {
-			setup: [
+			enter: [
 				() => {
 					host.dispatchEvent(new Event('open', { bubbles: true }));
 					focus.restore();
@@ -82,14 +79,13 @@ export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 			},
 		},
 		closing: {
-			setup: [
+			enter: [
 				focus.arm,
 				() => host.hidePopover(),
 				({ send }) => timer.arm(() => send('SETTLE')),
 			],
-			teardown: [timer.clear],
+			exit: [timer.clear],
 			transitions: {
-				// self-heal, mirror of opening.OPEN
 				CLOSE: { to: 'closing' },
 				OPEN: { to: 'opening' },
 				SETTLE: { to: 'closed' },
@@ -103,15 +99,12 @@ export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 				if (e.target !== host || e.propertyName !== 'translate') {
 					return;
 				}
-				// settle what is in flight; a settle during a flip race (e.g.
-				// transitionend after re-open) settles the NEW phase
 				machine.send('SETTLE');
 			}),
 		[],
 	);
 
-	// the flip: fires on mount, `opened` flips and reconnects (the
-	// resume); churn re-runs hit guards and no-op
+	// re-append resume: churn re-runs hit guards and no-op
 	useEffect(() => {
 		machine.send(opened ? 'OPEN' : 'CLOSE');
 	}, [opened]);
