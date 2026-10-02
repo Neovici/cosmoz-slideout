@@ -1,8 +1,10 @@
 # The lifecycle: reconcile against DOM truth
 
-Why the slideout has no state machine - the popover flip is an idempotent
-reconcile, and the two channels (intent, record) are owned one each by the
-element and the platform.
+Why the slideout has no state machine - the open flip is an idempotent
+reconcile, and the two channels (intent, record) are owned one each by
+the element and the platform. This file covers the shared shape; the
+modal drawer's platform primitive is its own topic
+([the modal drawer's dialog](#the-modal-drawers-dialog)).
 
 ## No machine
 
@@ -13,9 +15,8 @@ after the CSS transition finished. The in-flight states, the exit cleanup
 ledger, the timer, and the no-edge null (a late settle after a flip must
 not fire) all served that contract.
 
-The contract is gone; `toggle` (the platform's own `ToggleEvent`, fired at
-the popover flip whatever the closer) replaces it. What remains is a
-reconcile effect:
+The contract is gone; the platform's own flip record replaces it. What
+remains is a reconcile effect (shown for the non-modal surface):
 
 ```ts
 useEffect(() => {
@@ -40,43 +41,28 @@ and no guards are needed. There are no asynchronous phases, hence
 nothing to track and nothing to undo: the element's disconnect runs no
 cleanup, because the reconcile establishes nothing that outlives it.
 
-## No machine, per flavor
-
-The non-modal surface is the element itself (`popover="manual"`): the
-reconcile above is its whole lifecycle. The modal drawer's surface is an
-inner native `dialog` (`showModal()` - the only primitive that owns
-inertness, a focus trap and an absorbing `::backdrop`): the same
-reconcile runs against `dialog.open`, and the bridges map the platform's
-dismissal paths onto the same two channels - `cancel` (cancelable) runs
-the funnel, so a veto holds the drawer open; `close` (the record) writes
-`opened` silently; a backdrop click is funneled as a close intent (its
-target _is_ the dialog). The modal element fires no `toggle`; its record
-is the dialog's own `close` event.
-
 ## Two channels
 
 - **Intent - `opened-changed`, the element's.** Dispatched by the funnel
   (`useAttribute`'s `set()`), before the write, cancelable. Every
   element-initiated change goes through it exactly once: `open()`/
-  `close()`, Escape (`CloseWatcher` / the dialog's `cancel`),
-  `request-close`, backdrop clicks, attribute reconcile.
-  `preventDefault()` vetoes - on both flavors, every close source.
-- **Record - per flavor, the platform's.** The non-modal surface records
-  through `toggle`/`beforetoggle` (fired at the popover flip whatever the
-  closer, never cancelable); the modal drawer records through the inner
-  dialog's own `close` event. Correct, since a record cannot be vetoed,
-  only an intent can.
+  `close()`, Escape, `request-close`, backdrop clicks, attribute
+  reconcile. `preventDefault()` vetoes - on both flavors, every close
+  source.
+- **Record - the platform's.** Fired at the flip whatever the closer,
+  never cancelable - correct, since a record cannot be vetoed, only an
+  intent can. Per flavor: the non-modal surface records through
+  `toggle`/`beforetoggle`; the modal drawer records through the inner
+  dialog's own `close` event.
 
 The split gives each event one meaning. `opened-changed` used to carry
 both roles with the cancelability encoding the source ("two cancelability
 modes, by close source") - a wart the modal had to document. Now: veto on
-`opened-changed`, observe on the platform's record event; on the modal
-flavor the platform's dismissal itself funnels (its `cancel` precedes the
-flip), so no non-cancelable intent exists anywhere.
+`opened-changed`, observe on the platform's record event.
 
-`useAttribute`'s `reflect()` is the silent write (no event) - the modal's
-`close`-to-attribute bridge: the dialog's flip leaves the attribute
-untouched, so the element listens for `close` and records the dismissal
-into `opened`; the write re-renders, the reconcile finds agreement, done.
-The dialog's `close` is already the record of that flip; dispatching an
-element event on top would repeat it.
+`useAttribute`'s `reflect()` is the silent write (no event) - the
+platform-flip-to-attribute bridge: a platform flip leaves the attribute
+untouched, so the element listens for the record event and writes
+`opened` (the modal drawer's case; the write re-renders, the reconcile
+finds agreement, done). The platform's record is already out; dispatching
+an element event on top would repeat it.
