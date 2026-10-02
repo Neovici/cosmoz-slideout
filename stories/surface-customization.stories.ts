@@ -25,7 +25,7 @@ const closeControl = html`
 `;
 
 const meta: Meta = {
-	title: 'CosmozSlideout/Shell/Customization',
+	title: 'CosmozSlideout/Customization',
 	component: 'cosmoz-slideout',
 	tags: ['autodocs'],
 };
@@ -39,7 +39,7 @@ export const Width: Story = {
 		'Size and tune the surface with the `--cosmoz-slideout-*` custom ' +
 			'properties (here `--cosmoz-slideout-width`). Point them at ' +
 			'`@neovici/cosmoz-tokens` `--cz-*` tokens to track the design system ' +
-			'and dark mode.'
+			'and dark mode.',
 	),
 	render: () => {
 		const mount = document.createElement('div');
@@ -73,7 +73,7 @@ export const Width: Story = {
 						</div>
 					</cosmoz-slideout>
 				`,
-				mount
+				mount,
 			);
 		rerender();
 		const open = () => {
@@ -87,7 +87,7 @@ export const Width: Story = {
 	},
 	play: async ({ canvas, canvasElement, step, userEvent }) => {
 		await userEvent.click(
-			await canvas.findByShadowRole('button', { name: /open wide/iu })
+			await canvas.findByShadowRole('button', { name: /open wide/iu }),
 		);
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
 
@@ -95,8 +95,8 @@ export const Width: Story = {
 			await waitFor(() => expect(el.matches(':popover-open')).toBe(true));
 			await waitFor(() =>
 				expect(Math.round(el.getBoundingClientRect().width)).toBe(
-					Math.min(640, window.innerWidth)
-				)
+					Math.min(640, window.innerWidth),
+				),
 			);
 		});
 	},
