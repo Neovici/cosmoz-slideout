@@ -1,0 +1,31 @@
+import{i as e}from"./preload-helper-B45gAKPr.js";import{mt as t,pt as n}from"./iframe-BEf6A-WD.js";import{T as r,n as i,w as a}from"./cosmoz-slideout-CgaMaPX6.js";import{t as o}from"./cosmoz-slideout-panel-BEYxW0Is.js";import{n as s,r as c,t as l}from"./arg-types-CXxcK3Un.js";var u,d,f,p,m;e((()=>{t(),a(),i(),o(),s(),{expect:u,waitFor:d}=__STORYBOOK_MODULE_TEST__,f={title:`CosmozSlideoutPanel/Playground`,component:`cosmoz-slideout-panel`,argTypes:c,args:l},p={tags:[`!autodocs`],render:e=>n`
+		<cosmoz-slideout
+			.opened=${e.opened}
+			aria-label=${r(e[`aria-label`])}
+			?full-screen=${e[`full-screen`]}
+			?no-escape=${e[`no-escape`]}
+			style=${`--cosmoz-slideout-width: ${e.width};`}
+		>
+			<cosmoz-slideout-panel>
+				<div slot="header">
+					<h2
+						style="margin: 0; font-size: var(--cz-text-lg, 1.125rem); font-weight: var(--cz-font-weight-medium, 500); color: var(--cz-color-text-primary);"
+					>
+						${e.heading??`Panel`}
+					</h2>
+				</div>
+				<p style="margin: 0; color: var(--cz-color-text-tertiary);">
+					Adjust the Controls tab. The slotted header title, full-screen,
+					dismissal options, and width update this open slideout live.
+				</p>
+				<div
+					slot="footer"
+					style="display: flex; justify-content: flex-end; gap: 8px;"
+				>
+					<span style="color: var(--cz-color-text-tertiary);">
+						Footer slot preview
+					</span>
+				</div>
+			</cosmoz-slideout-panel>
+		</cosmoz-slideout>
+	`,play:async({canvasElement:e,step:t})=>{let n=e.querySelector(`cosmoz-slideout`);await t(`opens configured from the args`,async()=>{await d(()=>u(n.matches(`:popover-open`)).toBe(!0))})}},m=[`Playground`]}))();export{p as Playground,m as __namedExportsOrder,f as default};
