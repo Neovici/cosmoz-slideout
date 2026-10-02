@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{mt as t,pt as n,ut as r}from"./iframe-B2LRaMcR.js";import{B as i,C as a,K as o,S as s,W as c,b as l,x as u}from"./cosmoz-slideout-SJJjs-jk.js";var d,f=e((()=>{s(),d=o(c`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{mt as t,pt as n,ut as r}from"./iframe-BbjzEM5R.js";import{B as i,K as a,W as o,b as s,v as c,x as l,y as u}from"./use-imperative-api-CmlOl-La.js";var d,f=e((()=>{s(),d=a(o`
 	/*
 	 * Use border-box sizing for all elements.
 	 * This is safe and doesn't conflict with child component styles.
@@ -208,7 +208,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{mt as t,pt as n,ut as r}
 	[hidden]:where(:not([hidden='until-found'])) {
 		display: none !important;
 	}
-`)})),p,m=e((()=>{s(),p=c`
+`)})),p,m=e((()=>{s(),p=o`
 	position: relative;
 
 	&::before {
@@ -221,7 +221,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{mt as t,pt as n,ut as r}
 		mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
 		-webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
 	}
-`})),h,g=e((()=>{m(),s(),h=c`
+`})),h,g=e((()=>{m(),s(),h=o`
 	:host {
 		display: inline-flex;
 	}
@@ -457,7 +457,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{mt as t,pt as n,ut as r}
 		height: 20px;
 		flex-shrink: 0;
 	}
-`})),_,v,y=e((()=>{f(),s(),t(),l(),g(),_=[`variant`,`size`,`disabled`,`full-width`,`type`,`value`,`href`,`target`,`rel`,`download`],v=e=>{let t=e.hasAttribute(`disabled`),a=e.getAttribute(`type`)||`button`,o=e.getAttribute(`href`);i(()=>{let t=t=>{e.hasAttribute(`disabled`)&&t.stopImmediatePropagation()};return e.addEventListener(`click`,t,{capture:!0}),()=>e.removeEventListener(`click`,t,{capture:!0})},[]);let s=n`
+`})),_,v,y=e((()=>{f(),s(),t(),c(),g(),_=[`variant`,`size`,`disabled`,`full-width`,`type`,`value`,`href`,`target`,`rel`,`download`],v=e=>{let t=e.hasAttribute(`disabled`),a=e.getAttribute(`type`)||`button`,o=e.getAttribute(`href`);i(()=>{let t=t=>{e.hasAttribute(`disabled`)&&t.stopImmediatePropagation()};return e.addEventListener(`click`,t,{capture:!0}),()=>e.removeEventListener(`click`,t,{capture:!0})},[]);let s=n`
 		<slot name="prefix"></slot>
 		<slot></slot>
 		<slot name="suffix"></slot>
@@ -476,4 +476,4 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{mt as t,pt as n,ut as r}
 		<button type=${a} class="button" ?disabled=${t} part="button">
 			${s}
 		</button>
-	`},customElements.define(`cosmoz-button`,a(v,{observedAttributes:_,styleSheets:[d,h],shadowRootInit:{mode:`open`,delegatesFocus:!0}}))}));export{y as t};
+	`},customElements.define(`cosmoz-button`,l(v,{observedAttributes:_,styleSheets:[d,h],shadowRootInit:{mode:`open`,delegatesFocus:!0}}))}));export{y as t};
