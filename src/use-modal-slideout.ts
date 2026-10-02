@@ -5,15 +5,12 @@ import { useHandleRequestClose } from './use-handle-request-close';
 import { useImperativeApi } from './use-imperative-api';
 
 /**
- * The modal slideout's lifecycle. The inner `dialog` owns dismissal via
- * the platform: an Esc (its `cancel` event, cancelable - the veto
- * bridges through `opened-changed`, so every close source shares one
- * funnel) and a backdrop click (the click's target is the dialog -
- * only `::backdrop` hits the bare dialog) funnel as close intents; the
- * dialog's own `close` is the record of the flip (the silent attribute
- * write re-renders, whose reconcile finds agreement). The flip itself
- * is an idempotent reconcile against `dialog.open`: `showModal()` owns
- * inertness, the focus trap and focus restoration.
+ * The modal slideout's lifecycle: an idempotent reconcile against
+ * `dialog.open` - `showModal()` owns inertness, the focus trap and
+ * focus restoration. The platform dismissal paths (Esc `cancel`,
+ * backdrop click, the dialog's `close` record) are bridged onto the
+ * funnel: every close source funnels through the cancelable
+ * `opened-changed`.
  */
 export const useModalSlideout = () => {
 	const [opened, setOpened, reflectOpened] = useAttribute('opened');
@@ -33,41 +30,40 @@ export const useModalSlideout = () => {
 		if (opened && !isOpen) {
 			dialog.showModal();
 		} else if (!opened && isOpen) {
-			// the dismissal is done: dialog.close() has no veto; this is
-			// the element's own programmatic flip, recorded by `close`
-			dialog.close();
+			dialog.close(); // recorded by the dialog's `close`
 		}
-		// `host` is the element's own (never reassigned); `opened` is
-		// the only dep that can change
-	}, [opened]);
+	}, [opened]); // host: the element's own, never reassigned
 
-	// the dialog's platform paths, bridged onto the funnel; no
-	// cleanup: the listeners die with the dialog (a shadow child torn
-	// down with the element), and the deps are identity-stable for the
-	// element's lifetime - `host` is the element's own, `close` and
-	// `reflectOpened` are `useCallback`s over a static `[name]`
+	// the dialog's platform paths: the listeners' lifetime is the
+	// dialog's (a shadow child)
 	useEffect(() => {
 		const dialog = host.shadowRoot?.querySelector('dialog');
 		if (!dialog) {
 			return;
 		}
-		// the cancelable dismissal veto: a preventDefault here aborts
-		// the platform's close
-		dialog.addEventListener('cancel', (e) => {
+		// the cancelable dismissal veto: a preventDefault aborts the
+		// platform's close
+		const onCancel = (e: Event) => {
 			if (close() === false) {
 				e.preventDefault();
 			}
-		});
+		};
 		// the record of the flip, whatever the closer
-		dialog.addEventListener('close', () => reflectOpened(false));
-		// the backdrop is the click target: only it hits the bare
-		// dialog, so a click here is an outside click, funneled as a
-		// close intent (cancelable)
-		dialog.addEventListener('click', (e) => {
+		const onClose = () => reflectOpened(false);
+		// only the backdrop hits the bare dialog: an outside click
+		const onClick = (e: Event) => {
 			if (e.target === dialog) {
 				close();
 			}
-		});
+		};
+		dialog.addEventListener('cancel', onCancel);
+		dialog.addEventListener('close', onClose);
+		dialog.addEventListener('click', onClick);
+		return () => {
+			dialog.removeEventListener('cancel', onCancel);
+			dialog.removeEventListener('close', onClose);
+			dialog.removeEventListener('click', onClick);
+		};
 	}, []);
 
 	const { fullScreen, toggle } = useFullScreen();
