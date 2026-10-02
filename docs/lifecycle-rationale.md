@@ -8,15 +8,12 @@ modal drawer's platform primitive is its own topic
 
 ## No machine
 
-The lifecycle used to be a four-state settle machine (`closed` / `opening`
-/ `open` / `closing`, plus `SETTLE` from `transitionend` or a 1s cap). It
-existed to support one contract: settled `open`/`close` events, announced
-after the CSS transition finished. The in-flight states, the exit cleanup
-ledger, the timer, and the no-edge null (a late settle after a flip must
-not fire) all served that contract.
-
-The contract is gone; the platform's own flip record replaces it. What
-remains is a reconcile effect (shown for the non-modal surface):
+The lifecycle is not a state machine, because it has no phases: nothing
+here is announced after the CSS transition finishes (`transitionend` is
+the consumer's, not the element's), so there is no settle to await - a
+phase's only remaining job would be bookkeeping "what to undo", and
+nothing is left running once the flip is done. The lifecycle is a
+reconcile effect (shown for the non-modal surface):
 
 ```ts
 useEffect(() => {
@@ -37,8 +34,8 @@ is a no-op, so churn re-runs, reconnect resumes, and echo writes all
 degrade to nothing. The truth check and the platform call happen in one
 synchronous block - nothing can interleave in a synchronous effect - so
 the throwing cases (`showPopover()` on a showing popover) cannot arise,
-and no guards are needed. There are no asynchronous phases, hence
-nothing to track and nothing to undo: the element's disconnect runs no
+and no guards are needed. No asynchronous phases remain: the element's
+disconnect runs no
 cleanup, because the reconcile establishes nothing that outlives it.
 
 ## Two channels
@@ -53,12 +50,13 @@ cleanup, because the reconcile establishes nothing that outlives it.
   never cancelable - correct, since a record cannot be vetoed, only an
   intent can. Per flavor: the non-modal surface records through
   `toggle`/`beforetoggle`; the modal drawer records through the inner
-  dialog's own `close` event.
+  dialog's `close` event.
 
-The split gives each event one meaning. `opened-changed` used to carry
-both roles with the cancelability encoding the source ("two cancelability
-modes, by close source") - a wart the modal had to document. Now: veto on
-`opened-changed`, observe on the platform's record event.
+The split gives each event one meaning: `opened-changed` is the veto
+channel (an intent to change `opened`), the platform's record event is
+the observation channel (the flip, whatever the closer). On the modal
+flavor the platform's dismissal itself funnels (the dialog's `cancel`
+precedes its `close`), so no non-cancelable intent exists anywhere.
 
 `useAttribute`'s `reflect()` is the silent write (no event) - the
 platform-flip-to-attribute bridge: a platform flip leaves the attribute

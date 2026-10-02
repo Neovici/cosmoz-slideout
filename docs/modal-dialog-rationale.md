@@ -12,9 +12,10 @@ Modal is a different platform product from popover. `showModal()` is the
 only primitive that owns:
 
 - **inertness** - the page behind the drawer is untabbable, unclickable
-  and out of the a11y tree, by the UA, with no bookkeeping (a hand-rolled
-  `inert` on `body` cannot work: inert covers the drawer too, and
-  un-inerting a descendant of an inert ancestor is impossible);
+  and out of the a11y tree, by the UA, with no bookkeeping. Marking
+  `body` `inert` from script is no substitute: the drawer is inside
+  `body`, inert covers its whole subtree, and nothing under an inert
+  ancestor can opt out;
 - a **focus trap** - correct across shadow DOM (leaky only to browser
   chrome, the platform's consensus behavior);
 - an **absorbing `::backdrop`** - a popover's backdrop never receives
@@ -23,24 +24,23 @@ only primitive that owns:
   A dialog's backdrop is its click target: the click closes the drawer
   and reaches nothing else;
 - **focus restoration** - to the pre-show element, closed-shadow-safe;
-  the hand replication the non-modal surface needs does not.
+  the non-modal surface's hook supplies this itself (its popover never
+  captures the focus at show time).
 
 A dialog's dismissal is **vetoable**: Esc arrives as `cancel`, before the
-flip, and `preventDefault()` holds the drawer open. A `popover="auto"`
-dismissal is final - it has already happened, there is nothing to veto.
-That is the difference the two cancelability-encodings story existed for;
-the dialog's `cancel`-before-`close` is the intent/record split,
+flip, and `preventDefault()` holds the drawer open. A popover
+(`popover="auto"`) dismissal is final - the platform has already closed
+the popover when the element learns of it, so nothing can be vetoed. The
+dialog's `cancel`-before-`close` is the intent/record split,
 platform-provided (the vetoes bridge to `opened-changed`, so the funnel
 stays the one veto channel).
 
 The element stays autonomous (`extends HTMLElement`) and the dialog lives
 in its shadow DOM because a custom element that is itself a dialog
-requires a customized built-in (`{ extends: 'dialog' }`, `is=`), which
-WebKit opposes and Safari has not implemented - the definition throws
-there (checked: caniuse "customized built-in elements", Safari ❌ through
-27.x and TP; WebKit standards-positions: `position: oppose`). Autonomous
-
-- wrapper works identically on Chromium, Firefox and Safari.
+requires a customized built-in (`{ extends: 'dialog' }`, `is=`); WebKit
+opposes customized built-ins and Safari does not implement them -
+`customElements.define` with an `extends` option throws there. The
+autonomous wrapper works identically on Chromium, Firefox and Safari.
 
 ## What the wrapper costs
 
@@ -56,11 +56,10 @@ there (checked: caniuse "customized built-in elements", Safari ❌ through
   not offered: the label element sits in slotted light DOM - a different
   tree than the dialog - and IDREF does not resolve across the shadow
   boundary. The string label is the reliable name.
-- **Stacking**: dialogs do not light-dismiss one another (a `popover="auto"`
-  sibling-close is popover law). Modal drawers stack; one Esc closes
-  every open modal drawer - the platform's `cancel` broadcast reaches
-  each dialog (observed in Chromium), each recording through its own
-  funnel.
+- **Stacking**: dialogs do not light-dismiss one another (sibling-close
+  is popover law). Modal drawers stack; one Esc closes every open modal
+  drawer - the platform's `cancel` broadcast reaches each dialog, each
+  recording through its own funnel.
 - **Record channel**: a dialog fires no `toggle`; the modal drawer's
   record is the dialog's `close` event (the non-modal surface uses
   `toggle`).
