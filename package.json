@@ -83,7 +83,7 @@
     "@storybook/web-components": "^10.5.0",
     "@storybook/web-components-vite": "^10.6.0",
     "@types/dom-close-watcher": "^1.0.0",
-    "@types/node": "^25.5.0",
+    "@types/node": "^26.6.3",
     "@vitest/browser": "^4.1.10",
     "@vitest/browser-playwright": "^4.1.10",
     "eslint": "^9.0.0",
