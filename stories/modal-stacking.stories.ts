@@ -5,7 +5,7 @@ import { expect, waitFor } from 'storybook/test';
 import '../src/cosmoz-modal-slideout';
 import '../src/cosmoz-slideout-panel';
 import { header } from './chrome';
-import { componentDoc, storyDoc } from './story-docs';
+import { storyDoc } from './story-docs';
 import { skipUnlessTrusted } from './trusted';
 
 type SlideoutEl = HTMLElement & { open(): void; close(): void };
@@ -17,14 +17,6 @@ const meta: Meta = {
 	title: 'CosmozSlideout/Modal',
 	component: 'cosmoz-modal-slideout',
 	tags: ['autodocs'],
-	parameters: componentDoc(
-		'The modal drawer: an autonomous wrapper around a native `dialog` ' +
-			'promoted with `showModal()` - the page behind is inert, focus is ' +
-			'trapped, and the scrim backdrop absorbs its clicks. Esc arrives as ' +
-			'the dialog `cancel` (cancelable, bridged through `opened-changed`; ' +
-			'the veto holds) and the flip is recorded by the dialog `close`. ' +
-			'Programmatic `close()` and slotted `request-close` use the same funnel.',
-	),
 };
 
 export default meta;
@@ -43,30 +35,6 @@ export const Stacking: Story = {
 		const mountB = document.createElement('div');
 		let openedA = false;
 		let openedB = false;
-		const rerenderA = () =>
-			render(
-				html`
-					<cosmoz-modal-slideout
-						aria-label="First drawer"
-						.opened=${openedA}
-						@opened-changed=${(e: CustomEvent) => {
-							openedA = e.detail.value;
-							rerenderA();
-						}}
-					>
-						<cosmoz-slideout-panel>
-							${header('First drawer', {
-								subtitle: 'Opened first; sits underneath',
-							})}
-							<p>
-								Dialogs do not light-dismiss one another: the second drawer
-								stacks on top, and this one stays open underneath.
-							</p>
-						</cosmoz-slideout-panel>
-					</cosmoz-modal-slideout>
-				`,
-				mountA,
-			);
 		const rerenderB = () =>
 			render(
 				html`
@@ -92,22 +60,51 @@ export const Stacking: Story = {
 				`,
 				mountB,
 			);
+		const openB = () => {
+			openedB = true;
+			rerenderB();
+		};
+		const rerenderA = () =>
+			render(
+				html`
+					<cosmoz-modal-slideout
+						aria-label="First drawer"
+						.opened=${openedA}
+						@opened-changed=${(e: CustomEvent) => {
+							openedA = e.detail.value;
+							rerenderA();
+						}}
+					>
+						<cosmoz-slideout-panel>
+							${header('First drawer', {
+								subtitle: 'Opened first; sits underneath',
+							})}
+							<p>
+								Dialogs do not light-dismiss one another: the second drawer
+								stacks on top, and this one stays open underneath.
+							</p>
+							<div
+								slot="footer"
+								style="display: flex; justify-content: flex-end;"
+							>
+								<cosmoz-button variant="secondary" @click=${openB}>
+									Open second
+								</cosmoz-button>
+							</div>
+						</cosmoz-slideout-panel>
+					</cosmoz-modal-slideout>
+				`,
+				mountA,
+			);
 		rerenderA();
 		rerenderB();
 		const openA = () => {
 			openedA = true;
 			rerenderA();
 		};
-		const openB = () => {
-			openedB = true;
-			rerenderB();
-		};
 		return html`
 			<cosmoz-button variant="primary" @click=${openA}>
 				Open first
-			</cosmoz-button>
-			<cosmoz-button variant="secondary" @click=${openB}>
-				Open second
 			</cosmoz-button>
 			${mountA}${mountB}
 		`;
@@ -122,9 +119,13 @@ export const Stacking: Story = {
 				await canvas.findByShadowRole('button', { name: /open first/iu }),
 			);
 			await waitFor(() => expect(dialogOf(a).open).toBe(true));
-			await userEvent.click(
-				await canvas.findByShadowRole('button', { name: /open second/iu }),
-			);
+			const openSecond = await canvas.findByShadowRole('button', {
+				name: /open second/iu,
+			});
+			// the second trigger is inside the first drawer's footer - a
+			// human reaches it; slotted light-DOM stays clickable (it is
+			// the drawer's own content, not the inerted page)
+			await userEvent.click(openSecond as HTMLElement);
 			await waitFor(() => expect(dialogOf(b).open).toBe(true));
 			// no sibling close: A is still open underneath
 			expect(dialogOf(a).open).toBe(true);
