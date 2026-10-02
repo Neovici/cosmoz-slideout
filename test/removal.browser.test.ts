@@ -43,8 +43,7 @@ describe('cosmoz-slideout removal + re-append', () => {
 		el.open();
 		await vi.waitFor(() => expect(el.matches(':popover-open')).toBe(true));
 
-		// remove mid-flight, while `opened` stays set: silence detached -
-		// the armed settle never fires - polled through the whole cap window
+		// remove mid-flight, opened stays set: nothing settles detached
 		el.remove();
 		await vi.waitFor(
 			() => {
@@ -54,9 +53,8 @@ describe('cosmoz-slideout removal + re-append', () => {
 			{ timeout: 3000 },
 		);
 
-		// re-append into the owning parent: pion rebuilds the hooks fresh,
-		// the flip effect re-sends per the attribute's truth, the surface
-		// re-establishes and announces the settled open exactly once
+		// re-append: the hooks rebuild fresh, the flip re-sends per the
+		// attribute's truth, the settled open announces exactly once
 		attach();
 		await vi.waitFor(() => expect(el.matches(':popover-open')).toBe(true));
 		await vi.waitFor(() => expect(events).toEqual(['open event']), {
@@ -82,8 +80,8 @@ describe('cosmoz-slideout removal + re-append', () => {
 			timeout: 3000,
 		});
 
-		// close + remove within one tick: the close flight is armed,
-		// nothing settles; the open's announce remains
+		// close + remove within one tick: nothing settles; the open's
+		// announce remains
 		el.close();
 		el.remove();
 		await vi.waitFor(
@@ -94,8 +92,8 @@ describe('cosmoz-slideout removal + re-append', () => {
 			{ timeout: 3000 },
 		);
 
-		// re-append with opened absent: rebuilt idle, the CLOSE flip is
-		// guard-prevented (nothing to close) - no fabricated close event
+		// re-append with opened absent: the CLOSE flip is guard-prevented
+		// - no fabricated close event
 		attach();
 		await vi.waitFor(
 			() => {
