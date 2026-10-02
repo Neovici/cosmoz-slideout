@@ -3,9 +3,9 @@ import { xCloseIcon } from '@neovici/cosmoz-icons/untitled';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html, render } from 'lit-html';
 import { expect, waitFor } from 'storybook/test';
-import { skipUnlessTrusted } from './trusted';
 import '../src/cosmoz-slideout';
 import { componentDoc, storyDoc } from './story-docs';
+import { skipUnlessTrusted } from './trusted';
 
 type SlideoutEl = HTMLElement & { close(): void };
 const closeFrom = (e: Event) =>
@@ -14,14 +14,14 @@ const closeFrom = (e: Event) =>
 	).close();
 
 const meta: Meta = {
-	title: 'CosmozSlideout/Shell',
+	title: 'CosmozSlideout',
 	component: 'cosmoz-slideout',
 	tags: ['autodocs'],
 	parameters: componentDoc(
 		'The low-level surface: it owns the popover, the `opened` lifecycle, ' +
 			'focus and Escape, and exposes a **single blank slot** - no UI of its ' +
 			'own. These stories show driving it directly; for the styled preset, ' +
-			'see **CosmozSlideoutPanel**.'
+			'see **CosmozSlideoutPanel**.',
 	),
 };
 
@@ -32,7 +32,7 @@ type Story = StoryObj;
 export const Minimal: Story = {
 	parameters: storyDoc(
 		'The barest usage: bind `opened` and drop content in the default slot. ' +
-			'No header, buttons, or footer - Escape (or `close()`) dismisses it.'
+			'No header, buttons, or footer - Escape (or `close()`) dismisses it.',
 	),
 	render: () => {
 		const mount = document.createElement('div');
@@ -59,7 +59,7 @@ export const Minimal: Story = {
 						</div>
 					</cosmoz-slideout>
 				`,
-				mount
+				mount,
 			);
 		rerender();
 		const open = () => {
@@ -75,7 +75,7 @@ export const Minimal: Story = {
 	},
 	play: async ({ canvas, canvasElement, step, userEvent }) => {
 		await userEvent.click(
-			await canvas.findByShadowRole('button', { name: /open bare slideout/iu })
+			await canvas.findByShadowRole('button', { name: /open bare slideout/iu }),
 		);
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
 
@@ -88,7 +88,7 @@ export const Minimal: Story = {
 			expect(el.shadowRoot!.querySelector('.body')).toBeNull();
 			expect(el.shadowRoot!.querySelector('.footer')).toBeNull();
 			expect(
-				el.shadowRoot!.querySelector('cosmoz-button[aria-label="Close"]')
+				el.shadowRoot!.querySelector('cosmoz-button[aria-label="Close"]'),
 			).toBeNull();
 		});
 		await step('Escape is the only dismissal', async () => {
@@ -108,7 +108,7 @@ export const ComposedChrome: Story = {
 	parameters: storyDoc(
 		'The full-manual path: hand-compose header/body/footer inside the single ' +
 			'slot (one wrapper element) when you want custom chrome. For the ' +
-			'zero-markup styled version, use `<cosmoz-slideout-panel>`.'
+			'zero-markup styled version, use `<cosmoz-slideout-panel>`.',
 	),
 	render: () => {
 		const mount = document.createElement('div');
@@ -158,7 +158,7 @@ export const ComposedChrome: Story = {
 						</div>
 					</cosmoz-slideout>
 				`,
-				mount
+				mount,
 			);
 		rerender();
 		const open = () => {
@@ -174,7 +174,7 @@ export const ComposedChrome: Story = {
 	},
 	play: async ({ canvas, canvasElement, step, userEvent }) => {
 		await userEvent.click(
-			await canvas.findByShadowRole('button', { name: /edit supplier/iu })
+			await canvas.findByShadowRole('button', { name: /edit supplier/iu }),
 		);
 		const el = canvasElement.querySelector('cosmoz-slideout') as SlideoutEl;
 
@@ -193,7 +193,7 @@ export const ComposedChrome: Story = {
 				// while sliding out (:not(:popover-open)) the column layout must hold
 				expect(getComputedStyle(el).display).toBe('flex');
 				expect(getComputedStyle(el).flexDirection).toBe('column');
-			}
+			},
 		);
 	},
 };
