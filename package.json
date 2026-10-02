@@ -1,6 +1,6 @@
 {
   "name": "@neovici/cosmoz-slideout",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A reusable top-layer slideout / drawer web component built with pionjs and lit-html",
   "keywords": [
     "web-components",
