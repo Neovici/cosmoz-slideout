@@ -2,7 +2,7 @@
 '@neovici/cosmoz-slideout': minor
 ---
 
-Initial release: a non-modal, top-layer slideout/ drawer component built on the Popover API, pionjs and lit-html.
+Initial release: a top-layer slideout (drawer / sidebar) component built on the Popover API, pionjs and lit-html.
 
 - `<cosmoz-slideout>`: stateful surface - the element is itself the top-layer popover (`popover="manual"`, `role="dialog"`) with the `opened` lifecycle, animation, Escape/back-button, focus management, and a single blank slot.
 - `<cosmoz-slideout-panel>`: property-free layout chrome (`header` / body / `footer` slots), invisible when empty; close controls and titles come from slotting in your own header component dispatching `request-close`.
