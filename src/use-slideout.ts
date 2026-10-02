@@ -9,14 +9,14 @@ import { useHandleRequestClose } from './use-handle-request-close';
 import { useImperativeApi } from './use-imperative-api';
 
 /**
- * The slideout's lifecycle: `opened` (the reactive attribute read,
- * reconciled from DOM truth) drives an idempotent popover flip - show
- * when the attribute says so and the platform disagrees, hide in the
- * other mismatch, no-op on agreement. Focus capture precedes
- * `showPopover` (the browser's focusing steps read it synchronously);
- * restore follows `hidePopover`. No phase bookkeeping: nothing here is
- * asynchronous, races are impossible, and a flip is visible to
- * consumers through the platform's own `toggle` event.
+ * The slideout's lifecycle: `opened` (the reactive attribute read)
+ * reconciles against `:popover-open` - show on the mismatch, hide on
+ * the reverse, no-op on agreement, so churn re-runs, reconnect resumes
+ * and echo writes do nothing. The truth check and the platform call
+ * share one synchronous block: nothing can interleave, so
+ * `showPopover()`/`hidePopover()` cannot be called in a state that
+ * throws, and no guards are needed. The flip is visible to consumers
+ * through the platform's own `toggle` event.
  */
 export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 	const [opened, setOpened] = useAttribute('opened');

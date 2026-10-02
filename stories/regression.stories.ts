@@ -134,7 +134,7 @@ export const VetoOpenedChanged: Story = {
 						.opened=${opened}
 						@opened-changed=${(e: CustomEvent) => {
 							if (e.detail.value === false) {
-								e.preventDefault(); // veto the close
+								e.preventDefault();
 								return;
 							}
 							opened = e.detail.value;

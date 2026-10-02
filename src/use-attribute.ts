@@ -6,13 +6,13 @@ const toCamelCase = (name: string) =>
 const eventName = (name: string) => `${name}-changed`;
 
 /**
- * Reactive boolean attribute holder: `set()` applies a change through
- * the cancelable `name-changed` event (`preventDefault()` vetoes the
- * write); the read side reflects the attribute.
+ * Reactive boolean attribute holder. The read side is the **property**
+ * (e.g. `host.opened`), mirrored from the attribute by
+ * `attributeChangedCallback` - reads track attribute writes (external
+ * ones included) only through that reflection.
  *
- * `reflect()` is the same write, silent: for changes that already
- * happened (the platform did them), where a veto has nothing to
- * prevent.
+ * `set()` applies a change through the cancelable `name-changed` event
+ * (`preventDefault()` vetoes the write).
  */
 export const useAttribute = (
 	name: string,

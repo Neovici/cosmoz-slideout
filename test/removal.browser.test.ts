@@ -44,8 +44,8 @@ describe('cosmoz-slideout removal + re-append', () => {
 		await vi.waitFor(() => expect(el.matches(':popover-open')).toBe(true));
 
 		// remove mid-open, opened stays set: the platform hides the
-		// popover on disconnect, but the flip records once (both phases
-		// are the element's show/hide, so the records match the flips)
+		// popover on disconnect; the reconcile never runs detached, so
+		// the hide records nothing
 		el.remove();
 		await vi.waitFor(
 			() => {
@@ -60,7 +60,6 @@ describe('cosmoz-slideout removal + re-append', () => {
 		attach();
 		await vi.waitFor(() => expect(el.matches(':popover-open')).toBe(true));
 		await tick(100);
-		// no stragglers past the resumed flip
 		expect(events).toEqual(['toggle:open', 'toggle:open']);
 
 		el.close();
@@ -78,8 +77,8 @@ describe('cosmoz-slideout removal + re-append', () => {
 			timeout: 3000,
 		});
 
-		// close + remove within one tick: nothing settles detached; the
-		// open flip's record remains
+		// close + remove within one tick: the close's scheduled
+		// reconcile never runs; the disconnect's hide records nothing
 		el.close();
 		el.remove();
 		await vi.waitFor(
@@ -90,8 +89,8 @@ describe('cosmoz-slideout removal + re-append', () => {
 			{ timeout: 3000 },
 		);
 
-		// re-append with opened absent: the reconcile finds agreement
-		// (hidden, closed) - no flip, no fabricated record
+		// re-append with opened absent: hidden + `!opened` agree - no
+		// flip, no record
 		attach();
 		await vi.waitFor(
 			() => {

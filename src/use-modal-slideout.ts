@@ -9,11 +9,8 @@ import { useImperativeApi } from './use-imperative-api';
  * The modal slideout's lifecycle. The UA owns dismissal (`popover="auto"`
  * - Esc, light dismiss, a sibling auto popover): the platform flips
  * `:popover-open` without touching the attribute, so the `toggle` event
- * is the bridge that records the dismissal into `opened` (a silent
- * write - the platform's own `toggle` is the record-and-timing channel,
- * there is no veto for what already happened). Programmatic closes keep
- * the cancelable funnel. The flip itself is the same idempotent
- * reconcile as the non-modal surface.
+ * is the bridge that records the dismissal into `opened`. Programmatic
+ * closes keep the cancelable funnel.
  */
 export const useModalSlideout = () => {
 	const [opened, setOpened, reflectOpened] = useAttribute('opened');
@@ -37,11 +34,10 @@ export const useModalSlideout = () => {
 		}
 	}, [opened, host, focus]);
 
-	// UA dismissal bridge: `toggle` is the only observable (the
-	// attribute is untouched); the silent write re-renders, whose
-	// reconcile finds agreement - the platform did the flip
 	useEffect(() => {
 		const onToggle = (e: Event) => {
+			// a closed record only: the UA only ever dismisses; open
+			// flips are always the element's own reconcile
 			if ((e as ToggleEvent).newState === 'closed') {
 				reflectOpened(false);
 			}

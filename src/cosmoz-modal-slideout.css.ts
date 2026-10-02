@@ -1,8 +1,8 @@
 import { tagged as css } from '@neovici/cosmoz-utils';
 
 /**
- * The top-layer backdrop of the modal slideout; fades with the
- * surface's duration/easing tokens.
+ * A top-layer backdrop rendered by the platform for `popover="auto"`;
+ * fades with the surface's duration/easing tokens.
  *
  * `::backdrop` inherits custom properties from the originating
  * element, so `--cosmoz-slideout-backdrop` resolves there.

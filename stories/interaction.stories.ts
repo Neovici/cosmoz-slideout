@@ -11,7 +11,6 @@ import { skipUnlessTrusted } from './trusted';
 
 type SlideoutEl = HTMLElement & { close(): void };
 
-// shell + slotted panel opened by a trigger; `guarded` disables Escape
 const shellStory =
 	(label: string, guarded: boolean, panel: unknown): (() => TemplateResult) =>
 	() => {

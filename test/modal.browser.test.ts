@@ -24,8 +24,8 @@ const boot = () => {
 	const opener = document.createElement('button');
 	opener.className = 'm-outside';
 	opener.textContent = 'opener';
-	// outside the surface covers: the trusted light-dismiss click
-	// must land on it (the surface fills from the right)
+	// the surface fills from the right, so the trusted light-dismiss
+	// click must land on an element it covers
 	opener.style.cssText = 'position:fixed;left:4px;top:4px';
 	document.body.append(opener);
 	opener.focus();
@@ -101,7 +101,8 @@ describe('cosmoz-modal-slideout', () => {
 		await vi.waitFor(() => expect(el.matches(':popover-open')).toBe(true), {
 			timeout: 3000,
 		});
-		// settle before Esc: a mid-flight close skips the open record
+		// the open flip's record lands before Esc: the order below is
+		// deterministic
 		await vi.waitFor(() => expect(events).toEqual(['toggle:open']), {
 			timeout: 3000,
 		});
@@ -142,7 +143,8 @@ describe('cosmoz-modal-slideout', () => {
 		});
 		el.close();
 		await tick(100);
-		expect(el.matches(':popover-open')).toBe(true); // veto held
+		// the veto bailed inside set(): the attribute is untouched
+		expect(el.matches(':popover-open')).toBe(true);
 
 		veto = false;
 		el.close();
@@ -225,7 +227,6 @@ describe('cosmoz-modal-slideout', () => {
 		});
 		// A was closed synchronously during B's show (light dismiss)
 		expect(a.matches(':popover-open')).toBe(false);
-		// B's focused content holds focus
 		await vi.waitFor(() => expect(document.activeElement?.id).toBe('field-b'), {
 			timeout: 3000,
 		});
