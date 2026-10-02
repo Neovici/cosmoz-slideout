@@ -37,9 +37,15 @@ export const useModalSlideout = () => {
 			// the element's own programmatic flip, recorded by `close`
 			dialog.close();
 		}
-	}, [opened, host]);
+		// `host` is the element's own (never reassigned); `opened` is
+		// the only dep that can change
+	}, [opened]);
 
-	// the dialog's platforms paths, bridged onto the funnel once
+	// the dialog's platform paths, bridged onto the funnel; no
+	// cleanup: the listeners die with the dialog (a shadow child torn
+	// down with the element), and the deps are identity-stable for the
+	// element's lifetime - `host` is the element's own, `close` and
+	// `reflectOpened` are `useCallback`s over a static `[name]`
 	useEffect(() => {
 		const dialog = host.shadowRoot?.querySelector('dialog');
 		if (!dialog) {
@@ -62,7 +68,7 @@ export const useModalSlideout = () => {
 				close();
 			}
 		});
-	}, [host, close, reflectOpened]);
+	}, []);
 
 	const { fullScreen, toggle } = useFullScreen();
 
