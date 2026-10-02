@@ -7,6 +7,20 @@ import { defineConfig } from 'vitest/config';
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+	// pre-bundle the browser projects' runtime deps: the optimizer must
+	// settle before tests start - a cold-cache mid-test re-optimization
+	// reloads the page and kills running tests (ci flake, runs 36992182908)
+	optimizeDeps: {
+		include: [
+			'@neovici/cosmoz-utils',
+			'@neovici/cosmoz-utils/hooks/use-meta',
+			'@neovici/cosmoz-utils/array',
+			'@pionjs/pion',
+			'lit-html',
+			'lit-html/directives/if-defined.js',
+			'@vitest/browser/context',
+		],
+	},
 	test: {
 		passWithNoTests: true,
 		projects: [
