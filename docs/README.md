@@ -85,7 +85,7 @@ Your own buttons can do the same, or call `closest('cosmoz-slideout')?.close()`.
 
 A second element for drawers that block out the page: confirmations, detail panels over dense
 tables. One blank slot, the same `opened` lifecycle, the same slide animation - carried by the
-platform's own modal machinery: the element wraps a native `dialog` (promoted with
+platform's modal primitive: the element wraps a native `dialog` (promoted with
 **`showModal()`**), so the page behind is **inert**, focus is **trapped** (leaky only to browser
 chrome, per platform), the scrim **backdrop absorbs its clicks**, and dismissal is vetoes-able
 again: Esc and the backdrop arrive through the _cancelable_ funnel.

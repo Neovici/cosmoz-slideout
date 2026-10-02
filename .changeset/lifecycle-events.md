@@ -2,7 +2,7 @@
 '@neovici/cosmoz-slideout': major
 ---
 
-Simplify the lifecycle: the settle state machine, the settle cap and the settled `open`/`close` events are retired. The popover flip is now an idempotent reconcile against `:popover-open`, and the contract is two channels: **`opened-changed`** (unchanged - the element's cancelable intent, vetoed with `preventDefault()`) and the platform's record event (the non-modal surface's `toggle`).
+Simplify the lifecycle: the lifecycle is an idempotent reconcile against `:popover-open`, and the contract is two channels: **`opened-changed`** (unchanged - the element's cancelable intent, vetoed with `preventDefault()`) and the platform's record event (the non-modal surface's `toggle`). The settled `open`/`close` events and the settle cap are gone with the settled contract they served.
 
 `<cosmoz-modal-slideout>` is rebuilt on the platform's modal primitive: an autonomous wrapper around a native `dialog`, promoted with `showModal()`. The page behind is inert, focus is trapped, the scrim `::backdrop` **absorbs its clicks**, and dismissal is vetoes-able on every source: Esc arrives as the dialog's cancelable `cancel`, bridged through `opened-changed`; the flip is recorded by the dialog's `close`.
 
