@@ -17,7 +17,8 @@ const meta: Meta = {
 	parameters: componentDoc(
 		'The modal drawer: an autonomous wrapper around a native `dialog` ' +
 			'promoted with `showModal()` - the page behind is inert, focus is ' +
-			'trapped, and the scrim backdrop absorbs its clicks. Esc arrives as ' +
+			'trapped, and the scrim backdrop absorbs its clicks (tune the scrim ' +
+			'with the `--cosmoz-slideout-backdrop` control). Esc arrives as ' +
 			'the dialog `cancel` (cancelable, bridged through `opened-changed`; ' +
 			'the veto holds) and the flip is recorded by the dialog `close`. ' +
 			'Programmatic `close()` and slotted `request-close` use the same funnel.',
@@ -30,12 +31,10 @@ type Story = StoryObj;
 
 export const Playground: Story = {
 	parameters: storyDoc(
-		'The modal drawer: an autonomous wrapper around a native `dialog` ' +
-			'promoted with `showModal()` - the page behind is inert, focus is ' +
-			'trapped, and the scrim backdrop absorbs its clicks. Esc arrives as ' +
-			'the dialog `cancel` (cancelable, bridged through `opened-changed`; ' +
-			'the veto holds) and the flip is recorded by the dialog `close`. ' +
-			'Programmatic `close()` and slotted `request-close` use the same funnel.',
+		'The scrim: `--cosmoz-slideout-backdrop` (default ' +
+			'`color-mix(in srgb, var(--cz-color-bg-overlay) 50%, transparent)`), ' +
+			'fading with the same duration/easing tokens. A click on it closes ' +
+			'the drawer and is absorbed - the page behind never sees it.',
 	),
 	args: {
 		opened: false,
@@ -136,48 +135,17 @@ export const Playground: Story = {
 			await trusted.keyboard('{Escape}');
 			await waitFor(() => expect(dialog.open).toBe(false));
 		});
-	},
-};
-
-export const Backdrop: Story = {
-	parameters: storyDoc(
-		'The scrim: `--cosmoz-slideout-backdrop` (default ' +
-			'`color-mix(in srgb, var(--cz-color-bg-overlay) 50%, transparent)`), ' +
-			'fading with the same duration/easing tokens as the surface. It is ' +
-			'the dialog\'s `::backdrop`: a click on it closes the drawer and is ' +
-			'absorbed - the page behind never sees it.',
-	),
-	render: () => {
-		const mount = document.createElement('div');
-		let opened = false;
-		const rerender = () =>
-			render(
-				html`
-					<cosmoz-modal-slideout
-						.opened=${opened}
-						@opened-changed=${(e: CustomEvent) => {
-							opened = e.detail.value;
-							rerender();
-						}}
-						style="--cosmoz-slideout-backdrop: rgb(0 90 156 / 40%)"
-					>
-						<cosmoz-slideout-panel>
-							<p>The scrim is overridden: brand-blue at 40%.</p>
-						</cosmoz-slideout-panel>
-					</cosmoz-modal-slideout>
-				`,
-				mount,
+		await step('a backdrop click closes the drawer, absorbed', async () => {
+			// reopen first (the Esc step may have dismissed it)
+			el.open();
+			await waitFor(() => expect(dialog.open).toBe(true));
+			// only the backdrop hits the bare dialog: the click funnels as a
+			// close intent. (A trusted outside gesture cannot be produced
+			// past the modal - the browser suite pins the absorption.)
+			dialog.dispatchEvent(
+				new MouseEvent('click', { bubbles: true, composed: true }),
 			);
-		rerender();
-		const open = () => {
-			opened = true;
-			rerender();
-		};
-		return html`
-			<cosmoz-button variant="primary" @click=${open}>
-				Open (brand-blue scrim)
-			</cosmoz-button>
-			${mount}
-		`;
+			await waitFor(() => expect(dialog.open).toBe(false));
+		});
 	},
 };

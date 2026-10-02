@@ -31,9 +31,11 @@ export default css`
 			var(--cosmoz-slideout-duration, 0.3s)
 		);
 		--_ease: var(--cosmoz-slideout-easing, cubic-bezier(0.4, 0, 0.2, 1));
-		transition: translate var(--_dur) var(--_ease),
+		transition:
+			translate var(--_dur) var(--_ease),
 			overlay var(--_dur) var(--_ease) allow-discrete,
-			display var(--_dur) var(--_ease) allow-discrete, width 0.2s var(--_ease);
+			display var(--_dur) var(--_ease) allow-discrete,
+			width 0.2s var(--_ease);
 	}
 
 	:host(:popover-open) {
