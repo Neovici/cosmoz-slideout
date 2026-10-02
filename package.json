@@ -1,0 +1,100 @@
+{
+  "name": "@neovici/cosmoz-slideout",
+  "version": "0.0.0",
+  "description": "A reusable top-layer slideout / drawer web component built with pionjs and lit-html",
+  "keywords": [
+    "web-components",
+    "slideout",
+    "drawer",
+    "sidebar",
+    "dialog",
+    "pion",
+    "lit-html"
+  ],
+  "homepage": "https://github.com/Neovici/cosmoz-slideout#readme",
+  "bugs": {
+    "url": "https://github.com/Neovici/cosmoz-slideout/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Neovici/cosmoz-slideout.git"
+  },
+  "license": "Apache-2.0",
+  "author": "Neovici Development",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "lint": "tsc && eslint --cache .",
+    "check:duplicates": "check-duplicate-components",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "prepack": "npm run build",
+    "changeset": "changeset",
+    "start": "wds",
+    "test": "vitest --run",
+    "test:unit": "vitest --project=unit --run",
+    "test:storybook": "vitest --project=storybook --run",
+    "test:watch": "vitest",
+    "storybook:start": "storybook dev -p 8000",
+    "storybook:build": "storybook build",
+    "storybook:deploy": "storybook-to-ghpages",
+    "storybook:preview": "npm run storybook:build && http-server ./storybook-static/ --silent",
+    "prepare": "husky"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist/"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./cosmoz-slideout": {
+      "types": "./dist/cosmoz-slideout.d.ts",
+      "default": "./dist/cosmoz-slideout.js"
+    },
+    "./cosmoz-slideout-panel": {
+      "types": "./dist/cosmoz-slideout-panel.d.ts",
+      "default": "./dist/cosmoz-slideout-panel.js"
+    },
+    "./helpers": {
+      "types": "./dist/helpers.d.ts",
+      "default": "./dist/helpers.js"
+    }
+  },
+  "dependencies": {
+    "@neovici/cosmoz-utils": "^6.17.0",
+    "@pionjs/pion": "2.16.2",
+    "lit-html": "^3.3.1"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^3.0.3",
+    "@neovici/cfg": "^2.15.0",
+    "@neovici/cosmoz-button": "^1.1.1",
+    "@neovici/cosmoz-icons": "^1.6.0",
+    "@neovici/cosmoz-input": "^5.8.2",
+    "@neovici/cosmoz-tokens": "^4.8.0",
+    "@playwright/test": "^1.61.1",
+    "@storybook/addon-docs": "^10.5.0",
+    "@storybook/addon-vitest": "^10.5.0",
+    "@storybook/web-components": "^10.5.0",
+    "@storybook/web-components-vite": "^10.5.0",
+    "@types/dom-close-watcher": "^1.0.0",
+    "@types/node": "^25.5.0",
+    "@vitest/browser": "^4.1.10",
+    "@vitest/browser-playwright": "^4.1.10",
+    "eslint": "^9.0.0",
+    "http-server": "^14.1.1",
+    "husky": "^9.0.0",
+    "jsdom": "^29.0.1",
+    "lint-staged": "^17.0.7",
+    "prettier": "3.9.4",
+    "shadow-dom-testing-library": "^1.13.1",
+    "storybook": "^10.5.0",
+    "typescript": "^5.4.3",
+    "vitest": "^4.0.18"
+  }
+}
