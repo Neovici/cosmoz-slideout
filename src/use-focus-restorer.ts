@@ -14,13 +14,11 @@ export type Focus = {
 
 /**
  * Focus restorer: remembers the opener when the surface opens, and
- * restores focus to it when the surface closes with focus still inside.
- *
- * Focus *into* the content on open is the Popover API's job (the
- * browser's popover focusing steps honor `[autofocus]` in the slotted
- * content); this hook only deals with the way back - `popover="manual"`
- * never captures the previously focused element, so the restore on
- * close cannot be native.
+ * restores focus to it when the surface closes with focus still
+ * inside. Focus *into* the content on open is the Popover API's job
+ * (the focusing steps honor `[autofocus]`); `popover="manual"` never
+ * captures the previously focused element, so the restore cannot be
+ * native.
  */
 export const useFocusRestorer = (): Focus => {
 	const self = useRef<Focus>({

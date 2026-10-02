@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useHost } from '@pionjs/pion';
+import { useCallback } from '@pionjs/pion';
 import type { SlideoutElement } from './types';
 import { useAttribute } from './use-attribute';
 import { useCloseFallback } from './use-close-fallback';
@@ -7,16 +7,11 @@ import { useFocusRestorer } from './use-focus-restorer';
 import { useFullScreen } from './use-full-screen';
 import { useHandleRequestClose } from './use-handle-request-close';
 import { useImperativeApi } from './use-imperative-api';
+import { usePopoverReconcile } from './use-popover-reconcile';
 
 /**
- * The slideout's lifecycle: `opened` (the reactive attribute read)
- * reconciles against `:popover-open` - show on the mismatch, hide on
- * the reverse, no-op on agreement, so churn re-runs, reconnect resumes
- * and echo writes do nothing. The truth check and the platform call
- * share one synchronous block: nothing can interleave, so
- * `showPopover()`/`hidePopover()` cannot be called in a state that
- * throws, and no guards are needed. The flip is visible to consumers
- * through the platform's own `toggle` event.
+ * The slideout's lifecycle: `opened` reconciles against
+ * `:popover-open`.
  */
 export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 	const [opened, setOpened] = useAttribute('opened');
@@ -27,20 +22,8 @@ export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 	useCloseWatcher({ opened, noEscape, close });
 	useCloseFallback({ opened, noEscape, close });
 
-	const host = useHost<HTMLElement>();
 	const focus = useFocusRestorer();
-
-	useEffect(() => {
-		const isOpen = host.matches(':popover-open');
-		if (opened && !isOpen) {
-			focus.capture(); // precedes showPopover: the focusing steps read it
-			host.showPopover();
-		} else if (!opened && isOpen) {
-			focus.arm();
-			host.hidePopover();
-			focus.restore();
-		}
-	}, [opened, host, focus]);
+	usePopoverReconcile(opened, focus);
 
 	const { fullScreen, toggle } = useFullScreen();
 

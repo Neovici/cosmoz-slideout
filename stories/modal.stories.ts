@@ -15,11 +15,12 @@ const meta: Meta = {
 	component: 'cosmoz-modal-slideout',
 	tags: ['autodocs'],
 	parameters: componentDoc(
-		'The modal drawer: rendered with `popover="auto"` ' +
-			'and `aria-modal="true"`, a scrim backdrop, and UA-owned dismissal - ' +
-			'Esc, the hardware back button and clicks on the backdrop close the ' +
-			'surface natively (final; the platform `toggle` records it). ' +
-			'Programmatic `close()` and slotted `request-close` keep the vetoable funnel.',
+		'The modal drawer: an autonomous wrapper around a native `dialog` ' +
+			'promoted with `showModal()` - the page behind is inert, focus is ' +
+			'trapped, and the scrim backdrop absorbs its clicks. Esc arrives as ' +
+			'the dialog `cancel` (cancelable, bridged through `opened-changed`; ' +
+			'the veto holds) and the flip is recorded by the dialog `close`. ' +
+			'Programmatic `close()` and slotted `request-close` use the same funnel.',
 	),
 };
 
@@ -115,16 +116,17 @@ export const Playground: Story = {
 		const el = canvasElement.querySelector(
 			'cosmoz-modal-slideout',
 		) as SlideoutEl;
+		const dialog = el.shadowRoot!.querySelector('dialog')!;
 		await step('opens with the scrim and modal typing', async () => {
-			await waitFor(() => expect(el.matches(':popover-open')).toBe(true));
-			expect(el.getAttribute('popover')).toBe('auto');
+			await waitFor(() => expect(dialog.open).toBe(true));
+			expect(dialog.matches(':modal')).toBe(true);
 			expect(el.getAttribute('aria-modal')).toBe('true');
 		});
 		await step('Escape is the native dismissal (final, no veto)', async () => {
 			const trusted = await skipUnlessTrusted(step);
 			if (!trusted) return;
 			await trusted.keyboard('{Escape}');
-			await waitFor(() => expect(el.matches(':popover-open')).toBe(false));
+			await waitFor(() => expect(dialog.open).toBe(false));
 		});
 	},
 };

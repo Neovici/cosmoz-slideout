@@ -2,9 +2,8 @@ import { useMeta } from '@neovici/cosmoz-utils/hooks/use-meta';
 import { useEffect } from '@pionjs/pion';
 
 /**
- * `CloseWatcher` session (Escape + Android back), one per open surface
- * while `opened`. Engines without `CloseWatcher` are served by
- * `useCloseFallback`.
+ * `CloseWatcher` session (Escape + Android back), one per open surface.
+ * Engines without `CloseWatcher` are served by `useCloseFallback`.
  */
 export const useCloseWatcher = ({
 	opened,
