@@ -9,7 +9,7 @@ import { defaultPanelArgs, panelArgTypes } from './arg-types';
 type SlideoutEl = HTMLElement & { close(): void };
 
 const meta: Meta = {
-	title: 'CosmozSlideoutPanel/Playground',
+	title: 'CosmozSlideoutPanel',
 	component: 'cosmoz-slideout-panel',
 	argTypes: panelArgTypes,
 	args: defaultPanelArgs,

@@ -48,7 +48,7 @@ const shellStory =
 	};
 
 const meta: Meta = {
-	title: 'CosmozSlideout/Interaction',
+	title: 'CosmozSlideout',
 	component: 'cosmoz-slideout',
 	tags: ['autodocs'],
 	parameters: componentDoc(

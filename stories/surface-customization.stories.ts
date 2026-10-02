@@ -25,7 +25,7 @@ const closeControl = html`
 `;
 
 const meta: Meta = {
-	title: 'CosmozSlideout/Customization',
+	title: 'CosmozSlideout',
 	component: 'cosmoz-slideout',
 	tags: ['autodocs'],
 };
