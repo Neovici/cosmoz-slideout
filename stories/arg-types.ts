@@ -12,12 +12,6 @@ export const slideoutArgTypes: Meta['argTypes'] = {
 		description: 'Accessible label mirrored onto the surface (role="dialog").',
 		table: { category: 'Accessibility' },
 	},
-	'aria-labelledby': {
-		control: 'text',
-		description:
-			'IDREF label mirrored onto the surface. The target must live in the same tree as the surface (the shell), not a slotted one.',
-		table: { category: 'Accessibility' },
-	},
 	'full-screen': {
 		control: 'boolean',
 		description: 'Cover the whole viewport (parent-driven).',
@@ -35,6 +29,11 @@ export const slideoutArgTypes: Meta['argTypes'] = {
 			category: 'Styling',
 			defaultValue: { summary: 'min(400px, 100vw)' },
 		},
+	},
+	rows: {
+		control: { type: 'range', min: 0, max: 60, step: 10 },
+		description: 'Body rows (crank up to see the body scroll).',
+		table: { category: 'Body', defaultValue: { summary: '0' } },
 	},
 };
 
@@ -68,4 +67,5 @@ export const defaultPanelArgs: Meta['args'] = {
 	'full-screen': false,
 	'no-escape': false,
 	width: 'min(400px, 100vw)',
+	rows: 0,
 };

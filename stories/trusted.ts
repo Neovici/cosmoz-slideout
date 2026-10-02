@@ -26,12 +26,17 @@ export const trustedUserEvent = async (): Promise<UserEvent | null> => {
  */
 type StepFn = (
 	label: string,
-	play: () => Promise<void> | void
+	play: () => Promise<void> | void,
 ) => Promise<void> | void;
 
-export const skipUnlessTrusted = async (step: StepFn): Promise<UserEvent | null> => {
+export const skipUnlessTrusted = async (
+	step: StepFn,
+): Promise<UserEvent | null> => {
 	const trusted = await trustedUserEvent();
 	if (trusted) return trusted;
-	await step('skip: Escape needs Vitest Browser Mode (trusted keys)', async () => undefined);
+	await step(
+		'skip: Escape needs Vitest Browser Mode (trusted keys)',
+		async () => undefined,
+	);
 	return null;
 };
