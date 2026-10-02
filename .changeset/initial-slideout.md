@@ -1,5 +1,5 @@
 ---
-'@neovici/cosmoz-slideout': minor
+'@neovici/cosmoz-slideout': major
 ---
 
 Initial release: a top-layer slideout (drawer / sidebar) component built on the Popover API,
