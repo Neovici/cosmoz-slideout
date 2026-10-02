@@ -3,8 +3,7 @@ import type { PartialControls } from './types';
 
 /**
  * Assigns the controls onto the base element's `controls` bag, so
- * prototype methods (`open()`, `close()`, `toggleFullScreen()`)
- * delegate to live hook closures.
+ * prototype methods delegate to live hook closures.
  */
 export const useImperativeApi = (controls: PartialControls) => {
 	const host = useHost<HTMLElement>();

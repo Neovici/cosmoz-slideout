@@ -2,7 +2,7 @@ import { html } from '@pionjs/pion';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import type { SlideoutProps } from './types';
 
-/** The modal drawer's props (no `noEscape`, no `ariaLabelledby`; the label is mirrored onto the inner dialog). */
+/** The modal drawer's props; the label is the mirrored `aria-label` string. */
 export type ModalSlideoutProps = Omit<
 	SlideoutProps,
 	'noEscape' | 'ariaLabelledby'
