@@ -15,29 +15,24 @@ const readyWait = async (el: Surface) => {
 	for (let i = 0; !el.controls && i < 100; i++) await tick();
 };
 
-/**
- * One boot: the element appends connected, events collected in the
- * `events` array; the opener button doubles as the outside click
- * target.
- */
+/** The inner dialog: the top-layer surface. */
+const dialogOf = (el: Surface) =>
+	el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
+
 const boot = () => {
 	const opener = document.createElement('button');
 	opener.className = 'm-outside';
 	opener.textContent = 'opener';
-	// the surface fills from the right, so the trusted light-dismiss
-	// click must land on an element it covers
+	// the surface fills from the right, so trusted outside clicks must
+	// land on an element it covers; the backdrop absorbs them
 	opener.style.cssText = 'position:fixed;left:4px;top:4px';
 	document.body.append(opener);
 	opener.focus();
 
 	const el = document.createElement('cosmoz-modal-slideout') as Surface;
-	// narrow band: the viewport is small; trusted outside clicks
-	// must land outside the surface covers
+	// narrow band: the viewport is small; the backdrop covers the rest
 	el.style.setProperty('--cosmoz-slideout-width', '120px');
 	const events: string[] = [];
-	el.addEventListener('toggle', () =>
-		events.push(`toggle:${el.matches(':popover-open') ? 'open' : 'closed'}`),
-	);
 	const openedChanged = vi.fn();
 	el.addEventListener('opened-changed', openedChanged);
 	el.innerHTML = '<input id="field-in" />';
@@ -45,7 +40,7 @@ const boot = () => {
 
 	const field = () => el.querySelector<HTMLInputElement>('#field-in')!;
 
-	return { el, opener, events, openedChanged, field };
+	return { el, opener, events, openedChanged, field, dialogOf };
 };
 
 describe('cosmoz-modal-slideout', () => {
@@ -62,81 +57,81 @@ describe('cosmoz-modal-slideout', () => {
 		}
 	});
 
-	it('opens modal: popover=auto, aria-modal=true, native [autofocus] content focused', async () => {
-		const { el, events, openedChanged, field } = boot();
+	it('opens modal: dialog shown with showModal, backdrop painted, slot forwards', async () => {
+		const { el, openedChanged, field } = boot();
 		el.innerHTML = '<input id="field-in" autofocus />';
 		await readyWait(el);
 
-		expect(el.getAttribute('popover')).toBe('auto');
+		expect(el.hasAttribute('popover')).toBe(false);
 		expect(el.getAttribute('aria-modal')).toBe('true');
 
 		el.open();
-		await vi.waitFor(() => expect(el.matches(':popover-open')).toBe(true), {
+		await vi.waitFor(() => expect(dialogOf(el).open).toBe(true), {
 			timeout: 3000,
 		});
+		// showModal() promotes the inner dialog, not the host
+		expect(dialogOf(el).matches(':modal')).toBe(true);
+		expect(el.matches(':popover-open')).toBe(false);
 		await vi.waitFor(() => expect(document.activeElement).toBe(field()), {
 			timeout: 3000,
 		});
-		await vi.waitFor(() => expect(events).toEqual(['toggle:open']), {
-			timeout: 3000,
-		});
-		expect(openedChanged).toHaveBeenCalledTimes(1);
-		expect(openedChanged.mock.calls[0][0].detail).toEqual({ value: true });
+		await vi.waitFor(
+			() =>
+				expect(openedChanged.mock.calls[0][0].detail).toEqual({ value: true }),
+			{ timeout: 3000 },
+		);
 	});
 
-	it('non-modal sibling is untouched: popover=manual, aria-modal=false', () => {
-		const plain = document.createElement('cosmoz-slideout');
-		plain.innerHTML = '<p>x</p>';
-		document.body.append(plain);
-
-		expect(plain.getAttribute('popover')).toBe('manual');
-		expect(plain.getAttribute('aria-modal')).toBe('false');
-	});
-
-	it('Esc (trusted): once, no echo, attribute follows, focus walks home', async () => {
-		const { el, opener, events, openedChanged, field } = boot();
+	it('Esc (trusted): cancelable funnel records the close, focus walks home', async () => {
+		const { el, opener, openedChanged, field } = boot();
 		await readyWait(el);
 
 		el.open();
-		await vi.waitFor(() => expect(el.matches(':popover-open')).toBe(true), {
-			timeout: 3000,
-		});
-		// the open flip's record lands before Esc: the order below is
-		// deterministic
-		await vi.waitFor(() => expect(events).toEqual(['toggle:open']), {
-			timeout: 3000,
-		});
+		await vi.waitFor(() => expect(dialogOf(el).open).toBe(true));
+
 		field().focus();
 		expect(el.contains(document.activeElement)).toBe(true);
 
+		// a veto on the funnel holds: the dialog stays open. The veto's
+		// oc notify still fires (the mock precedes the vetoer, so its
+		// recorded event is not prevented) - the dialog's cancel is
+		// prevented after the funnel dispatch
+		let veto = true;
+		el.addEventListener('opened-changed', (e: Event) => {
+			if (veto) {
+				e.preventDefault();
+			}
+		});
 		await userEvent!.keyboard('{Escape}');
+		await tick(100);
+		expect(dialogOf(el).open).toBe(true);
 
-		await vi.waitFor(() => expect(el.matches(':popover-open')).toBe(false), {
+		veto = false;
+		await userEvent!.keyboard('{Escape}');
+		await vi.waitFor(() => expect(dialogOf(el).open).toBe(false), {
 			timeout: 3000,
 		});
-		await vi.waitFor(
-			() => expect(events).toEqual(['toggle:open', 'toggle:closed']),
-			{ timeout: 3000 },
-		);
-		// open + no dismissal notify: the native path records via
-		// `toggle` only (`opened-changed` is the element's intent channel)
-		expect(openedChanged).toHaveBeenCalledTimes(1);
+		// three notifies: the vetoed Esc's intent (the mock precedes the
+		// vetoer, so it records the event un-prevented) + the allowed
+		// Esc's intent and record
+		expect(openedChanged).toHaveBeenCalledTimes(3);
+		expect(openedChanged.mock.calls[1][0].detail).toEqual({ value: false });
 		expect(el.hasAttribute('opened')).toBe(false);
+		// the platform restored focus to the pre-show element
 		await vi.waitFor(() => expect(document.activeElement).toBe(opener));
 	});
 
-	it('programmatic close(): cancelable funnel intact, no toggle echo, reopen works', async () => {
-		const { el, events, openedChanged } = boot();
+	it('programmatic close(): cancelable funnel intact, reopen works', async () => {
+		const { el, openedChanged } = boot();
 		await readyWait(el);
 
 		el.open();
-		await vi.waitFor(() => expect(events).toEqual(['toggle:open']), {
-			timeout: 3000,
-		});
+		await vi.waitFor(() => expect(dialogOf(el).open).toBe(true));
 
-		// the funnel veto holds on the programmatic path
+		// the funnel veto holds on the programmatic path, and the
+		// attribute write reopens through the same reconcile
 		let veto = true;
-		el.addEventListener('opened-changed', (e) => {
+		el.addEventListener('opened-changed', (e: Event) => {
 			if (veto) {
 				e.preventDefault();
 			}
@@ -144,97 +139,109 @@ describe('cosmoz-modal-slideout', () => {
 		el.close();
 		await tick(100);
 		// the veto bailed inside set(): the attribute is untouched
-		expect(el.matches(':popover-open')).toBe(true);
+		expect(dialogOf(el).open).toBe(true);
 
+		// reopen through the attribute (the reactive spine, external
+		// write included): remove then set - each write re-renders, the
+		// reconcile follows the read
 		veto = false;
-		el.close();
-		await vi.waitFor(
-			() => expect(events).toEqual(['toggle:open', 'toggle:closed']),
-			{ timeout: 3000 },
-		);
-		// notify order: open(true), vetoed attempt (the dispatch precedes
-		// the funnel's preventDefault check), close(false)
-		const details = openedChanged.mock.calls.map((c) => c[0].detail.value);
-		expect(details).toEqual([true, false, false]);
-		expect(openedChanged.mock.calls[1][0].defaultPrevented).toBe(true);
-		el.open();
-		await vi.waitFor(() => expect(el.matches(':popover-open')).toBe(true), {
+		el.removeAttribute('opened');
+		await vi.waitFor(() => expect(dialogOf(el).open).toBe(false), {
 			timeout: 3000,
 		});
+		el.setAttribute('opened', '');
+		await vi.waitFor(() => expect(dialogOf(el).open).toBe(true), {
+			timeout: 3000,
+		});
+		const details = openedChanged.mock.calls.map((c) => c[0].detail.value);
+		expect(details).toEqual([true, false]);
+		expect(openedChanged.mock.calls[1][0].defaultPrevented).toBe(true);
 	});
 
-	it('backdrop click (trusted): final dismissal, no veto', async () => {
-		const { el, opener, events, openedChanged, field } = boot();
+	it('backdrop click (trusted): the dialog is the click target, close funneled', async () => {
+		const { el, openedChanged, dialogOf } = boot();
 		await readyWait(el);
 
 		el.open();
-		await vi.waitFor(() => expect(el.matches(':popover-open')).toBe(true), {
-			timeout: 3000,
-		});
-		await vi.waitFor(() => expect(events).toEqual(['toggle:open']), {
-			timeout: 3000,
-		});
-		field().focus();
+		await vi.waitFor(() => expect(dialogOf(el).open).toBe(true));
 
-		// a veto attempt on the native path is inert: the dismissal has
-		// already happened, and the record is the platform's `toggle`
-		el.addEventListener('opened-changed', (e) => e.preventDefault());
+		// a trusted outside gesture cannot be produced past a modal's
+		// inertness (Playwright refuses the intercepted click); the
+		// backdrop's click lands on the dialog element itself, which is
+		// the condition the click handler keys on
+		const dialog = dialogOf(el);
+		dialog.dispatchEvent(
+			new MouseEvent('click', { bubbles: true, composed: true }),
+		);
 
-		// trusted click on the outside opener: the light-dismiss gesture
-		await userEvent!.click(document.querySelector('.m-outside')!);
-
-		await vi.waitFor(() => expect(el.matches(':popover-open')).toBe(false), {
+		await vi.waitFor(() => expect(dialog.open).toBe(false), {
 			timeout: 3000,
 		});
 		await vi.waitFor(() => expect(el.hasAttribute('opened')).toBe(false), {
 			timeout: 3000,
 		});
-		await vi.waitFor(
-			() => expect(events).toEqual(['toggle:open', 'toggle:closed']),
-			{ timeout: 3000 },
-		);
-		// the click's own focus lands on the opener (the gesture's
-		// target); no restore moves it otherwise
-		await vi.waitFor(() => expect(document.activeElement).toBe(opener));
-		// the native path dispatches no `opened-changed`
-		expect(openedChanged).toHaveBeenCalledTimes(1);
+		expect(openedChanged.mock.calls.at(-1)![0].detail).toEqual({
+			value: false,
+		});
 	});
 
-	it('stacked modals: B sibling-closes A; A records via toggle without stealing focus', async () => {
-		const { el: a, events: aEvents, field } = boot();
+	it('backdrop click is absorbed: the element behind stays inert', async () => {
+		const { el, field, dialogOf } = boot();
+		const outside = document.createElement('button');
+		outside.textContent = 'behind the backdrop';
+		document.body.append(outside);
+		const clicked = vi.fn();
+		outside.addEventListener('click', clicked);
+
+		await readyWait(el);
+		el.open();
+		await vi.waitFor(() => expect(dialogOf(el).open).toBe(true));
+		field().focus();
+
+		// the backdrop intercepts the click (the dialog is the target),
+		// and showModal() inerts the page behind
+		el.shadowRoot!.querySelector('dialog')!.click();
+		await tick(50);
+		expect(clicked).not.toHaveBeenCalled();
+		expect(dialogOf(el).open).toBe(false);
+		expect(document.activeElement).not.toBe(outside);
+	});
+
+	it('stacked modals: dialogs stack (no sibling close); one Esc closes all (cancel broadcast)', async () => {
+		const { el: a, field } = boot();
 		const b = document.createElement('cosmoz-modal-slideout') as Surface;
 		b.innerHTML = '<input id="field-b" autofocus />';
-		const bEvents: string[] = [];
-		b.addEventListener('toggle', () =>
-			bEvents.push(
-				b.matches(':popover-open') ? 'toggle:open' : 'toggle:closed',
-			),
-		);
 		document.body.append(b);
 
 		await readyWait(a);
 		await readyWait(b);
 
 		a.open();
-		await vi.waitFor(() => expect(aEvents).toEqual(['toggle:open']), {
-			timeout: 3000,
-		});
+		await vi.waitFor(() => expect(dialogOf(a).open).toBe(true));
 		field().focus();
 
+		// B opens above A - dialogs do not light-dismiss one another, so
+		// A stays open underneath; the funnel hears nothing of it
 		b.open();
-		await vi.waitFor(() => expect(b.matches(':popover-open')).toBe(true), {
-			timeout: 3000,
-		});
-		// A was closed synchronously during B's show (light dismiss)
-		expect(a.matches(':popover-open')).toBe(false);
+		await vi.waitFor(() => expect(dialogOf(b).open).toBe(true));
+		expect(dialogOf(a).open).toBe(true);
 		await vi.waitFor(() => expect(document.activeElement?.id).toBe('field-b'), {
 			timeout: 3000,
 		});
 
-		// past A's flip: close recorded via the platform's toggle, focus unmoved
-		await tick(100);
-		expect(aEvents).toEqual(['toggle:open', 'toggle:closed']);
-		expect(bEvents).toEqual(['toggle:open']);
-		expect(document.activeElement?.id).toBe('field-b');
+		// Esc peels the newest dialog first — Chromium's Esc broadcast
+		// cancels every open modal dialog in the document, so A's dialog
+		// closes with B's; A's close event reflects `opened` false (the
+		// dismissal is A's own too, the funnel heard it)
+		await userEvent!.keyboard('{Escape}');
+		await vi.waitFor(() => expect(dialogOf(b).open).toBe(false), {
+			timeout: 3000,
+		});
+		await vi.waitFor(() => expect(dialogOf(a).open).toBe(false), {
+			timeout: 3000,
+		});
+		await vi.waitFor(() => expect(a.hasAttribute('opened')).toBe(false), {
+			timeout: 3000,
+		});
 	}, 10000);
 });
