@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{mt as t,pt as n}from"./iframe-BLzy1uNf.js";import{v as r,y as i}from"./use-imperative-api-Cao6xKEw.js";import{t as a}from"./cosmoz-slideout-panel-BrZClh72.js";import{t as o}from"./cosmoz-slideout-i9v0B8Lk.js";import{n as s,r as c,t as l}from"./arg-types-CXxcK3Un.js";var u,d,f,p,m;e((()=>{t(),r(),o(),a(),s(),{expect:u,waitFor:d}=__STORYBOOK_MODULE_TEST__,f={title:`CosmozSlideoutPanel/Playground`,component:`cosmoz-slideout-panel`,argTypes:c,args:l},p={tags:[`!autodocs`],render:e=>n`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{mt as t,pt as n}from"./iframe-BVmKcyIg.js";import{v as r,y as i}from"./use-imperative-api-CN67rVYJ.js";import{t as a}from"./cosmoz-slideout-panel-DnFGlKan.js";import{t as o}from"./cosmoz-slideout-8M6x0D9E.js";import{n as s,r as c,t as l}from"./arg-types-CXxcK3Un.js";var u,d,f,p,m;e((()=>{t(),r(),o(),a(),s(),{expect:u,waitFor:d}=__STORYBOOK_MODULE_TEST__,f={title:`CosmozSlideoutPanel/Playground`,component:`cosmoz-slideout-panel`,argTypes:c,args:l},p={tags:[`!autodocs`],render:e=>n`
 		<cosmoz-slideout
 			.opened=${e.opened}
 			aria-label=${i(e[`aria-label`])}
