@@ -9,12 +9,17 @@ const eventName = (name: string) => `${name}-changed`;
  * Reactive boolean attribute holder: `set()` applies a change through
  * the cancelable `name-changed` event (`preventDefault()` vetoes the
  * write); the read side reflects the attribute.
+ *
+ * `reflect()` is the same event and write, non-cancelable: for changes
+ * that already happened (the platform did them), where a veto has
+ * nothing to prevent.
  */
 export const useAttribute = (
 	name: string,
 ): readonly [
 	boolean,
 	(next: boolean | ((current: boolean) => boolean)) => boolean,
+	(next: boolean) => void,
 ] => {
 	const host = useHost();
 	const camel = toCamelCase(name);
@@ -43,9 +48,25 @@ export const useAttribute = (
 		[name],
 	);
 
+	const reflect = useCallback(
+		(next: boolean) => {
+			if (next === read()) {
+				return;
+			}
+			host.dispatchEvent(
+				new CustomEvent(eventName(name), {
+					detail: { value: next },
+					bubbles: true,
+				}),
+			);
+			host.toggleAttribute(name, next);
+		},
+		[name],
+	);
+
 	useLayoutEffect(() => {
 		host.toggleAttribute(name, read());
 	}, [value]);
 
-	return [value, set] as const;
+	return [value, set, reflect] as const;
 };
