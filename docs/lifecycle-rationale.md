@@ -40,28 +40,43 @@ and no guards are needed. There are no asynchronous phases, hence
 nothing to track and nothing to undo: the element's disconnect runs no
 cleanup, because the reconcile establishes nothing that outlives it.
 
+## No machine, per flavor
+
+The non-modal surface is the element itself (`popover="manual"`): the
+reconcile above is its whole lifecycle. The modal drawer's surface is an
+inner native `dialog` (`showModal()` - the only primitive that owns
+inertness, a focus trap and an absorbing `::backdrop`): the same
+reconcile runs against `dialog.open`, and the bridges map the platform's
+dismissal paths onto the same two channels - `cancel` (cancelable) runs
+the funnel, so a veto holds the drawer open; `close` (the record) writes
+`opened` silently; a backdrop click is funneled as a close intent (its
+target _is_ the dialog). The modal element fires no `toggle`; its record
+is the dialog's own `close` event.
+
 ## Two channels
 
 - **Intent - `opened-changed`, the element's.** Dispatched by the funnel
   (`useAttribute`'s `set()`), before the write, cancelable. Every
   element-initiated change goes through it exactly once: `open()`/
-  `close()`, Escape and hardware back (`CloseWatcher`), `request-close`,
-  attribute reconcile. `preventDefault()` vetoes.
-- **Record - `toggle`/`beforetoggle`, the platform's.** Fired at the flip
-  whatever the closer (the funnel, Esc, light dismiss, devtools attribute
-  writes, a direct `hidePopover()`), never cancelable - correct, since a
-  record cannot be vetoed, only an intent can.
+  `close()`, Escape (`CloseWatcher` / the dialog's `cancel`),
+  `request-close`, backdrop clicks, attribute reconcile.
+  `preventDefault()` vetoes - on both flavors, every close source.
+- **Record - per flavor, the platform's.** The non-modal surface records
+  through `toggle`/`beforetoggle` (fired at the popover flip whatever the
+  closer, never cancelable); the modal drawer records through the inner
+  dialog's own `close` event. Correct, since a record cannot be vetoed,
+  only an intent can.
 
 The split gives each event one meaning. `opened-changed` used to carry
 both roles with the cancelability encoding the source ("two cancelability
 modes, by close source") - a wart the modal had to document. Now: veto on
-`opened-changed`, observe on `toggle`; native dismissals dispatch no
-custom event at all.
+`opened-changed`, observe on the platform's record event; on the modal
+flavor the platform's dismissal itself funnels (its `cancel` precedes the
+flip), so no non-cancelable intent exists anywhere.
 
-`useAttribute`'s `reflect()` is the silent write (no event) - used by the
-modal's `toggle`-to-attribute bridge: for `popover="auto"` the UA flips
-`:popover-open` without touching the attribute, so the element listens for
-`toggle` and records the dismissal into `opened`; the write re-renders,
-the reconcile finds agreement, done. The platform's `toggle` is already
-the record of that flip; dispatching an element event on top would repeat
-it.
+`useAttribute`'s `reflect()` is the silent write (no event) - the modal's
+`close`-to-attribute bridge: the dialog's flip leaves the attribute
+untouched, so the element listens for `close` and records the dismissal
+into `opened`; the write re-renders, the reconcile finds agreement, done.
+The dialog's `close` is already the record of that flip; dispatching an
+element event on top would repeat it.
