@@ -18,5 +18,5 @@ customElements.define(
 	'cosmoz-slideout-panel',
 	component(CosmozSlideoutPanel, {
 		styleSheets: [normalize, panelStyles],
-	})
+	}),
 );

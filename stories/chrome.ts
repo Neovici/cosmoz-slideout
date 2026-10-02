@@ -8,7 +8,7 @@ export const requestClose = (e: Event) =>
 			bubbles: true,
 			composed: true,
 			cancelable: true,
-		})
+		}),
 	);
 
 const titleStyle =
@@ -35,7 +35,7 @@ export const footer = (content: unknown) =>
 
 export const header = (
 	title: string,
-	{ subtitle }: { subtitle?: string } = {}
+	{ subtitle }: { subtitle?: string } = {},
 ) =>
 	html`<div
 		slot="header"
@@ -45,9 +45,7 @@ export const header = (
 			style="display: flex; flex-direction: column; gap: calc(var(--cz-spacing) * 1); min-width: 0;"
 		>
 			<h2 style=${titleStyle}>${title}</h2>
-			${subtitle
-				? html`<p style=${subtitleStyle}>${subtitle}</p>`
-				: nothing}
+			${subtitle ? html`<p style=${subtitleStyle}>${subtitle}</p>` : nothing}
 		</div>
 		<cosmoz-button
 			variant="tertiary"
@@ -58,4 +56,3 @@ export const header = (
 			${xCloseIcon({ slot: 'prefix' })}
 		</cosmoz-button>
 	</div>`;
-
