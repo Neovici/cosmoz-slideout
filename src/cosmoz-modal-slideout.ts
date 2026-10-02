@@ -14,7 +14,6 @@ const ModalSlideout = () => {
 export class ModalSlideoutBase extends SlideoutBase {
 	connectedCallback() {
 		super.connectedCallback();
-		// the modal type's platform constants
 		this.setAttribute('popover', 'auto');
 		this.setAttribute('aria-modal', 'true');
 	}

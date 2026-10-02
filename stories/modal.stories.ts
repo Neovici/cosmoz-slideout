@@ -18,7 +18,7 @@ const meta: Meta = {
 		'The modal drawer: rendered with `popover="auto"` ' +
 			'and `aria-modal="true"`, a scrim backdrop, and UA-owned dismissal - ' +
 			'Esc, the hardware back button and clicks on the backdrop close the ' +
-			'surface natively (final; `opened-changed` syncs, non-cancelable). ' +
+			'surface natively (final; the platform `toggle` records it). ' +
 			'Programmatic `close()` and slotted `request-close` keep the vetoable funnel.',
 	),
 };

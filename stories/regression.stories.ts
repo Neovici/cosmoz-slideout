@@ -66,11 +66,11 @@ export const ExplicitAriaLabel: Story = {
 	},
 };
 
-export const OpenEvent: Story = {
+export const ToggleRecord: Story = {
 	render: () => {
 		const mount = document.createElement('div');
 		const status = document.createElement('span');
-		status.dataset.testid = 'open-count';
+		status.dataset.testid = 'toggle-count';
 		status.textContent = '0';
 		let count = 0;
 		let opened = false;
@@ -79,7 +79,7 @@ export const OpenEvent: Story = {
 				html`
 					<cosmoz-slideout
 						.opened=${opened}
-						@open=${() => {
+						@toggle=${() => {
 							count += 1;
 							status.textContent = String(count);
 						}}
@@ -110,11 +110,11 @@ export const OpenEvent: Story = {
 			await canvas.findByShadowRole('button', { name: /open with event/iu }),
 		);
 		await step(
-			'dispatches `open` after the enter transition settles',
+			'the platform `toggle` records the flip (single source, all closers)',
 			async () => {
 				await waitFor(() =>
 					expect(
-						canvasElement.querySelector('[data-testid="open-count"]')!
+						canvasElement.querySelector('[data-testid="toggle-count"]')!
 							.textContent,
 					).toBe('1'),
 				);
@@ -134,7 +134,7 @@ export const VetoOpenedChanged: Story = {
 						.opened=${opened}
 						@opened-changed=${(e: CustomEvent) => {
 							if (e.detail.value === false) {
-								e.preventDefault(); // veto the close
+								e.preventDefault();
 								return;
 							}
 							opened = e.detail.value;

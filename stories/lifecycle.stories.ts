@@ -25,8 +25,8 @@ type Story = StoryObj;
 
 export const Events: Story = {
 	parameters: storyDoc(
-		'The surface event lifecycle: `open` / `opened-changed` / ' +
-			'`full-screen-changed` / `close`. The element ' +
+		'The surface event lifecycle: `opened-changed` (the cancelable intent) / ' +
+			'`full-screen-changed` / `toggle` (the platform record). The element ' +
 			'persists in the DOM across open/close cycles.',
 	),
 	render: () => {
@@ -58,7 +58,7 @@ export const Events: Story = {
 						}}
 						@full-screen-changed=${(e: CustomEvent) =>
 							addLog(`full-screen: ${String(e.detail.value)}`)}
-						@close=${() => addLog('close event')}
+						@toggle=${(e: ToggleEvent) => addLog(`toggle: ${e.newState}`)}
 					>
 						<cosmoz-slideout-panel>
 							${header('Lifecycle', {
@@ -66,8 +66,8 @@ export const Events: Story = {
 							})}
 							<p>
 								The element persists in the DOM. It emits <code>opened-changed</code>
-								and, on close, <code>close</code> once the slide-out animation
-								completes.
+								(cancelable intent) as it opens, and the platform's <code>toggle</code>
+								as the recorded flip.
 							</p>
 							<div
 								slot="footer"
@@ -129,10 +129,10 @@ export const Events: Story = {
 			);
 			await waitFor(() => expect(logItems()).toContain('full-screen: true'));
 		});
-		await step('fires close when the animation finishes', async () => {
+		await step('records the flip through the platform toggle', async () => {
 			el.querySelector<HTMLElement>('cosmoz-button:last-of-type')!.click();
 			await waitFor(() => expect(el.matches(':popover-open')).toBe(false));
-			await waitFor(() => expect(logItems()).toContain('close event'));
+			await waitFor(() => expect(logItems()).toContain('toggle: closed'));
 		});
 	},
 };

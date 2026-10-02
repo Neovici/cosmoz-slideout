@@ -9,14 +9,14 @@ export const useHandleRequestClose = ({
 	opened,
 	close,
 }: {
-	/** The reactive read, gating the handler. */
 	opened: boolean;
-	/** The close funnel (cancelable `opened-changed`); `false` vetoes. */
 	close: () => boolean;
 }) => {
 	const meta = useMeta({ opened, close });
 	const onRequestClose = useCallback((e: Event) => {
 		if (meta.opened && !e.defaultPrevented) {
+			// an inner surface closes itself; the event must not also
+			// close an outer slideout it is slotted into
 			e.stopPropagation();
 			meta.close();
 		}

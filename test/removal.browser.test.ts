@@ -13,9 +13,9 @@ const tick = (ms = 20) => new Promise((r) => setTimeout(r, ms));
 const boot = () => {
 	const el = document.createElement('cosmoz-slideout') as Surface;
 	const events: string[] = [];
-	for (const type of ['open', 'close'] as const) {
-		el.addEventListener(type, () => events.push(`${type} event`));
-	}
+	el.addEventListener('toggle', () =>
+		events.push(el.matches(':popover-open') ? 'toggle:open' : 'toggle:closed'),
+	);
 	el.innerHTML = '<p>x</p>';
 	const parent = document.createElement('div');
 	document.body.append(parent, el);
@@ -43,31 +43,28 @@ describe('cosmoz-slideout removal + re-append', () => {
 		el.open();
 		await vi.waitFor(() => expect(el.matches(':popover-open')).toBe(true));
 
-		// remove mid-flight, opened stays set: nothing settles detached
+		// remove mid-open, opened stays set: the platform hides the
+		// popover on disconnect; the reconcile never runs detached, so
+		// the hide records nothing
 		el.remove();
 		await vi.waitFor(
 			() => {
 				expect(el.matches(':popover-open')).toBe(false);
-				expect(events).toEqual([]);
+				expect(events).toEqual(['toggle:open']);
 			},
 			{ timeout: 3000 },
 		);
 
-		// re-append: the hooks rebuild fresh, the flip re-sends per the
-		// attribute's truth, the settled open announces exactly once
+		// re-append: the hooks rebuild fresh, the reconcile re-shows per
+		// the attribute's truth - a second flip, recorded as such
 		attach();
 		await vi.waitFor(() => expect(el.matches(':popover-open')).toBe(true));
-		await vi.waitFor(() => expect(events).toEqual(['open event']), {
-			timeout: 3000,
-		});
-		// no stragglers past the resumed settle
-		await vi.waitFor(() => expect(events).toEqual(['open event']), {
-			timeout: 1500,
-		});
+		await tick(100);
+		expect(events).toEqual(['toggle:open', 'toggle:open']);
 
 		el.close();
 		await vi.waitFor(() =>
-			expect(events).toEqual(['open event', 'close event']),
+			expect(events).toEqual(['toggle:open', 'toggle:open', 'toggle:closed']),
 		);
 	});
 
@@ -76,29 +73,29 @@ describe('cosmoz-slideout removal + re-append', () => {
 		await readyWait(el);
 
 		el.open();
-		await vi.waitFor(() => expect(events).toEqual(['open event']), {
+		await vi.waitFor(() => expect(events).toEqual(['toggle:open']), {
 			timeout: 3000,
 		});
 
-		// close + remove within one tick: nothing settles; the open's
-		// announce remains
+		// close + remove within one tick: the close's scheduled
+		// reconcile never runs; the disconnect's hide records nothing
 		el.close();
 		el.remove();
 		await vi.waitFor(
 			() => {
 				expect(el.matches(':popover-open')).toBe(false);
-				expect(events).toEqual(['open event']);
+				expect(events).toEqual(['toggle:open']);
 			},
 			{ timeout: 3000 },
 		);
 
-		// re-append with opened absent: the CLOSE flip is guard-prevented
-		// - no fabricated close event
+		// re-append with opened absent: hidden + `!opened` agree - no
+		// flip, no record
 		attach();
 		await vi.waitFor(
 			() => {
 				expect(el.matches(':popover-open')).toBe(false);
-				expect(events).toEqual(['open event']);
+				expect(events).toEqual(['toggle:open']);
 			},
 			{ timeout: 3000 },
 		);

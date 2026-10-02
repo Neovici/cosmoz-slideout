@@ -11,11 +11,8 @@ export const useCloseFallback = ({
 	noEscape,
 	close,
 }: {
-	/** The reactive read, gating the keydown handler. */
 	opened: boolean;
-	/** When true, Escape is ignored. */
 	noEscape: boolean;
-	/** The close funnel (cancelable `opened-changed`); `false` vetoes. */
 	close: () => boolean;
 }) => {
 	const meta = useMeta({ opened, noEscape, close });
@@ -29,7 +26,7 @@ export const useCloseFallback = ({
 
 	useEffect(() => {
 		if ('CloseWatcher' in window) {
-			return; // the native session serves this engine
+			return;
 		}
 		document.addEventListener('keydown', onEscape);
 		return () => document.removeEventListener('keydown', onEscape);

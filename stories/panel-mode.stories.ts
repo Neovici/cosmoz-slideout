@@ -9,12 +9,8 @@ import { defaultPanelArgs, panelArgTypes } from './arg-types';
 import { footer, header, requestClose } from './chrome';
 import { componentDoc, storyDoc } from './story-docs';
 
-// Layout chrome inside a `<cosmoz-slideout>`; header and close control
-// are slotted in (see stories/chrome.ts).
-
 type ShellEl = HTMLElement & { close(): void; opened?: boolean };
 
-// shell (surface + lifecycle) wrapping the panel (content) - the canonical pairing
 const panelInShell = (
 	args: Args,
 	opened: boolean,
@@ -298,7 +294,7 @@ export const ScrollableContent: Story = {
 	},
 	render: (args) => {
 		const mount = document.createElement('div');
-		const rows = Array.from({ length: 50 }, (_, i) => i + 1); // 50 event rows
+		const rows = Array.from({ length: 50 }, (_, i) => i + 1);
 		let opened = false;
 		const rerender = () =>
 			render(

@@ -1,15 +1,14 @@
 import { useHost, useRef } from '@pionjs/pion';
 
-/** The focus domain: capture → arm → restore. */
 export type Focus = {
 	host: HTMLElement;
 	opener: HTMLElement | null;
 	armed: boolean;
-	/** Remembers the currently focused element as the opener. */
+	/** Remembers the currently focused element as the opener, and disarms any pending restore. */
 	capture(): void;
 	/** Arms the pending restore when focus is inside the surface. */
 	arm(): void;
-	/** Walks focus back to the opener (the close settle). */
+	/** Walks focus back to the opener (after the close flip). */
 	restore(): void;
 };
 

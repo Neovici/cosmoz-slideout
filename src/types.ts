@@ -9,9 +9,9 @@ export interface Props {
 	fullScreen?: boolean;
 	/** Disable Escape-to-close (attribute `no-escape`). */
 	noEscape?: boolean;
-	/** Slide-in (guarded no-op when already open). */
+	/** Show the slideout (a no-op when already open). */
 	open: () => void;
-	/** Slide-out (guarded no-op when already closed). */
+	/** Hide the slideout (a no-op when already closed). */
 	close: () => void;
 	/** Toggle the `full-screen` state. */
 	toggleFullScreen: () => void;
@@ -71,10 +71,6 @@ export interface SlideoutProps {
 	style?: string;
 	/** Two-way binding handler for `opened`. */
 	onOpenedChanged?: (e: CustomEvent<{ value: boolean }>) => void;
-	/** Slide-in settled handler. */
-	onOpen?: (e: Event) => void;
-	/** Slide-out settled handler. */
-	onClose?: (e: Event) => void;
 	/** Full-screen flip handler. */
 	onFullScreenChanged?: (e: CustomEvent<{ value: boolean }>) => void;
 }

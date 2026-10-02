@@ -11,7 +11,6 @@ import { skipUnlessTrusted } from './trusted';
 
 type SlideoutEl = HTMLElement & { close(): void };
 
-// shell + slotted panel opened by a trigger; `guarded` disables Escape
 const shellStory =
 	(label: string, guarded: boolean, panel: unknown): (() => TemplateResult) =>
 	() => {
@@ -194,8 +193,6 @@ export const FocusRestore: Story = {
 				.querySelector<HTMLElement>('cosmoz-button[aria-label="Close"]')!
 				.click();
 			await waitFor(() => expect(el.matches(':popover-open')).toBe(false));
-			// focus restore rides the settle cap, which matches the waitFor
-			// default; give the assertion room beyond it
 			await waitFor(
 				() =>
 					expect(document.activeElement).toBe(

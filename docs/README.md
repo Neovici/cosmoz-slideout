@@ -54,7 +54,8 @@ import '@neovici/cosmoz-slideout/cosmoz-slideout-panel';
 `opened` is a **reactive, two-way** value on `<cosmoz-slideout>` backed by the `opened` **attribute**.
 Drive it however suits you - a lit **property** binding (`.opened=${x}`), a
 boolean **attribute** binding (`?opened`), a bare `opened` in static HTML, or the `open()`/`close()`
-methods - and listen for the cancelable **`opened-changed`** event; the surface self-closes on Escape
+methods - and listen for the cancelable **`opened-changed`** event (the element's intent, vetoes
+included); the surface self-closes on Escape
 and `close()`, and removing the `opened` attribute (e.g. from devtools) closes it too. The element
 persists in the DOM across open/close cycles - there is no add-to-open / remove-to-close dance.
 
@@ -116,24 +117,25 @@ lifecycle, the same slide animation - with the platform's own modal machinery: `
 #### Methods
 
 - `open()` - set `opened` to true (play the slide-in).
-- `close()` - set `opened` to false (play the slide-out); `close` fires when it finishes.
+- `close()` - set `opened` to false (play the slide-out).
 - `toggleFullScreen()` - toggle the `full-screen` state.
 
 #### Events
 
-- `opened-changed` - **two cancelability modes, by close source**:
-  - programmatic changes (`close()`, `request-close`, attribute writes) dispatch it
-    **cancelable** - `preventDefault()` vetoes, exactly as on `<cosmoz-slideout>`;
-  - native dismissals (Esc, hardware back, backdrop click, a sibling `popover="auto"` surface
-    opening) dispatch it **non-cancelable** - the dismissal has already happened, there is nothing
-    left to veto; the event is the record of it, and the `opened` attribute follows.
-    Both bubble; `detail = { value }`.
-- `open` / `close` - dispatched when the slide animation settles, as on the surface (bubbles).
+- `opened-changed` - **the element's intent** to change `opened`, dispatched **before** the
+  write, **cancelable**: `close()`, `request-close`, Escape/back-button and attribute writes
+  all funnel through it (`preventDefault()` vetoes, exactly as on `<cosmoz-slideout>`;
+  `detail = { value }`). Native UA dismissals dispatch **nothing** - the dismissal has already
+  happened and there is nothing to veto; the platform's own `toggle` event is the record of it,
+  and the `opened` attribute follows.
+- `toggle` / `beforetoggle` - the platform's own `ToggleEvent`s: the record of the popover flip,
+  fired whatever the closer (funnel, Esc, light dismiss, backdrop, sibling
+  `popover="auto"` surface) and not cancelable; `newState` is `'open'`/`'closed'`. `toggle` is
+  also what two-way bindings sync on after a native dismissal
+  (`@toggle=${(e) => (this.open = e.newState === 'open')}`).
 - `full-screen-changed` - dispatched when the `full-screen` state changes; `detail = { value }`
   (bubbles, cancelable).
 - `request-close` - **listened for**, not emitted; identical to the surface.
-- `toggle` / `beforetoggle` - the platform's own `ToggleEvent`s (listened for by the element to
-  sync `opened`; they also reach your listeners: `newState` is `'open'`/`'closed'`).
 
 #### Slot
 
@@ -151,7 +153,7 @@ Programmatic closes keep the vetoable funnel - `close()`, a slotted `request-clo
 writes work exactly as on `<cosmoz-slideout>` (unsaved-changes guards).
 
 **Sibling close is platform semantics**: opening a second `popover="auto"` surface closes the
-first. The first still settles and announces `close` - and does not steal focus back from the
+first. The first still records the flip through `toggle` - and does not steal focus back from the
 surface that replaced it.
 
 ### Backdrop
@@ -191,18 +193,19 @@ surface that replaced it.
 #### Methods
 
 - `open()` - set `opened` to true (play the slide-in).
-- `close()` - set `opened` to false (play the slide-out); `close` fires when it finishes.
+- `close()` - set `opened` to false (play the slide-out).
 - `toggleFullScreen()` - toggle the `full-screen` state (also settable via the attribute).
 
 #### Events
 
-- `opened-changed` - dispatched (bubbling, **cancelable**) when the surface changes `opened` itself
-  (`open()`/`close()`, Escape/back-button, `request-close`); `detail = { value }`. Use it for two-way
-  binding; `preventDefault()` vetoes the change (an unsaved-changes guard).
-- `open` - dispatched after the slide-**in** animation settles (bubbles), symmetric with `close` -
-  handy for "scroll to top / focus the first field" timing.
-- `close` - dispatched after the slide-**out** animation settles (bubbles). Useful for teardown
-  timing; the element is **not** removed.
+- `opened-changed` - dispatched (bubbling, **cancelable**, **before the write**) when the surface
+  intends to change `opened` (`open()`/`close()`, Escape/back-button, `request-close`,
+  attribute reconcile); `detail = { value }`. Use it for two-way binding;
+  `preventDefault()` vetoes the change (an unsaved-changes guard).
+- `toggle` / `beforetoggle` - the platform's own `ToggleEvent`s: the record of the popover flip,
+  fired whatever the closer and not cancelable; `newState` is `'open'`/`'closed'`. Post-flip
+  timing (the retired settled `open`/`close` events) rides this, or a `transitionend` listener
+  hung off the element (it _is_ the popover).
 - `full-screen-changed` - dispatched when the `full-screen` state changes; `detail = { value }`
   (bubbles, cancelable - `preventDefault()` vetoes the flip).
 - `request-close` - **listened for**, not emitted: a bubbling, **cancelable** event from any
@@ -296,9 +299,9 @@ slideout(
 ```
 
 `slideout(props, content)` accepts `opened`, `fullScreen`, `noEscape`, `ariaLabel`,
-`ariaLabelledby`, `class`, `style`, and the event handlers `onOpenedChanged` / `onOpen` /
-`onClose` / `onFullScreenChanged` (so plain listeners and pion's `lift` both compose). Those `on*`
-props are render-helper sugar for listening to the element's events (`@close=${props.onClose}`); the
+`ariaLabelledby`, `class`, `style`, and the event handlers `onOpenedChanged` /
+`onFullScreenChanged` (so plain listeners and pion's `lift` both compose). Those `on*`
+props are render-helper sugar for listening to the element's events; the
 element itself has no callback properties. `slideoutPanel(props, content)` accepts only `class` and
 `style` (the panel is property-free). The `SlideoutProps` type is exported from the package root.
 
@@ -367,9 +370,9 @@ Set `opened` synchronously inside the opening handler (e.g. the click); if you s
   `aria-modal="true"` and the backdrop (see its own section above; popover modality still does not
   trap focus, per the platform).
 - **The drawer is a landmark-free dialog**: don't rely on `aria-expanded`/`aria-controls` wiring
-  from the trigger button - instead the trigger toggles `opened`, and the `open`/`close` events
-  let you announce state if you must (`aria-live`). Keep the announcements minimal: drawer
-  open/close is signaled by focus movement itself.
+  from the trigger button - instead the trigger toggles `opened`, and the `opened-changed`
+  (intent) + `toggle` (record) events let you announce state if you must (`aria-live`). Keep the
+  announcements minimal: drawer open/close is signaled by focus movement itself.
 - **Focus is the state announcer**: on open, the browser's popover focusing steps move focus to
   your `autofocus`-marked field (composite components work - `<cosmoz-input autofocus>` focuses
   its inner input) or to the surface when `autofocus` is on the element itself; on close, focus
