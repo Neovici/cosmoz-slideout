@@ -5,7 +5,7 @@ import { expect, waitFor } from 'storybook/test';
 import '../src/cosmoz-modal-slideout';
 import '../src/cosmoz-slideout-panel';
 import { modalSlideout, slideoutPanel } from '../src/helpers';
-import { componentDoc, storyDoc } from './story-docs';
+import { storyDoc } from './story-docs';
 import { skipUnlessTrusted } from './trusted';
 
 type SlideoutEl = HTMLElement & { open(): void; close(): void };
@@ -14,14 +14,6 @@ const meta: Meta = {
 	title: 'CosmozSlideout/Modal',
 	component: 'cosmoz-modal-slideout',
 	tags: ['autodocs'],
-	parameters: componentDoc(
-		'The modal drawer: an autonomous wrapper around a native `dialog` ' +
-			'promoted with `showModal()` - the page behind is inert, focus is ' +
-			'trapped, and the scrim backdrop absorbs its clicks. Esc arrives as ' +
-			'the dialog `cancel` (cancelable, bridged through `opened-changed`; ' +
-			'the veto holds) and the flip is recorded by the dialog `close`. ' +
-			'Programmatic `close()` and slotted `request-close` use the same funnel.',
-	),
 };
 
 export default meta;
@@ -29,6 +21,14 @@ export default meta;
 type Story = StoryObj;
 
 export const Playground: Story = {
+	parameters: storyDoc(
+		'The modal drawer: an autonomous wrapper around a native `dialog` ' +
+			'promoted with `showModal()` - the page behind is inert, focus is ' +
+			'trapped, and the scrim backdrop absorbs its clicks. Esc arrives as ' +
+			'the dialog `cancel` (cancelable, bridged through `opened-changed`; ' +
+			'the veto holds) and the flip is recorded by the dialog `close`. ' +
+			'Programmatic `close()` and slotted `request-close` use the same funnel.',
+	),
 	args: {
 		opened: false,
 		fullScreen: false,
@@ -135,7 +135,9 @@ export const Backdrop: Story = {
 	parameters: storyDoc(
 		'The scrim: `--cosmoz-slideout-backdrop` (default ' +
 			'`color-mix(in srgb, var(--cz-color-bg-overlay) 50%, transparent)`), ' +
-			'fading with the same duration/easing tokens as the surface.',
+			'fading with the same duration/easing tokens as the surface. It is ' +
+			'the dialog\'s `::backdrop`: a click on it closes the drawer and is ' +
+			'absorbed - the page behind never sees it.',
 	),
 	render: () => {
 		const mount = document.createElement('div');
