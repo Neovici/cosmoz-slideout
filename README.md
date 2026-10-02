@@ -22,8 +22,8 @@ This package ships **three custom elements** (two that compose, one modal wrappe
   dismissal with a veto (`cancel` before `close`). See
   [the modal drawer](#the-modal-drawer---cosmoz-modal-slideout).
 
-The surface and the layout chrome compose - the surface owns the lifecycle, the panel owns the
-layout; 99% of the time you slide the panel in:
+99% of the time you pair a slideout with the slideout-panel, but you don't have to: the surface
+owns the lifecycle, the panel owns the layout -
 
 ```html
 <cosmoz-slideout .opened="${this.supplierOpen}" aria-label="Supplier">
