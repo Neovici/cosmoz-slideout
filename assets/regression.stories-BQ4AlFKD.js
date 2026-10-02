@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r}from"./iframe-DgIR1Z41.js";import{n as i}from"./cosmoz-slideout-Dq4ZDEru.js";import{t as a}from"./cosmoz-button-C77Od3jb.js";import{t as o}from"./cosmoz-slideout-panel-D9m1FsOa.js";import{n as s,r as c}from"./chrome-mQwnEa0m.js";var l,u,d,f,p,m,h,g;e((()=>{a(),n(),i(),o(),c(),{expect:l,waitFor:u}=__STORYBOOK_MODULE_TEST__,d={title:`CosmozSlideout/Test`,component:`cosmoz-slideout`,tags:[`!autodocs`]},f={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>t(r`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r}from"./iframe-BEf6A-WD.js";import{n as i}from"./cosmoz-slideout-CgaMaPX6.js";import{t as a}from"./cosmoz-button-BRe8kagT.js";import{t as o}from"./cosmoz-slideout-panel-BEYxW0Is.js";import{n as s,r as c}from"./chrome-Dj8uIITs.js";var l,u,d,f,p,m,h,g;e((()=>{a(),n(),i(),o(),c(),{expect:l,waitFor:u}=__STORYBOOK_MODULE_TEST__,d={title:`CosmozSlideout/Test`,component:`cosmoz-slideout`,tags:[`!autodocs`]},f={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>t(r`
 					<cosmoz-slideout
 						aria-label="Supplier #4021"
 						.opened=${n}
