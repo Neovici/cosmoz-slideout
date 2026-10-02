@@ -36,8 +36,7 @@ layout; 99% of the time you slide the panel in:
 ```
 
 The surface **does not open merely by being in the DOM** - it stays in place and slides in/out as
-`opened` toggles (the example binds it; a hardcoded `opened` attribute would mean permanently
-open, and `full-screen` is a separate attribute, off unless asked for).
+`opened` toggles.
 
 ## Installation
 
