@@ -14,7 +14,7 @@ const dialogOf = (el: SlideoutEl) =>
 	el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
 
 const meta: Meta = {
-	title: 'CosmozSlideout/Modal',
+	title: 'CosmozModalSlideout',
 	component: 'cosmoz-modal-slideout',
 	tags: ['autodocs'],
 };
