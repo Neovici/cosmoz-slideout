@@ -60,6 +60,10 @@
       "types": "./dist/cosmoz-slideout-panel.d.ts",
       "default": "./dist/cosmoz-slideout-panel.js"
     },
+    "./cosmoz-modal-slideout": {
+      "types": "./dist/cosmoz-modal-slideout.d.ts",
+      "default": "./dist/cosmoz-modal-slideout.js"
+    },
     "./helpers": {
       "types": "./dist/helpers.d.ts",
       "default": "./dist/helpers.js"
