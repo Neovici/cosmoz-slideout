@@ -34,15 +34,13 @@ export const useModalSlideout = () => {
 		}
 	}, [opened]); // host: the element's own, never reassigned
 
-	// the dialog's platform paths: the listeners' lifetime is the
-	// dialog's (a shadow child)
+	// the dialog's platform paths
 	useEffect(() => {
 		const dialog = host.shadowRoot?.querySelector('dialog');
 		if (!dialog) {
 			return;
 		}
-		// the cancelable dismissal veto: a preventDefault aborts the
-		// platform's close
+		// the cancelable dismissal veto
 		const onCancel = (e: Event) => {
 			if (close() === false) {
 				e.preventDefault();

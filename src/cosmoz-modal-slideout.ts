@@ -9,10 +9,6 @@ import { useModalSlideout } from './use-modal-slideout';
 const ModalSlideout = () => {
 	useModalSlideout();
 	useMirrorLabel();
-
-	// the dialog is the top-layer surface: showModal() owns inertness,
-	// the focus trap and the absorbing ::backdrop - none of which an
-	// autonomous element can reach without being a wrapping host
 	return html`<dialog part="dialog"><slot></slot></dialog>`;
 };
 
@@ -20,6 +16,8 @@ export class ModalSlideoutBase extends HTMLElement {
 	controls?: SlideoutControls;
 
 	connectedCallback() {
+		// the inner dialog is the dialog: the host carries none of its
+		// semantics
 		this.setAttribute('aria-modal', 'true');
 	}
 

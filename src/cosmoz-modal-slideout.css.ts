@@ -1,10 +1,8 @@
 import { tagged as css } from '@neovici/cosmoz-utils';
 
 /**
- * The modal drawer's surface: the inner `dialog` is the top-layer
- * element (`showModal()`), so the surface styles target it and the
- * scrim targets `dialog::backdrop` - which absorbs its clicks and
- * inherits custom properties from the originating element, so
+ * The modal drawer's surface styles; `::backdrop` inherits custom
+ * properties from the originating element, so
  * `--cosmoz-slideout-backdrop` resolves there.
  */
 export default css`
