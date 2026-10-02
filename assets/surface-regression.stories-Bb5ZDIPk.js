@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r}from"./iframe-BbjzEM5R.js";import{t as i}from"./cosmoz-button-CtkBdSYu.js";import{t as a}from"./cosmoz-slideout-CDyB4oDY.js";import{t as o}from"./cosmoz-slideout-panel-vaKugmTZ.js";import{n as s,r as c}from"./chrome-CYIk356Y.js";var l,u,d,f,p,m,h,g;e((()=>{i(),n(),a(),o(),c(),{expect:l,waitFor:u}=__STORYBOOK_MODULE_TEST__,d={title:`CosmozSlideout/Test`,component:`cosmoz-slideout`,tags:[`!autodocs`]},f={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>t(r`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r}from"./iframe-ZQZcm3_E.js";import{t as i,y as a}from"./cosmoz-slideout-panel-Dfq-x_xt.js";import{n as o,r as s}from"./chrome-BycPpYic.js";import{t as c}from"./cosmoz-slideout-BQOLIm6Z.js";var l,u,d,f,p,m,h,g;e((()=>{a(),n(),c(),i(),s(),{expect:l,waitFor:u}=__STORYBOOK_MODULE_TEST__,d={title:`CosmozSlideout`,component:`cosmoz-slideout`,tags:[`!autodocs`]},f={render:()=>{let e=document.createElement(`div`),n=!1,i=()=>t(r`
 					<cosmoz-slideout
 						aria-label="Supplier #4021"
 						.opened=${n}
@@ -49,7 +49,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r}
 						<cosmoz-slideout-panel
 							@request-close=${e=>e.preventDefault()}
 						>
-							${s(`Vetoed`,{})}
+							${o(`Vetoed`,{})}
 							<p>Body</p>
 						</cosmoz-slideout-panel>
 					</cosmoz-slideout>
