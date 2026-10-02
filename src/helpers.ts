@@ -15,8 +15,6 @@ export const slideout = (props: SlideoutProps, content: unknown) => html`
 		aria-label=${ifDefined(props.ariaLabel)}
 		aria-labelledby=${ifDefined(props.ariaLabelledby)}
 		@opened-changed=${props.onOpenedChanged}
-		@open=${props.onOpen}
-		@close=${props.onClose}
 		@full-screen-changed=${props.onFullScreenChanged}
 	>
 		${content}
@@ -35,8 +33,6 @@ export const modalSlideout = (
 		aria-label=${ifDefined(props.ariaLabel)}
 		aria-labelledby=${ifDefined(props.ariaLabelledby)}
 		@opened-changed=${props.onOpenedChanged}
-		@open=${props.onOpen}
-		@close=${props.onClose}
 		@full-screen-changed=${props.onFullScreenChanged}
 	>
 		${content}

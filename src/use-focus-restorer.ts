@@ -9,7 +9,7 @@ export type Focus = {
 	capture(): void;
 	/** Arms the pending restore when focus is inside the surface. */
 	arm(): void;
-	/** Walks focus back to the opener (the close settle). */
+	/** Walks focus back to the opener (after the close flip). */
 	restore(): void;
 };
 

@@ -35,9 +35,9 @@ const boot = () => {
 	// must land outside the surface covers
 	el.style.setProperty('--cosmoz-slideout-width', '120px');
 	const events: string[] = [];
-	for (const type of ['open', 'close'] as const) {
-		el.addEventListener(type, () => events.push(`${type} event`));
-	}
+	el.addEventListener('toggle', () =>
+		events.push(`toggle:${el.matches(':popover-open') ? 'open' : 'closed'}`),
+	);
 	const openedChanged = vi.fn();
 	el.addEventListener('opened-changed', openedChanged);
 	el.innerHTML = '<input id="field-in" />';
@@ -77,7 +77,7 @@ describe('cosmoz-modal-slideout', () => {
 		await vi.waitFor(() => expect(document.activeElement).toBe(field()), {
 			timeout: 3000,
 		});
-		await vi.waitFor(() => expect(events).toEqual(['open event']), {
+		await vi.waitFor(() => expect(events).toEqual(['toggle:open']), {
 			timeout: 3000,
 		});
 		expect(openedChanged).toHaveBeenCalledTimes(1);
@@ -101,8 +101,8 @@ describe('cosmoz-modal-slideout', () => {
 		await vi.waitFor(() => expect(el.matches(':popover-open')).toBe(true), {
 			timeout: 3000,
 		});
-		// settle before Esc: a mid-flight close skips the open announce
-		await vi.waitFor(() => expect(events).toEqual(['open event']), {
+		// settle before Esc: a mid-flight close skips the open record
+		await vi.waitFor(() => expect(events).toEqual(['toggle:open']), {
 			timeout: 3000,
 		});
 		field().focus();
@@ -114,12 +114,12 @@ describe('cosmoz-modal-slideout', () => {
 			timeout: 3000,
 		});
 		await vi.waitFor(
-			() => expect(events).toEqual(['open event', 'close event']),
+			() => expect(events).toEqual(['toggle:open', 'toggle:closed']),
 			{ timeout: 3000 },
 		);
-		// open + one dismissal notify - a programmatic close echoes none
-		expect(openedChanged).toHaveBeenCalledTimes(2);
-		expect(openedChanged.mock.calls[1][0].detail).toEqual({ value: false });
+		// open + no dismissal notify: the native path records via
+		// `toggle` only (`opened-changed` is the element's intent channel)
+		expect(openedChanged).toHaveBeenCalledTimes(1);
 		expect(el.hasAttribute('opened')).toBe(false);
 		await vi.waitFor(() => expect(document.activeElement).toBe(opener));
 	});
@@ -129,7 +129,7 @@ describe('cosmoz-modal-slideout', () => {
 		await readyWait(el);
 
 		el.open();
-		await vi.waitFor(() => expect(events).toEqual(['open event']), {
+		await vi.waitFor(() => expect(events).toEqual(['toggle:open']), {
 			timeout: 3000,
 		});
 
@@ -147,7 +147,7 @@ describe('cosmoz-modal-slideout', () => {
 		veto = false;
 		el.close();
 		await vi.waitFor(
-			() => expect(events).toEqual(['open event', 'close event']),
+			() => expect(events).toEqual(['toggle:open', 'toggle:closed']),
 			{ timeout: 3000 },
 		);
 		// notify order: open(true), vetoed attempt (the dispatch precedes
@@ -161,7 +161,7 @@ describe('cosmoz-modal-slideout', () => {
 		});
 	});
 
-	it('backdrop click (trusted): final dismissal, non-cancelable notify', async () => {
+	it('backdrop click (trusted): final dismissal, no veto', async () => {
 		const { el, opener, events, openedChanged, field } = boot();
 		await readyWait(el);
 
@@ -169,13 +169,13 @@ describe('cosmoz-modal-slideout', () => {
 		await vi.waitFor(() => expect(el.matches(':popover-open')).toBe(true), {
 			timeout: 3000,
 		});
-		await vi.waitFor(() => expect(events).toEqual(['open event']), {
+		await vi.waitFor(() => expect(events).toEqual(['toggle:open']), {
 			timeout: 3000,
 		});
 		field().focus();
 
-		// a veto attempt on the native path is inert: the notify is
-		// non-cancelable, the dismissal already happened
+		// a veto attempt on the native path is inert: the dismissal has
+		// already happened, and the record is the platform's `toggle`
 		el.addEventListener('opened-changed', (e) => e.preventDefault());
 
 		// trusted click on the outside opener: the light-dismiss gesture
@@ -188,29 +188,33 @@ describe('cosmoz-modal-slideout', () => {
 			timeout: 3000,
 		});
 		await vi.waitFor(
-			() => expect(events).toEqual(['open event', 'close event']),
+			() => expect(events).toEqual(['toggle:open', 'toggle:closed']),
 			{ timeout: 3000 },
 		);
 		// the click's own focus lands on the opener (the gesture's
 		// target); no restore moves it otherwise
 		await vi.waitFor(() => expect(document.activeElement).toBe(opener));
-		expect(openedChanged).toHaveBeenCalledTimes(2);
+		// the native path dispatches no `opened-changed`
+		expect(openedChanged).toHaveBeenCalledTimes(1);
 	});
 
-	it('stacked modals: B sibling-closes A; A settles once without stealing focus', async () => {
+	it('stacked modals: B sibling-closes A; A records via toggle without stealing focus', async () => {
 		const { el: a, events: aEvents, field } = boot();
 		const b = document.createElement('cosmoz-modal-slideout') as Surface;
 		b.innerHTML = '<input id="field-b" autofocus />';
 		const bEvents: string[] = [];
-		b.addEventListener('open', () => bEvents.push('open event'));
-		b.addEventListener('close', () => bEvents.push('close event'));
+		b.addEventListener('toggle', () =>
+			bEvents.push(
+				b.matches(':popover-open') ? 'toggle:open' : 'toggle:closed',
+			),
+		);
 		document.body.append(b);
 
 		await readyWait(a);
 		await readyWait(b);
 
 		a.open();
-		await vi.waitFor(() => expect(aEvents).toEqual(['open event']), {
+		await vi.waitFor(() => expect(aEvents).toEqual(['toggle:open']), {
 			timeout: 3000,
 		});
 		field().focus();
@@ -226,10 +230,10 @@ describe('cosmoz-modal-slideout', () => {
 			timeout: 3000,
 		});
 
-		// past A's settle: close announced, focus unmoved
-		await tick(1300);
-		expect(aEvents).toEqual(['open event', 'close event']);
-		expect(bEvents).toEqual(['open event']);
+		// past A's flip: close recorded via the platform's toggle, focus unmoved
+		await tick(100);
+		expect(aEvents).toEqual(['toggle:open', 'toggle:closed']);
+		expect(bEvents).toEqual(['toggle:open']);
 		expect(document.activeElement?.id).toBe('field-b');
-	});
+	}, 10000);
 });

@@ -3,23 +3,20 @@ import type { SlideoutElement } from './types';
 import { useAttribute } from './use-attribute';
 import { useCloseFallback } from './use-close-fallback';
 import { useCloseWatcher } from './use-close-watcher';
-import { useEggTimer } from './use-egg-timer';
 import { useFocusRestorer } from './use-focus-restorer';
 import { useFullScreen } from './use-full-screen';
 import { useHandleRequestClose } from './use-handle-request-close';
 import { useImperativeApi } from './use-imperative-api';
-import { useStateMachine } from './use-state-machine';
-
-type State = 'closed' | 'opening' | 'open' | 'closing';
-type Action = 'OPEN' | 'CLOSE' | 'SETTLE';
 
 /**
- * The slideout's lifecycle: open()/close() funnel every close source
- * through the cancelable `opened-changed` contract; the settle machine
- * runs the surface's phase effects (popover promotion/demotion, the
- * settle cap, the settled `open`/`close` announce, focus restoration)
- * synchronously, as a per-phase cleanup ledger; `opened` (the reactive
- * attribute read) dispatches the flips and the reconnect resume.
+ * The slideout's lifecycle: `opened` (the reactive attribute read,
+ * reconciled from DOM truth) drives an idempotent popover flip - show
+ * when the attribute says so and the platform disagrees, hide in the
+ * other mismatch, no-op on agreement. Focus capture precedes
+ * `showPopover` (the browser's focusing steps read it synchronously);
+ * restore follows `hidePopover`. No phase bookkeeping: nothing here is
+ * asynchronous, races are impossible, and a flip is visible to
+ * consumers through the platform's own `toggle` event.
  */
 export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 	const [opened, setOpened] = useAttribute('opened');
@@ -32,82 +29,18 @@ export const useSlideout = ({ noEscape = false }: SlideoutElement) => {
 
 	const host = useHost<HTMLElement>();
 	const focus = useFocusRestorer();
-	const timer = useEggTimer();
 
-	const machine = useStateMachine<State, Action>('closed', {
-		closed: {
-			enter: [
-				() => {
-					host.dispatchEvent(new Event('close', { bubbles: true }));
-					focus.restore();
-				},
-			],
-			transitions: {
-				OPEN: {
-					to: 'opening',
-					guard: [() => !host.matches(':popover-open')],
-				},
-			},
-		},
-		opening: {
-			// capture precedes showPopover: the focusing steps read it
-			enter: [
-				focus.capture,
-				() => host.showPopover(),
-				({ send }) => timer.arm(() => send('SETTLE')),
-			],
-			exit: [timer.clear],
-			transitions: {
-				// re-append resume: per the attribute's truth
-				OPEN: { to: 'opening' },
-				CLOSE: { to: 'closing' },
-				SETTLE: { to: 'open' },
-			},
-		},
-		open: {
-			enter: [
-				() => {
-					host.dispatchEvent(new Event('open', { bubbles: true }));
-					focus.restore();
-				},
-			],
-			transitions: {
-				CLOSE: {
-					to: 'closing',
-					guard: [() => host.matches(':popover-open')],
-				},
-			},
-		},
-		closing: {
-			enter: [
-				focus.arm,
-				() => host.hidePopover(),
-				({ send }) => timer.arm(() => send('SETTLE')),
-			],
-			exit: [timer.clear],
-			transitions: {
-				CLOSE: { to: 'closing' },
-				OPEN: { to: 'opening' },
-				SETTLE: { to: 'closed' },
-			},
-		},
-	});
-
-	useEffect(
-		() =>
-			host.addEventListener('transitionend', (e) => {
-				if (e.target !== host || e.propertyName !== 'translate') {
-					return;
-				}
-				machine.send('SETTLE');
-			}),
-		[],
-	);
-
-	// re-append resume: churn re-runs hit guards and no-op
 	useEffect(() => {
-		machine.send(opened ? 'OPEN' : 'CLOSE');
-	}, [opened]);
+		const isOpen = host.matches(':popover-open');
+		if (opened && !isOpen) {
+			focus.capture(); // precedes showPopover: the focusing steps read it
+			host.showPopover();
+		} else if (!opened && isOpen) {
+			focus.arm();
+			host.hidePopover();
+			focus.restore();
+		}
+	}, [opened, host, focus]);
 
 	const { fullScreen, toggle } = useFullScreen();
 
