@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r,ut as i}from"./iframe-D1k0Osf9.js";import{v as a,y as o}from"./use-imperative-api-CSxclYaV.js";import{t as s}from"./cosmoz-button-ObI7Pexd.js";import{t as c}from"./cosmoz-slideout-vOYaNQ9T.js";import{n as l,r as u,t as d}from"./story-docs-CVcPOcP0.js";import{t as f}from"./cosmoz-slideout-panel-BwP5709u.js";import{i as p,n as m,r as h,t as g}from"./chrome-hcIC7QVf.js";import{n as _,r as v,t as y}from"./arg-types-CXxcK3Un.js";var b,x,S,C,w,T,E,D,O,k;e((()=>{s(),n(),a(),c(),f(),_(),h(),l(),{expect:b,waitFor:x}=__STORYBOOK_MODULE_TEST__,S=(e,t,n,a)=>r`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r,ut as i}from"./iframe-CIRWWJHW.js";import{v as a,y as o}from"./use-imperative-api-DO5vi0Ul.js";import{t as s}from"./cosmoz-button-B9Zoldxi.js";import{t as c}from"./cosmoz-slideout-panel-CRKQDjad.js";import{n as l,r as u,t as d}from"./story-docs-CVcPOcP0.js";import{i as f,n as p,r as m,t as h}from"./chrome-WgmRkc-F.js";import{t as g}from"./cosmoz-slideout-D1nVv1N_.js";import{n as _,r as v,t as y}from"./arg-types-CXxcK3Un.js";var b,x,S,C,w,T,E,D,O,k;e((()=>{s(),n(),a(),g(),c(),_(),m(),l(),{expect:b,waitFor:x}=__STORYBOOK_MODULE_TEST__,S=(e,t,n,a)=>r`
 	<cosmoz-slideout
 		.opened=${t}
 		aria-label=${o(e[`aria-label`])}
@@ -8,7 +8,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r,
 		@opened-changed=${e=>n(e.detail.value)}
 	>
 		<cosmoz-slideout-panel>
-			${a.header?m(a.header.title,{subtitle:a.header.subtitle}):i}
+			${a.header?p(a.header.title,{subtitle:a.header.subtitle}):i}
 			${a.body}
 		</cosmoz-slideout-panel>
 	</cosmoz-slideout>
@@ -24,10 +24,10 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r,
 								slot="footer"
 								style="display: flex; justify-content: flex-end; gap: 8px;"
 							>
-								<cosmoz-button variant="secondary" @click=${p}>
+								<cosmoz-button variant="secondary" @click=${f}>
 									Cancel
 								</cosmoz-button>
-								<cosmoz-button variant="primary" @click=${p}>
+								<cosmoz-button variant="primary" @click=${f}>
 									Save
 								</cosmoz-button>
 							</div>
@@ -54,7 +54,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r,
 										· Invoice ${4200+e} matched automatically.
 									</p>
 								`)}
-							${g(r`<cosmoz-button variant="secondary" @click=${p}>
+							${h(r`<cosmoz-button variant="secondary" @click=${f}>
 									Close
 								</cosmoz-button>`)}
 						`}),n);return o(),C(`Open activity`,()=>{a=!0,o()},n)},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open activity/iu}));let i=t.querySelector(`cosmoz-slideout-panel`),a=i.shadowRoot.querySelector(`.body`),o=i.shadowRoot.querySelector(`[part="header"]`),s=i.shadowRoot.querySelector(`[part="footer"]`);await n(`scrolls the body; header/footer stay outside it`,async()=>{await x(()=>b(a.scrollHeight).toBeGreaterThan(0)),b(o.closest(`.body`)).toBeNull(),b(s.closest(`.body`)).toBeNull()})}},k=[`Default`,`CustomHeader`,`BodyOnly`,`ScrollableContent`]}))();export{D as BodyOnly,E as CustomHeader,T as Default,O as ScrollableContent,k as __namedExportsOrder,w as default};

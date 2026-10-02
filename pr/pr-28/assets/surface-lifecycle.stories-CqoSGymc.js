@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r}from"./iframe-D1k0Osf9.js";import{t as i}from"./cosmoz-button-ObI7Pexd.js";import{t as a}from"./cosmoz-slideout-vOYaNQ9T.js";import{n as o,r as s}from"./story-docs-CVcPOcP0.js";import{t as c}from"./cosmoz-slideout-panel-BwP5709u.js";import{n as l,r as u}from"./chrome-hcIC7QVf.js";var d,f,p,m,h;e((()=>{i(),n(),a(),c(),u(),o(),{expect:d,waitFor:f}=__STORYBOOK_MODULE_TEST__,p={title:`CosmozSlideout/Events`,component:`cosmoz-slideout`,tags:[`autodocs`]},m={parameters:s("The surface event lifecycle: `opened-changed` (the cancelable intent) / `full-screen-changed` / `toggle` (the platform record). The element persists in the DOM across open/close cycles."),render:()=>{let e=document.createElement(`div`),n=document.createElement(`ol`);n.dataset.testid=`event-log`,n.style.cssText=`margin: calc(var(--cz-spacing) * 3) 0 0; color: var(--cz-color-text-tertiary); font-family: var(--cz-font-body); font-size: var(--cz-text-sm);`;let i=e=>{let t=document.createElement(`li`);t.textContent=e,n.append(t)},a=e=>e.currentTarget.closest(`cosmoz-slideout`),o=!1,s=()=>t(r`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r}from"./iframe-CIRWWJHW.js";import{t as i}from"./cosmoz-button-B9Zoldxi.js";import{t as a}from"./cosmoz-slideout-panel-CRKQDjad.js";import{n as o,r as s}from"./story-docs-CVcPOcP0.js";import{n as c,r as l}from"./chrome-WgmRkc-F.js";import{t as u}from"./cosmoz-slideout-D1nVv1N_.js";var d,f,p,m,h;e((()=>{i(),n(),u(),a(),l(),o(),{expect:d,waitFor:f}=__STORYBOOK_MODULE_TEST__,p={title:`CosmozSlideout/Events`,component:`cosmoz-slideout`,tags:[`autodocs`]},m={parameters:s("The surface event lifecycle: `opened-changed` (the cancelable intent) / `full-screen-changed` / `toggle` (the platform record). The element persists in the DOM across open/close cycles."),render:()=>{let e=document.createElement(`div`),n=document.createElement(`ol`);n.dataset.testid=`event-log`,n.style.cssText=`margin: calc(var(--cz-spacing) * 3) 0 0; color: var(--cz-color-text-tertiary); font-family: var(--cz-font-body); font-size: var(--cz-text-sm);`;let i=e=>{let t=document.createElement(`li`);t.textContent=e,n.append(t)},a=e=>e.currentTarget.closest(`cosmoz-slideout`),o=!1,s=()=>t(r`
 					<cosmoz-slideout
 						aria-label="Lifecycle"
 						.opened=${o}
@@ -7,7 +7,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r}
 						@toggle=${e=>i(`toggle: ${e.newState}`)}
 					>
 						<cosmoz-slideout-panel>
-							${l(`Lifecycle`,{subtitle:`Events and imperative methods`})}
+							${c(`Lifecycle`,{subtitle:`Events and imperative methods`})}
 							<p>
 								The element persists in the DOM. It emits <code>opened-changed</code>
 								(cancelable intent) as it opens, and the platform's <code>toggle</code>
@@ -32,8 +32,8 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r}
 							</div>
 						</cosmoz-slideout-panel>
 					</cosmoz-slideout>
-				`,e);s();let c=e.querySelector(`cosmoz-slideout`);return r`
-			<cosmoz-button variant="primary" @click=${()=>{n.replaceChildren(),c.open()}}>
+				`,e);s();let l=e.querySelector(`cosmoz-slideout`);return r`
+			<cosmoz-button variant="primary" @click=${()=>{n.replaceChildren(),l.open()}}>
 				Open lifecycle panel
 			</cosmoz-button>
 			${n}${e}

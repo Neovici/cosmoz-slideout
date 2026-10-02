@@ -1,16 +1,16 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,lt as i,mt as a,pt as o,st as s,ut as c}from"./iframe-D1k0Osf9.js";import{B as l,C as u,D as d,E as f,H as p,I as m,K as h,M as g,O as _,R as ee,T as v,V as y,b,h as x,p as te,v as ne,w as re,x as ie,y as S}from"./use-imperative-api-CSxclYaV.js";import{t as ae}from"./cosmoz-button-ObI7Pexd.js";import{a as C,i as oe}from"./untitled-akr6rms1.js";import{n as w,t as se}from"./trusted-6AwRJoKi.js";import{t as ce}from"./cosmoz-slideout-vOYaNQ9T.js";import{n as le,r as T,t as ue}from"./story-docs-CVcPOcP0.js";import{t as de}from"./cosmoz-slideout-panel-BwP5709u.js";import{i as E,n as D,r as fe}from"./chrome-hcIC7QVf.js";var O,pe=e((()=>{a(),d(),s(),O=v(class extends f{constructor(e){if(super(e),e.type!==_.PROPERTY&&e.type!==_.ATTRIBUTE&&e.type!==_.BOOLEAN_ATTRIBUTE)throw Error("The `live` directive is not allowed on child or event bindings");if(!i(e))throw Error("`live` bindings can only contain a single expression")}render(e){return e}update(e,[n]){if(n===r||n===c)return n;let i=e.element,a=e.name;if(e.type===_.PROPERTY){if(n===i[a])return r}else if(e.type===_.BOOLEAN_ATTRIBUTE){if(!!n===i.hasAttribute(a))return r}else if(e.type===_.ATTRIBUTE&&i.getAttribute(a)===n+``)return r;return t(e),n}})})),k,A,me=e((()=>{a(),re(),d(),k=new WeakMap,A=v(class extends u{render(e){return c}update(e,[t]){let n=t!==this.G;return n&&this.rt(void 0),(n||this.lt!==this.ct)&&(this.G=t,this.ht=e.options?.host,this.rt(this.ct=e.element)),c}rt(e){if(this.G!==void 0)if(this.isConnected||(e=void 0),typeof this.G==`function`){let t=this.ht??globalThis,n=k.get(t);n===void 0&&(n=new WeakMap,k.set(t,n)),n.get(this.G)!==void 0&&this.G.call(this.ht,void 0),n.set(this.G,e),e!==void 0&&this.G.call(this.ht,e)}else this.G.value=e}get lt(){return typeof this.G==`function`?k.get(this.ht??globalThis)?.get(this.G):this.G?.value}disconnected(){this.lt===this.ct&&this.rt(void 0)}reconnected(){this.rt(this.ct)}})})),j,M,he=e((()=>{a(),oe(),j=(e,{label:t,invalid:n,errorMessage:r})=>o`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,lt as i,mt as a,pt as o,st as s,ut as c}from"./iframe-CIRWWJHW.js";import{B as l,C as u,D as d,E as f,H as p,I as m,K as h,M as g,O as _,R as ee,T as v,V as y,b,h as x,p as te,v as ne,w as re,x as ie,y as S}from"./use-imperative-api-DO5vi0Ul.js";import{t as ae}from"./cosmoz-button-B9Zoldxi.js";import{t as oe}from"./cosmoz-slideout-panel-CRKQDjad.js";import{n as se,r as C,t as ce}from"./story-docs-CVcPOcP0.js";import{n as w,t as le}from"./trusted-6AwRJoKi.js";import{a as T,i as ue}from"./untitled-DLxRXIw3.js";import{i as E,n as D,r as de}from"./chrome-WgmRkc-F.js";import{t as fe}from"./cosmoz-slideout-D1nVv1N_.js";var O,pe=e((()=>{a(),d(),s(),O=v(class extends f{constructor(e){if(super(e),e.type!==_.PROPERTY&&e.type!==_.ATTRIBUTE&&e.type!==_.BOOLEAN_ATTRIBUTE)throw Error("The `live` directive is not allowed on child or event bindings");if(!i(e))throw Error("`live` bindings can only contain a single expression")}render(e){return e}update(e,[n]){if(n===r||n===c)return n;let i=e.element,a=e.name;if(e.type===_.PROPERTY){if(n===i[a])return r}else if(e.type===_.BOOLEAN_ATTRIBUTE){if(!!n===i.hasAttribute(a))return r}else if(e.type===_.ATTRIBUTE&&i.getAttribute(a)===n+``)return r;return t(e),n}})})),k,A,me=e((()=>{a(),re(),d(),k=new WeakMap,A=v(class extends u{render(e){return c}update(e,[t]){let n=t!==this.G;return n&&this.rt(void 0),(n||this.lt!==this.ct)&&(this.G=t,this.ht=e.options?.host,this.rt(this.ct=e.element)),c}rt(e){if(this.G!==void 0)if(this.isConnected||(e=void 0),typeof this.G==`function`){let t=this.ht??globalThis,n=k.get(t);n===void 0&&(n=new WeakMap,k.set(t,n)),n.get(this.G)!==void 0&&this.G.call(this.ht,void 0),n.set(this.G,e),e!==void 0&&this.G.call(this.ht,e)}else this.G.value=e}get lt(){return typeof this.G==`function`?k.get(this.ht??globalThis)?.get(this.G):this.G?.value}disconnected(){this.lt===this.ct&&this.rt(void 0)}reconnected(){this.rt(this.ct)}})})),j,M,he=e((()=>{a(),ue(),j=(e,{label:t,invalid:n,errorMessage:r})=>o`
 		<div class="float" part="float">&nbsp;</div>
 		<div class="wrap" part="wrap">
 			<slot name="prefix"></slot>
 			<div class="control" part="control">
 				<slot name="control"></slot>
 				${e}
-				${C(t,()=>o`<label for="input" part="label">${t}</label>`)}
+				${T(t,()=>o`<label for="input" part="label">${t}</label>`)}
 			</div>
 			<slot name="suffix"></slot>
 		</div>
 		<div class="line" part="line"></div>
-		${C(n&&r,()=>o`<div class="error" part="error">${r}</div>`)}
+		${T(n&&r,()=>o`<div class="error" part="error">${r}</div>`)}
 	`,M=[`autocomplete`,`readonly`,`disabled`,`maxlength`,`invalid`,`no-label-float`,`always-float-label`]})),N,P,ge=e((()=>{te(),N=x`
 	.wrap {
 		--contour-color: var(--focused-color);
@@ -302,7 +302,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
 				max=${S(V(t,u))}
 				step=${S(d)}
 			/>
-		`,e)},customElements.define(`cosmoz-input`,ie(U,{observedAttributes:H,styleSheets:[h(P)],shadowRootInit:{mode:`open`,delegatesFocus:!0}}))})),W,G,K,q,J,Y,X,Z,Q,$;e((()=>{ae(),Ce(),a(),ce(),de(),fe(),le(),se(),{expect:W,waitFor:G}=__STORYBOOK_MODULE_TEST__,K=(e,t,r)=>()=>{let i=document.createElement(`div`),a=!1,s=()=>n(o`
+		`,e)},customElements.define(`cosmoz-input`,ie(U,{observedAttributes:H,styleSheets:[h(P)],shadowRootInit:{mode:`open`,delegatesFocus:!0}}))})),W,G,K,q,J,Y,X,Z,Q,$;e((()=>{ae(),Ce(),a(),fe(),oe(),de(),se(),le(),{expect:W,waitFor:G}=__STORYBOOK_MODULE_TEST__,K=(e,t,r)=>()=>{let i=document.createElement(`div`),a=!1,s=()=>n(o`
 					<cosmoz-slideout
 						?no-escape=${t}
 						.opened=${a}
@@ -318,7 +318,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
 				${e}
 			</cosmoz-button>
 			${i}
-		`},q={title:`CosmozSlideout/Interaction`,component:`cosmoz-slideout`,tags:[`autodocs`],parameters:ue(`Interaction & focus: non-modal, focus, dismissal, stacking.`)},J={parameters:T(`Non-modal: the page behind stays interactive while open.`),render:()=>{let e=document.createElement(`div`),t=document.createElement(`p`);t.dataset.testid=`bg-count`,t.style.cssText=`margin: calc(var(--cz-spacing) * 3) 0 0; color: var(--cz-color-text-tertiary);`;let r=0;t.textContent=`Background clicks: 0`;let i=()=>{t.textContent=`Background clicks: ${++r}`},a=!1,s=()=>n(o`
+		`},q={title:`CosmozSlideout/Interaction`,component:`cosmoz-slideout`,tags:[`autodocs`],parameters:ce(`Interaction & focus: non-modal, focus, dismissal, stacking.`)},J={parameters:C(`Non-modal: the page behind stays interactive while open.`),render:()=>{let e=document.createElement(`div`),t=document.createElement(`p`);t.dataset.testid=`bg-count`,t.style.cssText=`margin: calc(var(--cz-spacing) * 3) 0 0; color: var(--cz-color-text-tertiary);`;let r=0;t.textContent=`Background clicks: 0`;let i=()=>{t.textContent=`Background clicks: ${++r}`},a=!1,s=()=>n(o`
 					<cosmoz-slideout
 						.opened=${a}
 						@opened-changed=${e=>{a=e.detail.value,s()}}
@@ -351,7 +351,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
 				</cosmoz-button>
 			</div>
 			${t}${e}
-		`},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open panel/iu}));let i=t.querySelector(`cosmoz-slideout`);await n(`background controls remain clickable while open`,async()=>{await G(()=>W(i.matches(`:popover-open`)).toBe(!0)),await r.click(await e.findByShadowRole(`button`,{name:/background action/iu})),W(t.querySelector(`[data-testid="bg-count"]`).textContent).toMatch(/Background clicks: 1/u)})}},Y={parameters:T(`Focus moves into the first marked field on open, back to the opener on close.`),render:K(`Edit profile`,!1,o`
+		`},play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/open panel/iu}));let i=t.querySelector(`cosmoz-slideout`);await n(`background controls remain clickable while open`,async()=>{await G(()=>W(i.matches(`:popover-open`)).toBe(!0)),await r.click(await e.findByShadowRole(`button`,{name:/background action/iu})),W(t.querySelector(`[data-testid="bg-count"]`).textContent).toMatch(/Background clicks: 1/u)})}},Y={parameters:C(`Focus moves into the first marked field on open, back to the opener on close.`),render:K(`Edit profile`,!1,o`
 			<cosmoz-slideout-panel>
 				${D(`Edit profile`,{subtitle:`Focus returns to the opener on close`})}
 				<div style="display: grid; gap: calc(var(--cz-spacing) * 4);">
@@ -366,7 +366,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
 					></cosmoz-input>
 				</div>
 			</cosmoz-slideout-panel>
-		`),play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/edit profile/iu}));let i=t.querySelector(`cosmoz-slideout`);await n(`focus is delegated to the first focusable content`,async()=>{await G(()=>W(i.matches(`:popover-open`)).toBe(!0));let e=i.querySelector(`cosmoz-input`);await G(()=>W(document.activeElement).toBe(e))}),await n(`returns focus to the opener after close`,async()=>{t.querySelector(`cosmoz-slideout-panel`).querySelector(`cosmoz-button[aria-label="Close"]`).click(),await G(()=>W(i.matches(`:popover-open`)).toBe(!1)),await G(()=>W(document.activeElement).toBe(t.querySelector(`cosmoz-button`)),{timeout:3e3})})}},X={parameters:T("`no-escape`: opt out of Escape-to-close."),render:K(`Open guarded draft`,!0,o`
+		`),play:async({canvas:e,canvasElement:t,step:n,userEvent:r})=>{await r.click(await e.findByShadowRole(`button`,{name:/edit profile/iu}));let i=t.querySelector(`cosmoz-slideout`);await n(`focus is delegated to the first focusable content`,async()=>{await G(()=>W(i.matches(`:popover-open`)).toBe(!0));let e=i.querySelector(`cosmoz-input`);await G(()=>W(document.activeElement).toBe(e))}),await n(`returns focus to the opener after close`,async()=>{t.querySelector(`cosmoz-slideout-panel`).querySelector(`cosmoz-button[aria-label="Close"]`).click(),await G(()=>W(i.matches(`:popover-open`)).toBe(!1)),await G(()=>W(document.activeElement).toBe(t.querySelector(`cosmoz-button`)),{timeout:3e3})})}},X={parameters:C("`no-escape`: opt out of Escape-to-close."),render:K(`Open guarded draft`,!0,o`
 			<cosmoz-slideout-panel>
 				${D(`Guarded draft`,{subtitle:`Escape disabled`})}
 				<p>
@@ -399,7 +399,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{ct as t,dt as n,ft as r,
 			${t}
 		</div>
 	</div>
-`,Q={parameters:T(`Multiple slideouts stack; Escape closes only the top-most.`),render:()=>{let e=document.createElement(`div`),t=document.createElement(`div`),r=!1,i=!1,a=()=>n(o`
+`,Q={parameters:C(`Multiple slideouts stack; Escape closes only the top-most.`),render:()=>{let e=document.createElement(`div`),t=document.createElement(`div`),r=!1,i=!1,a=()=>n(o`
 					<cosmoz-slideout
 						aria-label="Second"
 						.opened=${i}

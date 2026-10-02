@@ -1,11 +1,11 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r}from"./iframe-D1k0Osf9.js";import{t as i}from"./cosmoz-button-ObI7Pexd.js";import{t as a}from"./cosmoz-slideout-vOYaNQ9T.js";import{n as o,r as s,t as c}from"./story-docs-CVcPOcP0.js";import{t as l}from"./cosmoz-slideout-panel-BwP5709u.js";import{i as u,n as d,r as f}from"./chrome-hcIC7QVf.js";var p,m,h,g,_,v,y,b;e((()=>{i(),n(),a(),l(),f(),o(),{expect:p,waitFor:m}=__STORYBOOK_MODULE_TEST__,h=(e,t)=>{let n=document.createElement(`span`);n.style.color=t,e.append(n);let r=getComputedStyle(n).color;return n.remove(),r},g={title:`CosmozSlideoutPanel/States`,component:`cosmoz-slideout-panel`,tags:[`autodocs`],parameters:c(`Common panel states - full-screen and local token theming. Busy/loading states are the author's own slotted UI; the panel is property-free.`)},_={parameters:s("`full-screen` (here via `toggleFullScreen()`): the surface covers the whole viewport."),render:()=>{let e=document.createElement(`div`),n=!1,i=e=>e.currentTarget.closest(`cosmoz-slideout`)?.close(),a=()=>t(r`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r}from"./iframe-CIRWWJHW.js";import{t as i}from"./cosmoz-button-B9Zoldxi.js";import{t as a}from"./cosmoz-slideout-panel-CRKQDjad.js";import{n as o,r as s,t as c}from"./story-docs-CVcPOcP0.js";import{i as l,n as u,r as d}from"./chrome-WgmRkc-F.js";import{t as f}from"./cosmoz-slideout-D1nVv1N_.js";var p,m,h,g,_,v,y,b;e((()=>{i(),n(),f(),a(),d(),o(),{expect:p,waitFor:m}=__STORYBOOK_MODULE_TEST__,h=(e,t)=>{let n=document.createElement(`span`);n.style.color=t,e.append(n);let r=getComputedStyle(n).color;return n.remove(),r},g={title:`CosmozSlideoutPanel/States`,component:`cosmoz-slideout-panel`,tags:[`autodocs`],parameters:c(`Common panel states - full-screen and local token theming. Busy/loading states are the author's own slotted UI; the panel is property-free.`)},_={parameters:s("`full-screen` (here via `toggleFullScreen()`): the surface covers the whole viewport."),render:()=>{let e=document.createElement(`div`),n=!1,i=e=>e.currentTarget.closest(`cosmoz-slideout`)?.close(),a=()=>t(r`
 					<cosmoz-slideout
 						aria-label="Account workspace"
 						.opened=${n}
 						@opened-changed=${e=>{n=e.detail.value,a()}}
 					>
 						<cosmoz-slideout-panel>
-							${d(`Account workspace`,{subtitle:`Temporary full-screen review`})}
+							${u(`Account workspace`,{subtitle:`Temporary full-screen review`})}
 							<p>
 								Use full screen for dense review tasks. The state is owned by
 								the shell; this story wires a footer action to its public
@@ -40,7 +40,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r}
 						@opened-changed=${e=>{n=e.detail.value,i()}}
 					>
 						<cosmoz-slideout-panel>
-							${d(`Account`,{subtitle:`Premium · since 2019`})}
+							${u(`Account`,{subtitle:`Premium · since 2019`})}
 							<p style="color: var(--cz-color-text-tertiary);">
 								Local custom properties can tune one panel without breaking
 								global light/dark token behavior.
@@ -49,7 +49,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r}
 								slot="footer"
 								style="display: flex; justify-content: flex-end;"
 							>
-								<cosmoz-button variant="primary" @click=${u}>
+								<cosmoz-button variant="primary" @click=${l}>
 									Done
 								</cosmoz-button>
 							</div>

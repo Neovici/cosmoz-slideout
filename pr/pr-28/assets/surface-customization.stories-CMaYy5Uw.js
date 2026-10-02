@@ -1,4 +1,4 @@
-import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r}from"./iframe-D1k0Osf9.js";import{t as i}from"./cosmoz-button-ObI7Pexd.js";import{t as a}from"./cosmoz-slideout-vOYaNQ9T.js";import{n as o,r as s}from"./story-docs-CVcPOcP0.js";var c,l,u,d,f,p,m;e((()=>{i(),n(),a(),o(),{expect:c,waitFor:l}=__STORYBOOK_MODULE_TEST__,u=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),d=r`
+import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r}from"./iframe-CIRWWJHW.js";import{t as i}from"./cosmoz-button-B9Zoldxi.js";import{n as a,r as o}from"./story-docs-CVcPOcP0.js";import{t as s}from"./cosmoz-slideout-D1nVv1N_.js";var c,l,u,d,f,p,m;e((()=>{i(),n(),s(),a(),{expect:c,waitFor:l}=__STORYBOOK_MODULE_TEST__,u=e=>e.currentTarget.closest(`cosmoz-slideout`).close(),d=r`
 	<cosmoz-button
 		style="position: absolute; top: 8px; right: 8px; z-index: 1;"
 		variant="tertiary"
@@ -8,7 +8,7 @@ import{i as e}from"./preload-helper-B45gAKPr.js";import{dt as t,mt as n,pt as r}
 	>
 		✕
 	</cosmoz-button>
-`,f={title:`CosmozSlideout/Shell/Customization`,component:`cosmoz-slideout`,tags:[`autodocs`]},p={parameters:s("Size and tune the surface with the `--cosmoz-slideout-*` custom properties (here `--cosmoz-slideout-width`). Point them at `@neovici/cosmoz-tokens` `--cz-*` tokens to track the design system and dark mode."),render:()=>{let e=document.createElement(`div`),n=!1,i=()=>t(r`
+`,f={title:`CosmozSlideout/Customization`,component:`cosmoz-slideout`,tags:[`autodocs`]},p={parameters:o("Size and tune the surface with the `--cosmoz-slideout-*` custom properties (here `--cosmoz-slideout-width`). Point them at `@neovici/cosmoz-tokens` `--cz-*` tokens to track the design system and dark mode."),render:()=>{let e=document.createElement(`div`),n=!1,i=()=>t(r`
 					<cosmoz-slideout
 						aria-label="Wide panel"
 						.opened=${n}
