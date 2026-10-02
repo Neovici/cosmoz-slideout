@@ -9,11 +9,11 @@ export type EggTimer = {
 };
 
 /**
- * The egg timer: one armed-or-not slot per surface. `arm` schedules a
- * callback after the cap window (the safety net behind the surface's
- * `translate` transitionend), `clear` retires an armed settle (it must
- * not fire detached or after the phase resolved some other way). The
- * machine never sees the scheduling - it hands callbacks.
+ * The settle cap: `arm` schedules a callback after the cap window -
+ * the backstop behind the surface's `translate` transitionend
+ * (reduced motion, zero duration, a transition the platform cut
+ * short); `clear` retires an armed callback, which must not fire
+ * after the phase resolved another way.
  */
 export const useEggTimer = (): EggTimer => {
 	const self = useRef<EggTimer>({

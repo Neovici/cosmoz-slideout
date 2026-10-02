@@ -19,15 +19,14 @@ export const useCloseWatcher = ({
 }) => {
 	const meta = useMeta({ close });
 
-	// re-runs per open phase - this is what keeps the session's UA stack
-	// position in open order, so Esc routes to the newest open surface
+	// one session per open phase: the newest session receives the
+	// close request, so Esc routes to the newest open surface
 	useEffect(() => {
 		if (!opened || noEscape || !('CloseWatcher' in window)) {
 			return;
 		}
 		const w = new CloseWatcher();
 		w.oncancel = (e) => {
-			// a vetoed `opened-changed` prevents the native close request
 			if (meta.close() === false) {
 				e.preventDefault();
 			}
