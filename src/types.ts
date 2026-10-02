@@ -1,3 +1,4 @@
+import type { ModalSlideoutBase } from './cosmoz-modal-slideout';
 import type { SlideoutBase } from './cosmoz-slideout';
 
 /** Props of `<cosmoz-slideout>`; all attributes/properties are optional. */
@@ -35,6 +36,9 @@ export type PartialControls = {
 /** The `<cosmoz-slideout>` element. */
 export type SlideoutElement = HTMLElement & Props;
 
+/** The `<cosmoz-modal-slideout>` element. */
+export type ModalElement = ModalSlideoutBase & Omit<Props, 'noEscape'>;
+
 /** Props of `<cosmoz-slideout-panel>` (property-free by design). */
 export type PanelProps = Record<never, never>;
 
@@ -44,6 +48,7 @@ export type PanelElement = HTMLElement & PanelProps;
 declare global {
 	interface HTMLElementTagNameMap {
 		'cosmoz-slideout': SlideoutBase & Props;
+		'cosmoz-modal-slideout': ModalSlideoutBase & Props;
 		'cosmoz-slideout-panel': HTMLElement & PanelProps;
 	}
 }

@@ -1,8 +1,9 @@
 # cosmoz-slideout
 
-A non-modal, top-layer slideout (drawer / sidebar) web component built with pionjs and lit-html.
+A top-layer slideout (drawer / sidebar) web component built with pionjs and lit-html, in a
+non-modal and a modal flavor.
 
-This package ships **two custom elements that compose**:
+This package ships **three custom elements** (two that compose, one modal sibling):
 
 - **`<cosmoz-slideout>`** - the **surface**. It **is itself the popover** (`<cosmoz-slideout popover="manual">`): the element renders in the browser top-layer via the native
   **Popover API**, is **non-modal** (the page behind stays interactive),
@@ -15,6 +16,10 @@ This package ships **two custom elements that compose**:
   (region wrappers have no box of their own; spacing and dividers are painted on the slotted elements).
   The header, its title, and any close control are slotted in. It owns no
   open/close lifecycle - it is meant to be **slotted into a `<cosmoz-slideout>`**.
+- **`<cosmoz-modal-slideout>`** - the **modal drawer**: the same surface rendered
+  `popover="auto"` + `aria-modal="true"` with a scrim backdrop; the platform owns
+  its dismissal (Esc, hardware back, backdrop click). See
+  [the modal drawer](#the-modal-drawer---cosmoz-modal-slideout).
 
 99% of the time you use them together:
 
@@ -55,8 +60,10 @@ persists in the DOM across open/close cycles - there is no add-to-open / remove-
 
 ```html
 <!-- lit-html two-way binding -->
-<cosmoz-slideout .opened="${this.open}" @opened-changed="${(e)" ="">
-	(this.open = e.detail.value)} >
+<cosmoz-slideout
+	.opened="${this.open}"
+	@opened-changed="${(e) => (this.open = e.detail.value)}"
+>
 	<cosmoz-slideout-panel>
 		<my-header slot="header">Acme</my-header>
 		<p>…body…</p>
@@ -71,6 +78,97 @@ A child asks the surface to close by dispatching a bubbling, **cancelable** **`r
 your slotted header's close button does exactly this, so it never needs a reference to the slideout.
 Your own buttons can do the same, or call `closest('cosmoz-slideout')?.close()`. To guard a close
 ("unsaved changes"), call `preventDefault()` on `request-close`, or on the cancelable `opened-changed`.
+
+## The modal drawer - `<cosmoz-modal-slideout>`
+
+A second element for drawers that block out the page: confirmations, detail panels over dense
+tables. It is the same surface as `<cosmoz-slideout>` - one blank slot, the same `opened`
+lifecycle, the same slide animation - with the platform's own modal machinery: `popover="auto"`,
+`aria-modal="true"`, and a scrim **backdrop** behind it.
+
+```html
+<cosmoz-modal-slideout
+	.opened="${this.open}"
+	@opened-changed="${(e) => (this.open = e.detail.value)}"
+>
+	<cosmoz-slideout-panel>
+		<my-header slot="header">Acme</my-header>
+		<p>…body…</p>
+	</cosmoz-slideout-panel>
+</cosmoz-modal-slideout>
+```
+
+### `<cosmoz-modal-slideout>` API
+
+#### Attributes & properties
+
+- `opened` - show/hide the drawer; identical two-way reactive attribute as on `<cosmoz-slideout>`
+  (`.opened=${x}`, `?opened`, bare markup, or `open()`/`close()`).
+- `full-screen` - when present the drawer covers the whole document. Flip the attribute or call
+  `toggleFullScreen()`.
+- `aria-label` / `aria-labelledby` - label the dialog (mirrored; see the surface's guidance above).
+- `popover` / `aria-modal` - set by the element itself (`auto` / `true`) and **overridden on
+  reconnect**: these are the type's constants, not configuration. Use `<cosmoz-slideout>` for
+  non-modal.
+- **No `no-escape`.** Escape is the platform's close request here; disable-on-escape is not a
+  per-instance knob.
+
+#### Methods
+
+- `open()` - set `opened` to true (play the slide-in).
+- `close()` - set `opened` to false (play the slide-out); `close` fires when it finishes.
+- `toggleFullScreen()` - toggle the `full-screen` state.
+
+#### Events
+
+- `opened-changed` - **two cancelability modes, by close source**:
+  - programmatic changes (`close()`, `request-close`, attribute writes) dispatch it
+    **cancelable** - `preventDefault()` vetoes, exactly as on `<cosmoz-slideout>`;
+  - native dismissals (Esc, hardware back, backdrop click, a sibling `popover="auto"` surface
+    opening) dispatch it **non-cancelable** - the dismissal has already happened, there is nothing
+    left to veto; the event is the record of it, and the `opened` attribute follows.
+    Both bubble; `detail = { value }`.
+- `open` / `close` - dispatched when the slide animation settles, as on the surface (bubbles).
+- `full-screen-changed` - dispatched when the `full-screen` state changes; `detail = { value }`
+  (bubbles, cancelable).
+- `request-close` - **listened for**, not emitted; identical to the surface.
+- `toggle` / `beforetoggle` - the platform's own `ToggleEvent`s (listened for by the element to
+  sync `opened`; they also reach your listeners: `newState` is `'open'`/`'closed'`).
+
+#### Slot
+
+- _default_ - the same single blank slot; drop a `<cosmoz-slideout-panel>` in for the styled
+  layout, or author your own chrome.
+
+### Dismissal model
+
+**The UA owns dismissal.** Esc, the hardware back button (Android), and clicks/taps outside the
+drawer all close it natively - through the browser's own close watcher and light dismiss,
+newest-first across stacked surfaces. This path is **final**: the platform provides no veto for
+`popover="auto"` dismissals, so attempting `preventDefault()` on `opened-changed` there is inert.
+
+Programmatic closes keep the vetoable funnel - `close()`, a slotted `request-close`, and attribute
+writes work exactly as on `<cosmoz-slideout>` (unsaved-changes guards).
+
+**Sibling close is platform semantics**: opening a second `popover="auto"` surface closes the
+first. The first still settles and announces `close` - and does not steal focus back from the
+surface that replaced it.
+
+### Backdrop
+
+`::backdrop` fades with the surface's duration/easing tokens and its color is
+`--cosmoz-slideout-backdrop` (default `color-mix(in srgb, --cz-color-bg-overlay 50%, transparent)`).
+
+### Accessibility
+
+- `role="dialog"` + `aria-modal="true"`: like `<dialog>`, popover modality does **not** make the
+  page inert - tabbing can still reach the page behind the backdrop. If you need a focus trap,
+  this is not the component for it.
+- Focus behavior on open matches the surface (the popover focusing steps honor `autofocus` in your
+  content, or on the drawer itself). On close after a **key** dismissal, the platform restores
+  focus to what was focused at show time; after a **pointer** dismissal, focus stays where the
+  user's gesture left it; after a programmatic close, focus returns to the opener when it was
+  still inside the drawer.
 
 ## API
 
@@ -204,17 +302,24 @@ props are render-helper sugar for listening to the element's events (`@close=${p
 element itself has no callback properties. `slideoutPanel(props, content)` accepts only `class` and
 `style` (the panel is property-free). The `SlideoutProps` type is exported from the package root.
 
+`modalSlideout(props, content)` is the modal drawer's helper: the same props minus `noEscape`
+(which does not exist on `<cosmoz-modal-slideout>`); `ModalSlideoutProps` is exported too.
+
 ### Typed lookups
 
-`HTMLElementTagNameMap` is augmented by importing the surface module, so DOM queries return fully
+`HTMLElementTagNameMap` is augmented by importing the element modules, so DOM queries return fully
 typed elements:
 
 ```ts
 import '@neovici/cosmoz-slideout/cosmoz-slideout';
+import '@neovici/cosmoz-slideout/cosmoz-modal-slideout';
 
 const view = document.querySelector('cosmoz-slideout');
 view.opened; // typed
 view.close(); // typed
+
+const modal = document.querySelector('cosmoz-modal-slideout'); // typed
+modal.open(); // typed
 
 const panel = document.querySelector('cosmoz-slideout-panel'); // typed (property-free)
 ```
@@ -256,12 +361,11 @@ Set `opened` synchronously inside the opening handler (e.g. the click); if you s
   always works. If the drawer has visible heading text and the heading element can carry an
   `aria-labelledby`-addressable id in the light DOM, either is acceptable - just never leave it
   unnamed.
-- **`role="dialog"` + `aria-modal="false"` is intentional**: non-modal dialogs keep the page
-  behind interactive, so the drawer does not trap focus. Do **not** flip `aria-modal` to `true`
-  unless you also implement focus trapping - with this component that combination is wrong.
-  If a modal drawer appears later, it should be built as a `modal`/`aria-modal` variant of this
-  element (with focus trapping owned by the component, not hand-rolled per consumer), not by
-  flipping the aria attribute from the outside.
+- **`role="dialog"` + `aria-modal="false"` is intentional on `<cosmoz-slideout>`**: non-modal dialogs
+  keep the page behind interactive, so the drawer does not trap focus. Do **not** flip `aria-modal`
+  to `true` by hand. For a modal drawer use `<cosmoz-modal-slideout>` - it carries
+  `aria-modal="true"` and the backdrop (see its own section above; popover modality still does not
+  trap focus, per the platform).
 - **The drawer is a landmark-free dialog**: don't rely on `aria-expanded`/`aria-controls` wiring
   from the trigger button - instead the trigger toggles `opened`, and the `open`/`close` events
   let you announce state if you must (`aria-live`). Keep the announcements minimal: drawer
@@ -318,7 +422,8 @@ embellishment is **opt-out**: override its property (e.g. `--cosmoz-slideout-bor
 - **Multiple open slideouts** all render pinned to the right edge and therefore stack on top of one
   another (top-layer LIFO). Escape and back navigation target the most-recently-opened one
   (each instance holds its own close-request session with the browser - no shared state between
-  instances).
+  instances). `<cosmoz-modal-slideout>` follows the platform's `popover="auto"` rule instead:
+  opening a second one closes the first (see the modal drawer section).
 - **Close controls live in your slotted header** and close by dispatching
   `request-close`. They are independent of Escape-to-close, which is a surface behavior controlled by
   `no-escape` (on `<cosmoz-slideout>`) and stays active either way.

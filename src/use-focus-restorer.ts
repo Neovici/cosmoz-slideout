@@ -1,7 +1,7 @@
 import { useHost, useRef } from '@pionjs/pion';
 
 /** The focus domain: capture → arm → restore. */
-type Focus = {
+export type Focus = {
 	host: HTMLElement;
 	opener: HTMLElement | null;
 	armed: boolean;
@@ -38,9 +38,15 @@ export const useFocusRestorer = (): Focus => {
 		restore() {
 			const { opener, armed } = self;
 			self.armed = false;
-			if (armed && opener?.isConnected) {
-				opener.focus({ preventScroll: true });
+			if (!armed || !opener?.isConnected) {
+				return;
 			}
+			// another surface is open and holds focus: keep it there
+			const top = document.activeElement?.closest?.(':popover-open');
+			if (top && top !== self.host) {
+				return;
+			}
+			opener.focus({ preventScroll: true });
 		},
 	}).current as Focus;
 	return self;
