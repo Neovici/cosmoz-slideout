@@ -14,7 +14,7 @@ type SlideoutEl = HTMLElement & {
 };
 
 const meta: Meta = {
-	title: 'CosmozSlideout/Events',
+	title: 'CosmozSlideout',
 	component: 'cosmoz-slideout',
 	tags: ['autodocs'],
 };

@@ -23,7 +23,7 @@ const cssColor = (scope: HTMLElement, value: string) => {
 };
 
 const meta: Meta = {
-	title: 'CosmozSlideoutPanel/States',
+	title: 'CosmozSlideoutPanel',
 	component: 'cosmoz-slideout-panel',
 	tags: ['autodocs'],
 	parameters: componentDoc(
@@ -191,14 +191,11 @@ export const ThemedSurface: Story = {
 		);
 		const shell = canvasElement.querySelector('cosmoz-slideout') as ShellEl;
 
-		await step(
-			'resolves the local override through tokens',
-			async () => {
-				await waitFor(() => expect(shell.matches(':popover-open')).toBe(true));
-				expect(getComputedStyle(shell).backgroundColor).toBe(
-					cssColor(shell, 'var(--cz-color-bg-secondary)'),
-				);
-			},
-		);
+		await step('resolves the local override through tokens', async () => {
+			await waitFor(() => expect(shell.matches(':popover-open')).toBe(true));
+			expect(getComputedStyle(shell).backgroundColor).toBe(
+				cssColor(shell, 'var(--cz-color-bg-secondary)'),
+			);
+		});
 	},
 };

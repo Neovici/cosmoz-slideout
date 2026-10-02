@@ -9,7 +9,7 @@ import { header } from './chrome';
 type SlideoutEl = HTMLElement & { close(): void };
 
 const meta: Meta = {
-	title: 'CosmozSlideout/Test',
+	title: 'CosmozSlideout',
 	component: 'cosmoz-slideout',
 	tags: ['!autodocs'],
 };
