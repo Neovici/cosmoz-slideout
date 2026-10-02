@@ -5,15 +5,23 @@ import { expect, waitFor } from 'storybook/test';
 import '../src/cosmoz-modal-slideout';
 import '../src/cosmoz-slideout-panel';
 import { modalSlideout, slideoutPanel } from '../src/helpers';
-import { storyDoc } from './story-docs';
+import { componentDoc, storyDoc } from './story-docs';
 import { skipUnlessTrusted } from './trusted';
 
 type SlideoutEl = HTMLElement & { open(): void; close(): void };
 
 const meta: Meta = {
-	title: 'CosmozSlideout/Modal',
+	title: 'CosmozModalSlideout',
 	component: 'cosmoz-modal-slideout',
 	tags: ['autodocs'],
+	parameters: componentDoc(
+		'The modal drawer: an autonomous wrapper around a native `dialog` ' +
+			'promoted with `showModal()` - the page behind is inert, focus is ' +
+			'trapped, and the scrim backdrop absorbs its clicks. Esc arrives as ' +
+			'the dialog `cancel` (cancelable, bridged through `opened-changed`; ' +
+			'the veto holds) and the flip is recorded by the dialog `close`. ' +
+			'Programmatic `close()` and slotted `request-close` use the same funnel.',
+	),
 };
 
 export default meta;
