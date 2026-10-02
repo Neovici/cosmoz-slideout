@@ -1,19 +1,17 @@
 # The lifecycle: reconcile against DOM truth
 
-Why the slideout has no state machine - the open flip is an idempotent
-reconcile, and the two channels (intent, record) are owned one each by
-the element and the platform. This file covers the shared shape; the
-modal drawer's platform primitive is its own topic
-([the modal drawer's dialog](#the-modal-drawers-dialog)).
+The open flip is an idempotent reconcile, and the two channels (intent,
+record) are owned one each by the element and the platform. This file
+covers the shared shape; the modal drawer's platform primitive is its own
+topic ([the modal drawer's dialog](#the-modal-drawers-dialog)).
 
-## No machine
+## The reconcile
 
-The lifecycle is not a state machine, because it has no phases: nothing
-here is announced after the CSS transition finishes (`transitionend` is
-the consumer's, not the element's), so there is no settle to await - a
-phase's only remaining job would be bookkeeping "what to undo", and
-nothing is left running once the flip is done. The lifecycle is a
-reconcile effect (shown for the non-modal surface):
+Nothing here is announced after the CSS transition finishes
+(`transitionend` is the consumer's, not the element's), so there is no
+settle to await - a phase's only remaining job would be bookkeeping "what
+to undo", and nothing is left running once the flip is done. The
+lifecycle is a reconcile effect (shown for the non-modal surface):
 
 ```ts
 useEffect(() => {
@@ -34,9 +32,8 @@ is a no-op, so churn re-runs, reconnect resumes, and echo writes all
 degrade to nothing. The truth check and the platform call happen in one
 synchronous block - nothing can interleave in a synchronous effect - so
 the throwing cases (`showPopover()` on a showing popover) cannot arise,
-and no guards are needed. No asynchronous phases remain: the element's
-disconnect runs no
-cleanup, because the reconcile establishes nothing that outlives it.
+and no guards are needed. The element's disconnect runs no cleanup,
+because the reconcile establishes nothing that outlives it.
 
 ## Two channels
 
