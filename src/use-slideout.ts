@@ -7,7 +7,7 @@ import { useFocusRestorer } from './use-focus-restorer';
 import { useFullScreen } from './use-full-screen';
 import { useHandleRequestClose } from './use-handle-request-close';
 import { useImperativeApi } from './use-imperative-api';
-import { usePopoverReconcile } from './use-popover';
+import { usePopoverReconcile } from './use-popover-reconcile';
 
 /**
  * The slideout's lifecycle: `opened` reconciles against
