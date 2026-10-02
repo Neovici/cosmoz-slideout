@@ -1,0 +1,39 @@
+import{i as e}from"./preload-helper-B45gAKPr.js";import{pt as t}from"./iframe-DgIR1Z41.js";import{E as n,T as r,w as i}from"./cosmoz-slideout-Dq4ZDEru.js";var a,o,s,c=e((()=>{n(),i(),a=(e,n)=>t`
+	<cosmoz-slideout
+		class=${r(e.class)}
+		style=${r(e.style)}
+		.opened=${e.opened??!1}
+		?full-screen=${e.fullScreen}
+		?no-escape=${e.noEscape}
+		aria-label=${r(e.ariaLabel)}
+		aria-labelledby=${r(e.ariaLabelledby)}
+		@opened-changed=${e.onOpenedChanged}
+		@open=${e.onOpen}
+		@close=${e.onClose}
+		@full-screen-changed=${e.onFullScreenChanged}
+	>
+		${n}
+	</cosmoz-slideout>
+`,o=(e,n)=>t`
+	<cosmoz-modal-slideout
+		class=${r(e.class)}
+		style=${r(e.style)}
+		.opened=${e.opened??!1}
+		?full-screen=${e.fullScreen}
+		aria-label=${r(e.ariaLabel)}
+		aria-labelledby=${r(e.ariaLabelledby)}
+		@opened-changed=${e.onOpenedChanged}
+		@open=${e.onOpen}
+		@close=${e.onClose}
+		@full-screen-changed=${e.onFullScreenChanged}
+	>
+		${n}
+	</cosmoz-modal-slideout>
+`,s=(e,n)=>t`
+	<cosmoz-slideout-panel
+		class=${r(e.class)}
+		style=${r(e.style)}
+	>
+		${n}
+	</cosmoz-slideout-panel>
+`}));export{s as i,o as n,a as r,c as t};
