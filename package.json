@@ -77,7 +77,7 @@
   "devDependencies": {
     "@changesets/cli": "^3.0.3",
     "@neovici/cfg": "^2.15.0",
-    "@neovici/cosmoz-button": "^1.1.1",
+    "@neovici/cosmoz-button": "^2.2.1",
     "@neovici/cosmoz-icons": "^1.6.0",
     "@neovici/cosmoz-input": "^5.8.2",
     "@neovici/cosmoz-tokens": "^4.8.0",
