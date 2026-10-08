@@ -95,7 +95,7 @@
     "husky": "^9.0.0",
     "jsdom": "^29.0.1",
     "lint-staged": "^17.0.7",
-    "prettier": "3.9.4",
+    "prettier": "3.9.9",
     "shadow-dom-testing-library": "^1.13.1",
     "storybook": "^10.5.0",
     "typescript": "^5.4.3",
