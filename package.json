@@ -93,7 +93,7 @@
     "eslint": "^9.0.0",
     "http-server": "^14.1.1",
     "husky": "^9.0.0",
-    "jsdom": "^29.0.1",
+    "jsdom": "^30.1.2",
     "lint-staged": "^17.0.7",
     "prettier": "3.9.9",
     "shadow-dom-testing-library": "^1.13.1",
